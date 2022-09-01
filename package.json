@@ -1,0 +1,93 @@
+{
+  "name": "chartjs-color-schemes",
+  "description": "Simple color schemes for Chart.js v3.x",
+  "homepage": "https://uk-taniyama.github.io/chartjs-color-schemes/",
+  "version": "1.0.0-alpha.1",
+  "licence": "MIT",
+  "jsdelivr": "dist/index.min.js",
+  "unpkg": "dist/index.min.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "chartjs",
+    "chart.js",
+    "color",
+    "schemes"
+  ],
+  "files": [
+    "dist/**",
+    "samples/**",
+    "CHANGELOG.md",
+    "README.md",
+    "index.html",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uk-taniyama/chartjs-color-schemes"
+  },
+  "bugs": {
+    "url": "https://github.com/uk-taniyama/chartjs-color-schemes/issues"
+  },
+  "peerDependencies": {
+    "chart.js": "^3.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.4.0",
+    "@swc/core": "^1.2.246",
+    "@swc/jest": "^0.2.22",
+    "@types/jest": "^29.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "chart.js": "^3.6.0",
+    "chartjs-test-utils": "^0.4.0",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "highlight.js": "^11.6.0",
+    "http-browser": "^0.1.31",
+    "jest": "^29.0.1",
+    "jest-environment-jsdom": "^29.0.1",
+    "jsdom": "^20.0.0",
+    "marked": "^4.1.0",
+    "mdserver": "^2.2.6",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.37",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.79.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^28.0.8",
+    "tslib": "^2.4.0",
+    "typedoc-plugin-markdown": "^3.13.5",
+    "typescript": "^4.8.2",
+    "yargs": "^17.5.1"
+  },
+  "scripts": {
+    "prepublishOnly": "npm-run-all -s clean t build:all",
+    "clean": "rimraf dist test-result",
+    "build": "rollup -c",
+    "build:all": "npm-run-all -p build:docs build",
+    "build:watch": "rollup -c --watch",
+    "build:docs": "node src/tools/mkdocs.js",
+    "docs": "typedoc src/index.ts",
+    "lint": "eslint .",
+    "test": "jest",
+    "start": "npm-run-all server build:watch",
+    "server": "mdserver .",
+    "clean-chartjs": "rimraf modules/chart.js",
+    "clone-chartjs": "git clone --branch v3.1.0 --depth 1 https://github.com/chartjs/Chart.js.git modules/chart.js"
+  },
+  "dependencies": {
+    "canvas": "^2.9.3"
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Chart.js color schemes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.js"></script>
+  <script src="../dist/index.js"></script>
+  <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-chart-schemes/dist/index.js"><\/script>')</script>
+  <style>
+    canvas {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <a href="..">Home</a>
+    <div id="canvas-holder" style="width:100%">
+      <canvas id="chart" style="height: 500px"></canvas>
+    </div>
+    <button class="btn btn-chartjs" id="addDataset">Add Dataset</button>
+    <script>
+      const CHART_COLORS = {
+        // red: 'rgb(255, 99, 132)',
+        // orange: 'rgb(255, 159, 64)',
+        // yellow: 'rgb(255, 205, 86)',
+        // green: 'rgb(75, 192, 192)',
+        // blue: 'rgb(54, 162, 235)',
+        // purple: 'rgb(153, 102, 255)',
+        // grey: 'rgb(201, 203, 207)',
+        red: "#ff6384",
+        orange: "#ff9f40",
+        yellow: "#ffcd56",
+        green: "#4bc0c0",
+        blue: "#36a2eb",
+        purple: "#9966ff",
+        grey: "#c9cbcf",
+        black: '#404244',
+      };
+      var randomScalingFactor = function () {
+        return Math.round(Math.random() * 100);
+      };
+
+      var randomData = function () {
+        return [
+          randomScalingFactor(),
+          randomScalingFactor(),
+          randomScalingFactor(),
+          randomScalingFactor()
+        ];
+      };
+
+      var data = randomData();
+      var config = {
+        type: 'line',
+        data: {
+          labels: ['Success', 'Warning', 'Warning', 'Fail'],
+          datasets: [{
+            label: 'Dataset 1',
+            data: randomData(),
+          }, {
+            label: 'Dataset 2',
+            data: randomData(),
+          }]
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: false,
+          },
+        }
+      };
+      const schemes = ChartColorSchemes.createColorSchemes(Object.values(CHART_COLORS));
+      Chart.defaults.borderColor = schemes.color();
+      Chart.defaults.backgroundColor = schemes.color();
+
+      window.onload = function () {
+        var ctx = document.getElementById('chart').getContext('2d');
+        window.myChart = new Chart(ctx, config);
+      };
+
+      document.getElementById('addDataset').addEventListener('click', function () {
+        const datasets = config.data.datasets;
+        datasets.push({
+          label: 'Dataset ' + (datasets.length + 1),
+          data: randomData(),
+        })
+        window.myChart.update();
+      });
+    </script>
+  </div>
+</body>
+
+</html>

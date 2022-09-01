@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "lib": ["DOM", "ES2020"],
+    "importHelpers": false,
+    "declaration": false,
+    "sourceMap": true,
+    "strict": true,
+    "removeComments": false,
+    "importsNotUsedAsValues": "error",
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictBindCallApply": true,
+    "stripInternal": true,
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "rootDir": "./src",
+    "baseUrl": "./",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.json"],
+
+  "typedocOptions": {
+    "out": "./docs",
+    "theme": "default",
+    "plugin": "typedoc-plugin-markdown",
+    "readme": "none",
+    "githubPages": false,
+    "disableSources": true,
+    "excludeExternals": true,
+    "excludePrivate": true,
+    "includeVersion": true,
+    "hideGenerator": true
+  }
+}
