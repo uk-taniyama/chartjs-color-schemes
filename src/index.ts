@@ -11,13 +11,13 @@ function getChartType(ctx: Context) {
 }
 
 export const defaults = {
-  indexedByDataset: ['line'],
+  indexedByData: ['pie', 'doughnut', 'polarArea'],
 };
 
 export function getColor(ctx: Context, colors: string[]) {
   const chartType = getChartType(ctx);
   console.log(ctx.type, chartType, ctx.dataIndex, ctx.datasetIndex);
-  const index = defaults.indexedByDataset.indexOf(chartType) > 0 ? ctx.dataIndex : ctx.datasetIndex;
+  const index = defaults.indexedByData.indexOf(chartType) >= 0 ? ctx.dataIndex : ctx.datasetIndex;
   return colors[index % colors.length];
 }
 
@@ -33,11 +33,16 @@ class ColorSchemeImpl implements ColorScheme {
   colors: string[];
 
   constructor(colors: string[]) {
-    this.colors = colors;
+    this.colors = [];
+    this.update(colors);
   }
 
   color() {
     return createBorderColor(this.colors);
+  }
+
+  update(colors: string[]) {
+    this.colors.splice(0, this.colors.length, ...colors);
   }
 }
 

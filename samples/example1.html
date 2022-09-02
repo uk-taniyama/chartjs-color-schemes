@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>Chart.js color schemes</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
   <script src="../dist/index.js"></script>
   <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-chart-schemes/dist/index.js"><\/script>')</script>
   <style>
@@ -23,9 +24,21 @@
   <div class="content">
     <a href="..">Home</a>
     <div id="canvas-holder" style="width:100%">
-      <canvas id="chart" style="height: 500px"></canvas>
+      <canvas id="chart" style="max-height: 800px; min-height: 800px;"></canvas>
     </div>
-    <button class="btn btn-chartjs" id="addDataset">Add Dataset</button>
+    <div>
+      <button class="btn btn-chartjs" id="addDataset">Add Dataset</button>
+    </div>
+    <div>
+      <button class="btn btn-chartjs" id="lineChart">Line Chart</button>
+      <button class="btn btn-chartjs" id="barChart">Bar Chart</button>
+      <button class="btn btn-chartjs" id="bubbleChart">Bubble Chart</button>
+      <button class="btn btn-chartjs" id="scatterChart">Scatter Chart</button>
+      <button class="btn btn-chartjs" id="pieChart">Pie Chart</button>
+      <button class="btn btn-chartjs" id="doughnutChart">Doughnut Chart</button>
+      <button class="btn btn-chartjs" id="polarAreaChart">PolarArea Chart</button>
+      <button class="btn btn-chartjs" id="radarChart">Rader Chart</button>
+    </div>
     <script>
       const CHART_COLORS = {
         // red: 'rgb(255, 99, 132)',
@@ -44,34 +57,51 @@
         grey: "#c9cbcf",
         black: '#404244',
       };
-      var randomScalingFactor = function () {
+
+      function randomScaler() {
         return Math.round(Math.random() * 100);
       };
 
-      var randomData = function () {
-        return [
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor()
-        ];
-      };
+      function random3d() {
+        return {
+          x: randomScaler(),
+          y: randomScaler(),
+          r: randomScaler() / 10,
+        }
+      }
 
-      var data = randomData();
+      const labels = ['Data 1', 'Data 2', 'Data 3', 'Data 4'];
+
+      function getCreateData(type) {
+        if (type === 'bubble' || type === 'scatter') return random3d;
+        return randomScaler
+      }
+
+      function createDataset(i, type) {
+        return {
+          label: 'Dataset ' + i,
+          data: labels.map(getCreateData(type)),
+        }
+      }
+
+      function createDatasets(count, type) {
+        const datasets = [];
+        for (let i = 1; i <= count; i += 1) {
+          datasets.push(createDataset(i, type));
+        }
+        return datasets;
+      }
+
+
       var config = {
-        type: 'line',
+        type: '',
         data: {
-          labels: ['Success', 'Warning', 'Warning', 'Fail'],
-          datasets: [{
-            label: 'Dataset 1',
-            data: randomData(),
-          }, {
-            label: 'Dataset 2',
-            data: randomData(),
-          }]
+          labels,
+          datasets: [],
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           title: {
             display: false,
           },
@@ -81,18 +111,27 @@
       Chart.defaults.borderColor = schemes.color();
       Chart.defaults.backgroundColor = schemes.color();
 
-      window.onload = function () {
-        var ctx = document.getElementById('chart').getContext('2d');
-        window.myChart = new Chart(ctx, config);
-      };
+      function createChart(type) {
+        Math.seedrandom("ChartColorSchemes");
+        var ctx = document.getElementById('chart');
+        config.type = type;
+        config.data.datasets = createDatasets(2, type);
+        window.chart = new Chart(ctx, JSON.parse(JSON.stringify(config)));
+      }
 
-      document.getElementById('addDataset').addEventListener('click', function () {
-        const datasets = config.data.datasets;
-        datasets.push({
-          label: 'Dataset ' + (datasets.length + 1),
-          data: randomData(),
-        })
-        window.myChart.update();
+      window.onload = () => createChart('line');
+
+      document.getElementById('addDataset').addEventListener('click', () => {
+        const datasets = chart.data.datasets;
+        datasets.push(createDataset(datasets.length, config.type));
+        chart.update();
+      });
+
+      ['line', 'bar', 'pie', 'bubble', 'doughnut', 'polarArea', 'radar', 'scatter'].forEach((type) => {
+        document.getElementById(type + 'Chart')?.addEventListener('click', () => {
+          chart.destroy();
+          createChart(type);
+        });
       });
     </script>
   </div>
