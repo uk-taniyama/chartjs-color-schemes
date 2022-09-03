@@ -24,9 +24,7 @@ describe('index', () => {
     colorSchemes.setSchemeColors(COLORS);
     const { colors, colors2 } = colorSchemes;
     const ctx = {
-      dataset: {
-        length: 6,
-      },
+      dataset: { data: { length: 6 } },
     };
     expect(colors(ctx)).toEqual([...COLORS, ...COLORS]);
     // default converter is empty. so same value.
@@ -56,9 +54,7 @@ describe('index', () => {
     colorSchemes.setSchemeColors(COLORS);
     const { colors } = colorSchemes;
     const ctx = {
-      dataset: {
-        length: 3,
-      },
+      dataset: { data: { length: 3 } },
     };
     expect(colors(ctx)).toEqual(COLORS);
 

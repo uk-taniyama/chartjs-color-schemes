@@ -8,6 +8,9 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>Chart.js color schemes</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-color@3.1.0/dist/d3-color.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/dist/d3-interpolate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.0.0/dist/d3-scale-chromatic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
   <script src="../dist/index.js"></script>
   <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-chart-schemes/dist/index.js"><\/script>')</script>
@@ -28,9 +31,12 @@
     </div>
     <div>
       <button class="btn btn-chartjs" id="addDataset">Add Dataset</button>
+      <button class="btn btn-chartjs" id="changeScheme">Change Scheme</button>
+      <span id="scheme">default</span>
     </div>
     <div>
       <button class="btn btn-chartjs" id="lineChart">Line Chart</button>
+      <button class="btn btn-chartjs" id="areaChart">Area Chart</button>
       <button class="btn btn-chartjs" id="barChart">Bar Chart</button>
       <button class="btn btn-chartjs" id="bubbleChart">Bubble Chart</button>
       <button class="btn btn-chartjs" id="scatterChart">Scatter Chart</button>
@@ -40,23 +46,10 @@
       <button class="btn btn-chartjs" id="radarChart">Rader Chart</button>
     </div>
     <script>
-      const CHART_COLORS = {
-        // red: 'rgb(255, 99, 132)',
-        // orange: 'rgb(255, 159, 64)',
-        // yellow: 'rgb(255, 205, 86)',
-        // green: 'rgb(75, 192, 192)',
-        // blue: 'rgb(54, 162, 235)',
-        // purple: 'rgb(153, 102, 255)',
-        // grey: 'rgb(201, 203, 207)',
-        red: "#ff6384",
-        orange: "#ff9f40",
-        yellow: "#ffcd56",
-        green: "#4bc0c0",
-        blue: "#36a2eb",
-        purple: "#9966ff",
-        grey: "#c9cbcf",
-        black: '#404244',
-      };
+      const colorSchemes = ChartColorSchemes.createColorSchemes();
+      ChartColorSchemes.setup(colorSchemes);
+      ChartColorSchemes.addSchemes(ChartColorSchemes.d3NamedScheme)
+      const schemeNames = ChartColorSchemes.getSchemeNames();
 
       function randomScaler() {
         return Math.round(Math.random() * 100);
@@ -92,7 +85,6 @@
         return datasets;
       }
 
-
       var config = {
         type: '',
         data: {
@@ -107,16 +99,18 @@
           },
         }
       };
-      const schemes = ChartColorSchemes.createColorSchemes(Object.values(CHART_COLORS));
-      Chart.defaults.borderColor = schemes.color();
-      Chart.defaults.backgroundColor = schemes.color();
 
       function createChart(type) {
         Math.seedrandom("ChartColorSchemes");
         var ctx = document.getElementById('chart');
         config.type = type;
         config.data.datasets = createDatasets(2, type);
-        window.chart = new Chart(ctx, JSON.parse(JSON.stringify(config)));
+        if(type=='area') {
+          config.type = 'line';
+          config.data.datasets.forEach(dataset => dataset.fill = true)          
+        }
+        const newConfig = JSON.parse(JSON.stringify(config));
+        window.chart = new Chart(ctx, newConfig);
       }
 
       window.onload = () => createChart('line');
@@ -127,7 +121,19 @@
         chart.update();
       });
 
-      ['line', 'bar', 'pie', 'bubble', 'doughnut', 'polarArea', 'radar', 'scatter'].forEach((type) => {
+      let schemeIndex = 0;
+      document.getElementById('changeScheme').addEventListener('click', () => {
+        schemeIndex += 1;
+        if (schemeIndex >= schemeNames.length) {
+          schemeIndex = 0;
+        }
+        const name = schemeNames[schemeIndex];
+        document.getElementById('scheme').innerText = name;
+        colorSchemes.setSchemeName(name);
+        chart.update();
+      });
+
+      ['line', 'area', 'bar', 'pie', 'bubble', 'doughnut', 'polarArea', 'radar', 'scatter'].forEach((type) => {
         document.getElementById(type + 'Chart')?.addEventListener('click', () => {
           chart.destroy();
           createChart(type);

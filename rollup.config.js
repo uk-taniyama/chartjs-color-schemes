@@ -23,6 +23,12 @@ const commonPlugins = [
   }),
 ];
 
+const globals = {
+  'chart.js': 'Chart',
+  'chart.js/helpers': 'Chart.helpers',
+  'd3-scale-chromatic': 'd3',
+};
+
 const minifyPlugins = [
   ...commonPlugins,
   terser({
@@ -54,13 +60,14 @@ module.exports = [
     file: `dist/index${ext}`,
     banner: minify ? false : banner,
     indent: false,
-    globals: {
-      'chart.js': 'Chart',
-      'chart.js/helpers': 'Chart.helpers',
-    },
+    globals,
   },
-  external: [
-    'chart.js',
-    'chart.js/helpers',
-  ],
+  onwarn: (warning, defaultHandler) => {
+    if (warning.code === 'CIRCULAR_DEPENDENCY') {
+      if (warning.importer.indexOf('d3-interpolate')) return;
+    }
+    // console.error(warning);
+    defaultHandler(warning);
+  },
+  external: Object.keys(globals),
 }));

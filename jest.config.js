@@ -1,3 +1,8 @@
+const esmodules = [
+  'd3-.*',
+  'lodash-es',
+].join('|');
+
 module.exports = {
   roots: [
     '<rootDir>/src',
@@ -7,9 +12,9 @@ module.exports = {
     '**/__tests__/**/*.+(ts|tsx|js)',
     '**/?(*.)+(spec|test).+(ts|tsx|js)',
   ],
-  // transform: {
-  //   '^.+\\.(ts|tsx)$': 'ts-jest',
-  // },
+  transformIgnorePatterns: [
+    `node_modules/(?!(${esmodules})/)`,
+  ],
   transform: {
     '.+\\.(t|j)sx?$': [
       '@swc/jest', {
