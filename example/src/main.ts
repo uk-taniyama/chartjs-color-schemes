@@ -4,6 +4,7 @@ import {
   createColorSchemes, setup, addScheme, addSchemes, getSchemeNames,
 } from 'chartjs-color-schemes';
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
+import seed from 'seed-random';
 
 // create color-schemes.
 const colorSchemes = createColorSchemes();
@@ -20,25 +21,44 @@ addSchemes(getOfficeSchemes());
 const schemeNames = getSchemeNames();
 setup(colorSchemes);
 
-const labels = ['Data 1', 'Data 2', 'Data 3', 'Data 4'];
-
 const ctx: HTMLCanvasElement = document.getElementById('chart') as any;
 const schemeNameEl = document.getElementById('schemeName')!;
 const schemesEl = document.getElementById('schemes')!;
 const typesEl = document.getElementById('types')!;
 
+let random = seed('default');
+
 function randomData() {
-  return Math.random() * 40 + Math.random() * 5;
+  return random() * 50;
 }
 
-function config(type: string): any {
+function randomData3d() {
   return {
-    type,
+    x: randomData(),
+    y: randomData(),
+    r: randomData(),
+  };
+}
+
+function createRandomData(type: string): any {
+  if (type === 'bubble') return randomData3d;
+  if (type === 'scatter') return randomData3d;
+  return randomData;
+}
+
+const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((name) => ([`Data ${name}`]));
+
+function config(chartType: string): any {
+  random = seed('default');
+  const getData = createRandomData(chartType);
+  return {
+    type: chartType === 'area' ? 'line' : chartType,
     data: {
       labels,
       datasets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((name) => ({
         label: `Dataset ${name}`,
-        data: labels.map(randomData),
+        data: labels.map(getData),
+        fill: chartType === 'area' ? true : undefined,
       })),
     },
     options: {
@@ -63,7 +83,7 @@ schemesEl.addEventListener('click', (ev: any) => {
   colorSchemes.setSchemeName(schemeName);
   chart.update();
 });
-const types = ['line', 'bar'];
+const types = ['line', 'area', 'bar', 'bubble', 'scatter', 'pie', 'doughnut', 'polarArea', 'radar'];
 typesEl.innerHTML = types.map((type) => `<button class="btn btn-chartjs" id="${type}">${type}</button>`).join(' ');
 typesEl.addEventListener('click', (ev: any) => {
   const type = ev.target.id;
