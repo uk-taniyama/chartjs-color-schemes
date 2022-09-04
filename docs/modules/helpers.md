@@ -1,19 +1,19 @@
-[chartjs-color-schemes - v1.0.0-alpha.1](../README.md) / helper
+[chartjs-color-schemes - v1.0.0-alpha.1](../README.md) / helpers
 
-# Namespace: helper
+# Namespace: helpers
 
 ## Table of contents
 
 ### Classes
 
-- [ConvertColorBuilder](../classes/helper.ConvertColorBuilder.md)
+- [ConvertColorBuilder](../classes/helpers.ConvertColorBuilder.md)
 
 ### Functions
 
-- [clampColor](helper.md#clampcolor)
-- [clampValue](helper.md#clampvalue)
-- [createColors](helper.md#createcolors)
-- [createConvertColorBuilder](helper.md#createconvertcolorbuilder)
+- [clampColor](helpers.md#clampcolor)
+- [clampValue](helpers.md#clampvalue)
+- [createColors](helpers.md#createcolors)
+- [createConvertColorBuilder](helpers.md#createconvertcolorbuilder)
 
 ## Functions
 
@@ -83,8 +83,8 @@ ___
 
 ### createConvertColorBuilder
 
-▸ **createConvertColorBuilder**(): [`ConvertColorBuilder`](../classes/helper.ConvertColorBuilder.md)
+▸ **createConvertColorBuilder**(): [`ConvertColorBuilder`](../classes/helpers.ConvertColorBuilder.md)
 
 #### Returns
 
-[`ConvertColorBuilder`](../classes/helper.ConvertColorBuilder.md)
+[`ConvertColorBuilder`](../classes/helpers.ConvertColorBuilder.md)

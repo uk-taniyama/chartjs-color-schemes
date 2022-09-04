@@ -6,7 +6,7 @@ chartjs-color-schemes - v1.0.0-alpha.1
 
 ### Namespaces
 
-- [helper](modules/helper.md)
+- [helpers](modules/helpers.md)
 - [schemes](modules/schemes.md)
 
 ### Interfaces
