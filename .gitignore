@@ -4,4 +4,4 @@ node_modules/**/*
 temp/**/*
 test-result/**/*
 *.tgz
-index.html
+/index.html

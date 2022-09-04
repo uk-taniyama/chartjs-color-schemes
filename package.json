@@ -33,7 +33,7 @@
     "url": "https://github.com/uk-taniyama/chartjs-color-schemes/issues"
   },
   "scripts": {
-    "prepublishOnly": "rebuild",
+    "prepublishOnly": "npm-run-all rebuild",
     "clean": "rimraf dist test-result",
     "rebuild": "npm-run-all -s clean test build:all",
     "build": "rollup -c",
