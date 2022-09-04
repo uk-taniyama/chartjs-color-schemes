@@ -1,4 +1,9 @@
 module.exports = {
+  ignorePatterns: [
+    'modules/**',
+    'dist/**',
+    '**/dist/**',
+  ],
   extends: [
     'airbnb-base',
     'airbnb-typescript/base',

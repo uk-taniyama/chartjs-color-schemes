@@ -3,6 +3,10 @@
   "exclude": [
     "src/**/*.test.ts"
   ],
+  "compilerOptions": {
+    "noEmit": false,
+    "sourceMap": false
+  },
   "typedocOptions": {
     "entryPoints": [
       "./src/index.ts"

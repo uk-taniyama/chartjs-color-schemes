@@ -1,4 +1,4 @@
-import { Chart, ScriptableContext } from 'chart.js';
+import { Chart } from 'chart.js';
 import 'canvas';
 
 describe('chart.js', () => {
@@ -6,31 +6,19 @@ describe('chart.js', () => {
     const canvas = document.createElement('canvas');
     canvas.width = 1000;
     canvas.height = 1000;
-    return new Promise((resolve) => {
-      const chart = new Chart(canvas, {
-        type: 'line',
-        data: {
-          labels: ['A', 'B', 'C'],
-          datasets: [{
-            data: [1, 2, 3],
-          }],
-        },
-        options: {
-          responsive: false,
-          borderColor(ctx: ScriptableContext<any>) {
-            console.log(ctx.type, ctx.chart.options.type, ctx.datasetIndex, ctx.dataIndex);
-            return '#';
-          },
-        },
-        plugins: [{
-          id: 'test',
-          beforeBuildTicks(chart, args, options) {
-            console.log(chart.config);
-          },
+    const chart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: ['A', 'B', 'C'],
+        datasets: [{
+          data: [1, 2, 3],
         }],
-      });
-      console.log(chart !== null);
-      resolve('true');
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
     });
+    console.log(chart !== null);
   });
 });

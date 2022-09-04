@@ -49,9 +49,9 @@ const dtsPlugins = [
 module.exports = [
   { format: 'umd', ext: '.js', minify: false },
   { format: 'umd', ext: '.min.js', minify: true },
-  { format: 'cjs', ext: '.cjs.js' },
-  { format: 'esm', ext: '.esm.js' },
-  { format: 'es', ext: '.d.ts' },
+  // { format: 'cjs', ext: '.cjs.js' },
+  // { format: 'esm', ext: '.esm.js' },
+  // { format: 'es', ext: '.d.ts' },
 ]
   .filter(({ format, minify }) => watch === false || (format === 'umd' && minify === false))
   .map(({
