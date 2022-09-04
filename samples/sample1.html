@@ -13,7 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.0.0/dist/d3-scale-chromatic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
   <script src="../dist/index.js"></script>
-  <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-chart-schemes/dist/index.js"><\/script>')</script>
+  <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-color-schemes/dist/index.min.js"><\/script>')</script>
   <style>
     canvas {
       -moz-user-select: none;
@@ -48,7 +48,7 @@
     <script>
       const colorSchemes = ChartColorSchemes.createColorSchemes();
       ChartColorSchemes.setup(colorSchemes);
-      ChartColorSchemes.addSchemes(ChartColorSchemes.d3NamedScheme)
+      ChartColorSchemes.addSchemes(ChartColorSchemes.schemes.getD3Schemes().namedColors)
       const schemeNames = ChartColorSchemes.getSchemeNames();
 
       function randomScaler() {
