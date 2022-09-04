@@ -1,6 +1,7 @@
 const esmodules = [
   'd3-.*',
   'lodash-es',
+  'chartjs-plugin-colorschemes',
 ].join('|');
 
 module.exports = {

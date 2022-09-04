@@ -30,8 +30,29 @@
   "bugs": {
     "url": "https://github.com/uk-taniyama/chartjs-color-schemes/issues"
   },
+  "scripts": {
+    "prepublishOnly": "npm-run-all -s clean test build:all",
+    "clean": "rimraf dist test-result",
+    "rebuild": "npm-run-all -s clean test build:all",
+    "build": "rollup -c",
+    "build:all": "npm-run-all -p build:docs build",
+    "build:watch": "rollup -c --watch",
+    "build:docs": "node src/tools/mkdocs.js",
+    "docs": "typedoc --tsconfig tsconfig.tsdoc.json",
+    "lint": "eslint .",
+    "test": "jest",
+    "start": "npm-run-all server build:watch",
+    "server": "mdserver .",
+    "clean-chartjs": "rimraf modules/chart.js",
+    "clone-chartjs": "git clone --branch v3.9.1 --depth 1 https://github.com/chartjs/Chart.js.git modules/chart.js"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  },
   "peerDependencies": {
-    "chart.js": "^3.6.0"
+    "chart.js": "^3.6.0",
+    "chartjs-plugin-colorschemes": "^0.4.0",
+    "d3-scale-chromatic": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",
@@ -43,12 +64,16 @@
     "@swc/core": "^1.2.246",
     "@swc/jest": "^0.2.22",
     "@types/d3-color": "^3.1.0",
+    "@types/d3-scale-chromatic": "^3.0.0",
     "@types/jest": "^29.0.0",
     "@types/lodash-es": "^4.17.6",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "canvas": "^2.9.3",
     "chart.js": "^3.6.0",
+    "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-test-utils": "^0.4.0",
+    "d3-scale-chromatic": "^3.0.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -70,29 +95,9 @@
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^28.0.8",
     "tslib": "^2.4.0",
+    "typedoc": "0.23.13",
     "typedoc-plugin-markdown": "^3.13.5",
     "typescript": "^4.8.2",
     "yargs": "^17.5.1"
-  },
-  "scripts": {
-    "prepublishOnly": "npm-run-all -s clean t build:all",
-    "clean": "rimraf dist test-result",
-    "build": "rollup -c",
-    "build:all": "npm-run-all -p build:docs build",
-    "build:watch": "rollup -c --watch",
-    "build:docs": "node src/tools/mkdocs.js",
-    "docs": "typedoc src/index.ts",
-    "lint": "eslint .",
-    "test": "jest",
-    "start": "npm-run-all server build:watch",
-    "server": "mdserver .",
-    "clean-chartjs": "rimraf modules/chart.js",
-    "clone-chartjs": "git clone --branch v3.9.1 --depth 1 https://github.com/chartjs/Chart.js.git modules/chart.js"
-  },
-  "dependencies": {
-    "@types/d3-scale-chromatic": "^3.0.0",
-    "canvas": "^2.9.3",
-    "d3-scale-chromatic": "^3.0.0",
-    "lodash-es": "^4.17.21"
   }
 }

@@ -22,6 +22,12 @@ describe('chart.js', () => {
             return '#';
           },
         },
+        plugins: [{
+          id: 'test',
+          beforeBuildTicks(chart, args, options) {
+            console.log(chart.config);
+          },
+        }],
       });
       console.log(chart !== null);
       resolve('true');

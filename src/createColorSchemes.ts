@@ -39,7 +39,7 @@ export function setNamedColors(namedColors: Record<string, string>): void {
   Object.assign(globalNamedColors, namedColors);
 }
 
-export function addScheme(schmeName: string, colors: Colors) {
+export function addScheme(schmeName: string, colors: Colors): void {
   globalSchemes[schmeName] = colors;
 }
 

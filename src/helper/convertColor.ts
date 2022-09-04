@@ -3,9 +3,11 @@ import type { ColorModel } from 'chart.js/helpers';
 
 type Fn = (v: ColorModel) => ColorModel;
 
-class Builder {
+export class ConvertColorBuilder {
+  /** @private */
   fn: Fn[];
 
+  /** @private */
   constructor() {
     this.fn = [];
   }
@@ -70,6 +72,6 @@ class Builder {
   }
 }
 
-export function createBuilder(): Builder {
-  return new Builder();
+export function createConvertColorBuilder(): ConvertColorBuilder {
+  return new ConvertColorBuilder();
 }

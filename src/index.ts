@@ -1,5 +1,6 @@
 export * from './types';
-export * as helper from './helper';
 export * from './createColorSchemes';
+export { defaultConverter } from './defaultConverter';
 export { setup } from './setup';
-export { namedScheme as d3NamedScheme, namedLinear as d3NamedLinear } from './adapter/d3';
+export * as helper from './helper';
+export * as schemes from './schemes';

@@ -15,13 +15,17 @@ const banner = `/*!
 
 const commonPlugins = [
   json(),
-  typescript(),
+  typescript({
+    exclude: ['**/*test*'],
+  }),
   resolve({
     mainFields: ['module', 'main'],
     extensions: ['.mjs', '.cjs', '.js', '.jsx', '.json', '.node'],
     modulesOnly: true,
   }),
 ];
+
+const watch = process.env.ROLLUP_WATCH === 'true';
 
 const globals = {
   'chart.js': 'Chart',
@@ -48,26 +52,29 @@ module.exports = [
   { format: 'cjs', ext: '.cjs.js' },
   { format: 'esm', ext: '.esm.js' },
   { format: 'es', ext: '.d.ts' },
-].map(({
-  format, ext, minify = false,
-}) => ({
-  input,
-  // eslint-disable-next-line no-nested-ternary
-  plugins: ext === '.d.ts' ? dtsPlugins : (minify ? minifyPlugins : commonPlugins),
-  output: {
-    name: 'ChartColorSchemes',
-    format,
-    file: `dist/index${ext}`,
-    banner: minify ? false : banner,
-    indent: false,
-    globals,
-  },
-  onwarn: (warning, defaultHandler) => {
-    if (warning.code === 'CIRCULAR_DEPENDENCY') {
-      if (warning.importer.indexOf('d3-interpolate')) return;
-    }
-    // console.error(warning);
-    defaultHandler(warning);
-  },
-  external: Object.keys(globals),
-}));
+]
+  .filter(({ format, minify }) => watch === false || (format === 'umd' && minify === false))
+  .map(({
+    format, ext, minify = false,
+  }) => ({
+    input,
+    // eslint-disable-next-line no-nested-ternary
+    plugins: ext === '.d.ts' ? dtsPlugins : (minify ? minifyPlugins : commonPlugins),
+    output: {
+      name: 'ChartColorSchemes',
+      format,
+      file: `dist/index${ext}`,
+      banner: minify ? false : banner,
+      indent: false,
+      globals,
+    },
+    onwarn: (warning, defaultHandler) => {
+      // NOTE next warning is not a bug. https://github.com/d3/d3-interpolate/issues/58
+      if (warning.code === 'CIRCULAR_DEPENDENCY') {
+        if (warning.importer.indexOf('d3-interpolate')) return;
+      }
+      // console.error(warning);
+      defaultHandler(warning);
+    },
+    external: Object.keys(globals),
+  }));
