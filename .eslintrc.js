@@ -2,7 +2,9 @@ module.exports = {
   ignorePatterns: [
     'modules/**',
     'dist/**',
-    '**/dist/**',
+    '**/out/**',
+    '**/*.d.ts',
+    'example/vite.config.js',
   ],
   extends: [
     'airbnb-base',
