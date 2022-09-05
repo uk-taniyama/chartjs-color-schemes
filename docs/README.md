@@ -1,6 +1,6 @@
-chartjs-color-schemes - v1.0.0-alpha.1
+chartjs-color-schemes - v1.0.0-alpha.2
 
-# chartjs-color-schemes - v1.0.0-alpha.1
+# chartjs-color-schemes - v1.0.0-alpha.2
 
 ## Table of contents
 

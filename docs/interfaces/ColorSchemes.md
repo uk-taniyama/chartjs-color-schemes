@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.1](../README.md) / ColorSchemes
+[chartjs-color-schemes - v1.0.0-alpha.2](../README.md) / ColorSchemes
 
 # Interface: ColorSchemes
 
