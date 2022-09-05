@@ -6,7 +6,9 @@ Simple color schemes for Chart.js v3.x
 - [Samples](samples/sample1.html)
   for umd.
 
-- [Example](example/out/index.html)
+- [Example 1](example/out/example1.html)
+- [Example 2](example/out/example2.html)
+- [Example 3](example/out/example3.html)
   for vite.
 
 ## Install
