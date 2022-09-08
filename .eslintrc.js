@@ -21,5 +21,6 @@ module.exports = {
     'import/no-named-as-default': 'off',
     'import/prefer-default-export': 'off',
     '@typescript-eslint/type-annotation-spacing': 'error',
+    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-expect-error': { descriptionFormat: '^: TS\\d+' } }],
   },
 };

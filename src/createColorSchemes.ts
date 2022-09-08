@@ -1,4 +1,7 @@
-import type { Colors, ColorConverter, ColorFn } from './types';
+import { clampValue } from './helpers';
+import type {
+  Colors, ColorConverter, ColorFn, ColorLinear,
+} from './types';
 
 const globalNamedColors: Record<string, string> = {
   red: '#ff6384',
@@ -11,6 +14,7 @@ const globalNamedColors: Record<string, string> = {
   black: '#404244',
   white: '#F4F5F7',
 };
+
 globalNamedColors.line = globalNamedColors.grey;
 globalNamedColors.font = globalNamedColors.white;
 
@@ -51,11 +55,44 @@ export function getSchemeNames(): string[] {
   return Object.keys(globalSchemes);
 }
 
-export function getScheme(schemeName?: string): Colors {
-  if (schemeName == null) {
+export function getScheme(name?: string): Colors {
+  if (name == null) {
     return defaultScheme;
   }
-  return globalSchemes[schemeName] || defaultScheme;
+  return globalSchemes[name] || defaultScheme;
+}
+
+export function createGreyLiear(): ColorLinear {
+  const clamp = clampValue(0, 1, 255, 0);
+  return (value: number) => {
+    const hex = Math.floor(clamp(value)).toString(16).padStart(2, '0');
+    return `#${hex}${hex}${hex}`;
+  };
+}
+
+const grayLinear = createGreyLiear();
+
+const globalLinears: Record<string, ColorLinear> = {
+  default: grayLinear,
+};
+
+export function addLinear(name: string, linear: ColorLinear) {
+  globalLinears[name] = linear;
+}
+
+export function addLinears(linears: Record<string, ColorLinear>) {
+  Object.entries(linears).forEach(([name, linear]) => addLinear(name, linear));
+}
+
+export function getLinearNames(): string[] {
+  return Object.keys(globalLinears);
+}
+
+export function getLinear(name?: string): ColorLinear {
+  if (name == null) {
+    return grayLinear;
+  }
+  return globalLinears[name] || grayLinear;
 }
 
 export function getColor(colors: Colors, index: number) {

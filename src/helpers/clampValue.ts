@@ -1,15 +1,22 @@
-export function clampValue(min: number, max: number) {
-  let length = max - min;
-  if (length === 0) {
-    length = 1;
+export function clampValue(
+  min: number,
+  max: number,
+  rangeMin: number = 0,
+  rangeMax: number = 1,
+) {
+  const d = max - min;
+  if (d === 0) {
+    return () => rangeMin;
   }
+  const a = (rangeMax - rangeMin) / d;
+  const b = (rangeMin * max - rangeMax * min) / d;
   return (value: number) => {
     if (value <= min) {
-      return 0;
+      return rangeMin;
     }
     if (value >= max) {
-      return 1;
+      return rangeMax;
     }
-    return (value - min) / length;
+    return a * value + b;
   };
 }

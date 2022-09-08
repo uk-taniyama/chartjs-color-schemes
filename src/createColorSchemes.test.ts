@@ -1,4 +1,7 @@
-import { createColorSchemes } from '.';
+import {
+  createColorSchemes, addLinear, addLinears, getLinear, getLinearNames,
+} from '.';
+import { getD3Schemes } from './schemes';
 
 describe('index', () => {
   const COLORS = ['#000000', '#000001', '#000002'];
@@ -61,5 +64,19 @@ describe('index', () => {
     // change scheme colors
     colorSchemes.setSchemeColors(COLORS2);
     expect(colors(ctx)).toEqual(COLORS2);
+  });
+});
+describe.only('linears', () => {
+  const { namedLinear } = getD3Schemes();
+
+  addLinears(namedLinear);
+  expect(getLinearNames()).toEqual(['default', ...Object.keys(namedLinear)]);
+  const defaultLinear = getLinear();
+  expect(defaultLinear).toBeFunction();
+  expect(getLinear('BrBG')).toBe(namedLinear.BrBG);
+  Object.keys(getLinearNames()).forEach((name) => {
+    if (name !== 'default') {
+      addLinear(name, undefined as any);
+    }
   });
 });
