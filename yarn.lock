@@ -3553,7 +3553,7 @@ jest-config@^29.0.2:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-diff@^29.0.2:
+jest-diff@^29.0.0, jest-diff@^29.0.2:
   version "29.0.2"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-29.0.2.tgz#1a99419efda66f9ee72f91e580e774df95de5ddc"
   integrity sha512-b9l9970sa1rMXH1owp2Woprmy42qIwwll/htsw4Gf7+WuSp5bZxNhkKHDuCGKL+HoHn1KhcC+tNEeAPYBkD2Jg==
@@ -3606,6 +3606,14 @@ jest-environment-node@^29.0.2:
     "@types/node" "*"
     jest-mock "^29.0.2"
     jest-util "^29.0.2"
+
+jest-extended@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/jest-extended/-/jest-extended-3.1.0.tgz#7998699751f3b5d9207d212b39c1837f59c7fecc"
+  integrity sha512-BbuAVUb2dchgwm7euayVt/7hYlkKaknQItKyzie7Li8fmXCglgf21XJeRIdOITZ/cMOTTj5Oh5IjQOxQOe/hfQ==
+  dependencies:
+    jest-diff "^29.0.0"
+    jest-get-type "^29.0.0"
 
 jest-get-type@^29.0.0:
   version "29.0.0"

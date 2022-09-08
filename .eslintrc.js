@@ -2,6 +2,7 @@ module.exports = {
   ignorePatterns: [
     'modules/**',
     'dist/**',
+    'coverage/**',
     '**/out/**',
     '**/*.d.ts',
     'example/vite.config.js',

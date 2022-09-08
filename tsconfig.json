@@ -25,5 +25,6 @@
     "baseUrl": "./",
     "noEmit": true
   },
+  "files": ["src/global.d.ts"],
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.json"],
 }
