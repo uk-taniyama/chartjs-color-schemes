@@ -6,3 +6,4 @@ test-result/**/*
 *.tgz
 /index.html
 /coverage
+/src/e2e/__image_snapshots__

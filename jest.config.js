@@ -16,7 +16,7 @@ module.exports = {
   transformIgnorePatterns: [
     `node_modules/(?!(${esmodules})/)`,
   ],
-  setupFilesAfterEnv: ['jest-extended/all'],
+  setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
   transform: {
     '.+\\.(t|j)sx?$': [
       '@swc/jest', {
