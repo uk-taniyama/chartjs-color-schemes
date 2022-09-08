@@ -1,6 +1,6 @@
-chartjs-color-schemes - v1.0.0-alpha.2
+chartjs-color-schemes - v1.0.0-alpha.3
 
-# chartjs-color-schemes - v1.0.0-alpha.2
+# chartjs-color-schemes - v1.0.0-alpha.3
 
 ## Table of contents
 
@@ -9,9 +9,16 @@ chartjs-color-schemes - v1.0.0-alpha.2
 - [helpers](modules/helpers.md)
 - [schemes](modules/schemes.md)
 
+### Classes
+
+- [ColorfulScale](classes/ColorfulScale.md)
+
 ### Interfaces
 
 - [ColorSchemes](interfaces/ColorSchemes.md)
+- [ColorfulPluginData](interfaces/ColorfulPluginData.md)
+- [ColorfulPluginOptions](interfaces/ColorfulPluginOptions.md)
+- [ColorfulScaleOptions](interfaces/ColorfulScaleOptions.md)
 
 ### Type Aliases
 
@@ -21,16 +28,29 @@ chartjs-color-schemes - v1.0.0-alpha.2
 - [Colors](README.md#colors)
 - [NamedColors](README.md#namedcolors)
 - [NamedLinear](README.md#namedlinear)
+- [ValueFn](README.md#valuefn)
+
+### Variables
+
+- [ColorfulPlugin](README.md#colorfulplugin)
 
 ### Functions
 
+- [addLinear](README.md#addlinear)
+- [addLinears](README.md#addlinears)
 - [addScheme](README.md#addscheme)
 - [addSchemes](README.md#addschemes)
+- [applyColorfulPluginData](README.md#applycolorfulplugindata)
+- [applyColorfulPluginOptions](README.md#applycolorfulpluginoptions)
 - [clearNamedColors](README.md#clearnamedcolors)
 - [createColorSchemes](README.md#createcolorschemes)
+- [createColorfulScaleOptions](README.md#createcolorfulscaleoptions)
+- [createGreyLiear](README.md#creategreyliear)
 - [defaultConverter](README.md#defaultconverter)
 - [getColor](README.md#getcolor)
 - [getColors](README.md#getcolors)
+- [getLinear](README.md#getlinear)
+- [getLinearNames](README.md#getlinearnames)
 - [getScheme](README.md#getscheme)
 - [getSchemeNames](README.md#getschemenames)
 - [setNamedColor](README.md#setnamedcolor)
@@ -115,7 +135,77 @@ ___
 
 Ƭ **NamedLinear**: `Record`<`string`, [`ColorLinear`](README.md#colorlinear)\>
 
+___
+
+### ValueFn
+
+Ƭ **ValueFn**: (`ctx`: `any`) => `number` \| ``null`` \| `undefined`
+
+#### Type declaration
+
+▸ (`ctx`): `number` \| ``null`` \| `undefined`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ctx` | `any` |
+
+##### Returns
+
+`number` \| ``null`` \| `undefined`
+
+## Variables
+
+### ColorfulPlugin
+
+• `Const` **ColorfulPlugin**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `defaults` | { `data`: `never`[] = [] } |
+| `defaults.data` | `never`[] |
+| `id` | `string` |
+| `afterUpdate` | () => `void` |
+| `beforeInit` | (`chart`: `Chart`<keyof `ChartTypeRegistry`, (``null`` \| `number` \| `ScatterDataPoint` \| `BubbleDataPoint`)[], `unknown`\>, `_args`: `any`, `opts`: [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)) => `void` |
+| `beforeUpdate` | (`chart`: `any`, `_args`: { `mode`: `string`  }, `opts`: [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)) => `undefined` \| ``false`` |
+
 ## Functions
+
+### addLinear
+
+▸ **addLinear**(`name`, `linear`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `name` | `string` |
+| `linear` | [`ColorLinear`](README.md#colorlinear) |
+
+#### Returns
+
+`void`
+
+___
+
+### addLinears
+
+▸ **addLinears**(`linears`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `linears` | `Record`<`string`, [`ColorLinear`](README.md#colorlinear)\> |
+
+#### Returns
+
+`void`
+
+___
 
 ### addScheme
 
@@ -150,6 +240,40 @@ ___
 
 ___
 
+### applyColorfulPluginData
+
+▸ **applyColorfulPluginData**(`chart`, `data`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chart` | `Chart`<keyof `ChartTypeRegistry`, (``null`` \| `number` \| `ScatterDataPoint` \| `BubbleDataPoint`)[], `unknown`\> |
+| `data` | [`ColorfulPluginData`](interfaces/ColorfulPluginData.md) |
+
+#### Returns
+
+`void`
+
+___
+
+### applyColorfulPluginOptions
+
+▸ **applyColorfulPluginOptions**(`chart`, `opts`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `chart` | `any` |
+| `opts` | [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md) |
+
+#### Returns
+
+`void`
+
+___
+
 ### clearNamedColors
 
 ▸ **clearNamedColors**(): `void`
@@ -167,6 +291,41 @@ ___
 #### Returns
 
 [`ColorSchemes`](interfaces/ColorSchemes.md)
+
+___
+
+### createColorfulScaleOptions
+
+▸ **createColorfulScaleOptions**(`linear`, `min`, `max`): `Object`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `linear` | [`ColorLinear`](README.md#colorlinear) |
+| `min` | `number` |
+| `max` | `number` |
+
+#### Returns
+
+`Object`
+
+| Name | Type |
+| :------ | :------ |
+| `linear` | () => [`ColorLinear`](README.md#colorlinear) |
+| `max` | `number` |
+| `min` | `number` |
+| `type` | `string` |
+
+___
+
+### createGreyLiear
+
+▸ **createGreyLiear**(): [`ColorLinear`](README.md#colorlinear)
+
+#### Returns
+
+[`ColorLinear`](README.md#colorlinear)
 
 ___
 
@@ -221,15 +380,41 @@ ___
 
 ___
 
-### getScheme
+### getLinear
 
-▸ **getScheme**(`schemeName?`): [`Colors`](README.md#colors)
+▸ **getLinear**(`name?`): [`ColorLinear`](README.md#colorlinear)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `schemeName?` | `string` |
+| `name?` | `string` |
+
+#### Returns
+
+[`ColorLinear`](README.md#colorlinear)
+
+___
+
+### getLinearNames
+
+▸ **getLinearNames**(): `string`[]
+
+#### Returns
+
+`string`[]
+
+___
+
+### getScheme
+
+▸ **getScheme**(`name?`): [`Colors`](README.md#colors)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `name?` | `string` |
 
 #### Returns
 
