@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>chartjs-chart-schemes example</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="out/assets/index.css">
+  <link rel="icon" href="favicon.ico">
+  <title>chartjs-color-schemes example</title>
 </head>
 
 <body>
   <div class="content">
-    <a href="..">Home</a>
-    <div>
-      <span>Scheme:</span><span id="schemeName">default</span>
-      <div id="schemes"></div>
-      <span>Chart</span>
-      <div id="types"></div>
+    <div class="header">
+      <div class="chartjs-title">chartjs-color-schemes</div>
+      <div class="chartjs-caption">Example color schemes for Chart.js</div>
+      <div class="chartjs-links">
+        <!--
+                <a class="btn btn-chartjs" href="https://github.com/haiiaaa/chartjs-color-schemes/">Website</a>
+                <a class="btn btn-docs" href="https://github.com/haiiaaa/chartjs-color-schemes/">Documentation</a>
+                -->
+        <a class="btn btn-gh" href="https://github.com/uk-taniyama/chartjs-color-schemes/">GitHub</a>
+      </div>
     </div>
-    <div id="canvas-holder" style="width:100%">
-      <canvas id="chart" style="max-height: 800px; min-height: 800px;"></canvas>
+
+    <div id="categories" class="samples-categories">
+      <div class="samples-category">
+        <div class="title">Example</div>
+        <div class="items">
+          <div class="samples-entry">
+            <a class="title" href="./out/example1.html">Color scheme for the chart.</a>
+          </div>
+          <div class="samples-entry">
+            <a class="title" href="./out/example2.html">Colorful scale for chart.</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ export default {
       input: {
         example1: __dirname + '/example1.html',
         example2: __dirname + '/example2.html',
-        example3: __dirname + '/example3.html',
+        // example3: __dirname + '/example3.html',
       },
       output: {
         entryFileNames: `assets/[name].js`,

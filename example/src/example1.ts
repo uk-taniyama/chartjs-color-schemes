@@ -6,6 +6,11 @@ import {
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
+if (document.location.search === '?e2e') {
+  Chart.defaults.animation = false;
+  Chart.defaults.animations.colors = false;
+}
+
 // create color-schemes.
 const colorSchemes = createColorSchemes();
 
@@ -24,7 +29,6 @@ setup(colorSchemes);
 const ctx: HTMLCanvasElement = document.getElementById('chart') as any;
 const schemeNameEl = document.getElementById('schemeName')!;
 const schemesEl = document.getElementById('schemes')!;
-const typesEl = document.getElementById('types')!;
 
 let random = seed('default');
 
@@ -76,6 +80,9 @@ let chart = new Chart(ctx, config('line'));
 
 schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');
 schemesEl.addEventListener('click', (ev: any) => {
+  if (ev.target.tagName !== 'BUTTON') {
+    return;
+  }
   const schemeName = ev.target.id;
   schemeNameEl.innerHTML = schemeName;
 
@@ -84,8 +91,12 @@ schemesEl.addEventListener('click', (ev: any) => {
   chart.update();
 });
 const types = ['line', 'area', 'bar', 'bubble', 'scatter', 'pie', 'doughnut', 'polarArea', 'radar'];
+const typesEl = document.getElementById('types')!;
 typesEl.innerHTML = types.map((type) => `<button class="btn btn-chartjs" id="${type}">${type}</button>`).join(' ');
 typesEl.addEventListener('click', (ev: any) => {
+  if (ev.target.tagName !== 'BUTTON') {
+    return;
+  }
   const type = ev.target.id;
   chart.destroy();
   chart = new Chart(ctx, config(type));
