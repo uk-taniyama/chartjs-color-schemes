@@ -1,9 +1,11 @@
-// npx jest e2e/test.e2e.js -c jest.e2e.config.js
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import { chromium, Browser, Page } from 'playwright';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 
 expect.extend({ toMatchImageSnapshot });
+
+export const sleep = (ms: number) => new Promise((resolve) => { setTimeout(resolve, ms); });
+const videosPath = (name: string) => (process.env.E2E_VIDEO === 'true' ? `e2e/video/${name}` : undefined);
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -11,8 +13,10 @@ globalThis.setImmediate = globalThis.setTimeout;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 globalThis['jest-playwright'] = {};
+
 let browser: Browser = null!;
 let page: Page = null!;
+
 const exampleURL = 'http://localhost:5173/';
 
 beforeAll(async () => {
@@ -32,11 +36,17 @@ describe('example1', () => {
   beforeAll(async () => {
     page = await browser.newPage({
       viewport: { width: 1200, height: 1600 },
+      videosPath: videosPath('example1'),
     });
     await page.goto(`${exampleURL}example1.html?e2e`);
   });
 
+  afterAll(async () => {
+    await page.close();
+  });
+
   it('screenshot', async () => {
+    await sleep(500);
     expect(await page.screenshot()).toMatchImageSnapshot();
 
     await clickAndScreenshot('#Primary');
@@ -55,11 +65,17 @@ describe('example2', () => {
   beforeAll(async () => {
     page = await browser.newPage({
       viewport: { width: 1200, height: 1600 },
+      videosPath: videosPath('example2'),
     });
     await page.goto(`${exampleURL}example2.html?e2e`);
   });
 
+  afterAll(async () => {
+    await page.close();
+  });
+
   it('screenshot', async () => {
+    await sleep(500);
     expect(await page.screenshot()).toMatchImageSnapshot();
 
     await clickAndScreenshot('#Rainbow');
