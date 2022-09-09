@@ -43,8 +43,8 @@ export function setNamedColors(namedColors: Record<string, string>): void {
   Object.assign(globalNamedColors, namedColors);
 }
 
-export function addScheme(schmeName: string, colors: Colors): void {
-  globalSchemes[schmeName] = colors;
+export function addScheme(schemeName: string, colors: Colors): void {
+  globalSchemes[schemeName] = colors;
 }
 
 export function addSchemes(schemes: Record<string, Colors>): void {
@@ -62,7 +62,7 @@ export function getScheme(name?: string): Colors {
   return globalSchemes[name] || defaultScheme;
 }
 
-export function createGreyLiear(): ColorLinear {
+export function createGreyLinear(): ColorLinear {
   const clamp = clampValue(0, 1, 255, 0);
   return (value: number) => {
     const hex = Math.floor(clamp(value)).toString(16).padStart(2, '0');
@@ -70,7 +70,7 @@ export function createGreyLiear(): ColorLinear {
   };
 }
 
-const grayLinear = createGreyLiear();
+const grayLinear = createGreyLinear();
 
 const globalLinears: Record<string, ColorLinear> = {
   default: grayLinear,
@@ -117,7 +117,7 @@ export interface ColorSchemes {
   fontColor: ColorFn;
   setColorConverter(converter: ColorConverter): void;
   setSchemeColors(colors: Colors): void;
-  setSchemeName(schmeName: string): void;
+  setSchemeName(schemeName: string): void;
 }
 
 class ColorSchemesImpl implements ColorSchemes {

@@ -11,7 +11,7 @@ export interface ColorfulPluginData {
    */
   min: number;
   /**
-   * maxmum number for the scale.
+   * maximum number for the scale.
    */
   max: number;
   /**
@@ -20,7 +20,7 @@ export interface ColorfulPluginData {
    */
   name: string;
   /**
-   * colrful-scale axis.
+   * colorful-scale axis.
    */
   axis?: string;
   /**

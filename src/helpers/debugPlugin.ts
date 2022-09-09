@@ -1,6 +1,6 @@
 import { isFunction } from 'chart.js/helpers';
 
-function strigify(obj: any) {
+function stringify(obj: any) {
   return Object
     .entries(obj)
     .map(([k, v]) => {
@@ -59,7 +59,7 @@ export const DebugPlugin = [
   'uninstall',
 ].reduce((prev, name) => ({
   ...prev,
-  [name]: (_: any, args: any, opts: any) => { console.log(name, args, strigify(opts)); },
+  [name]: (_: any, args: any, opts: any) => { console.log(name, args, stringify(opts)); },
 }), {
   id: 'debug',
 });
