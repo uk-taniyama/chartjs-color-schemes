@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.3](../README.md) / helpers
+[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / helpers
 
 # Namespace: helpers
 

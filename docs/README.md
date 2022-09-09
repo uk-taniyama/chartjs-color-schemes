@@ -1,6 +1,6 @@
-chartjs-color-schemes - v1.0.0-alpha.3
+chartjs-color-schemes - v1.0.0-alpha.4
 
-# chartjs-color-schemes - v1.0.0-alpha.3
+# chartjs-color-schemes - v1.0.0-alpha.4
 
 ## Table of contents
 
@@ -40,12 +40,9 @@ chartjs-color-schemes - v1.0.0-alpha.3
 - [addLinears](README.md#addlinears)
 - [addScheme](README.md#addscheme)
 - [addSchemes](README.md#addschemes)
-- [applyColorfulPluginData](README.md#applycolorfulplugindata)
-- [applyColorfulPluginOptions](README.md#applycolorfulpluginoptions)
 - [clearNamedColors](README.md#clearnamedcolors)
 - [createColorSchemes](README.md#createcolorschemes)
-- [createColorfulScaleOptions](README.md#createcolorfulscaleoptions)
-- [createGreyLiear](README.md#creategreyliear)
+- [createGreyLinear](README.md#creategreylinear)
 - [defaultConverter](README.md#defaultconverter)
 - [getColor](README.md#getcolor)
 - [getColors](README.md#getcolors)
@@ -159,18 +156,7 @@ ___
 
 ### ColorfulPlugin
 
-• `Const` **ColorfulPlugin**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `defaults` | { `data`: `never`[] = [] } |
-| `defaults.data` | `never`[] |
-| `id` | `string` |
-| `afterUpdate` | () => `void` |
-| `beforeInit` | (`chart`: `Chart`<keyof `ChartTypeRegistry`, (``null`` \| `number` \| `ScatterDataPoint` \| `BubbleDataPoint`)[], `unknown`\>, `_args`: `any`, `opts`: [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)) => `void` |
-| `beforeUpdate` | (`chart`: `any`, `_args`: { `mode`: `string`  }, `opts`: [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)) => `undefined` \| ``false`` |
+• `Const` **ColorfulPlugin**: `Plugin`<keyof `ChartTypeRegistry`, [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)\>
 
 ## Functions
 
@@ -209,13 +195,13 @@ ___
 
 ### addScheme
 
-▸ **addScheme**(`schmeName`, `colors`): `void`
+▸ **addScheme**(`schemeName`, `colors`): `void`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `schmeName` | `string` |
+| `schemeName` | `string` |
 | `colors` | [`Colors`](README.md#colors) |
 
 #### Returns
@@ -233,40 +219,6 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `schemes` | `Record`<`string`, [`Colors`](README.md#colors)\> |
-
-#### Returns
-
-`void`
-
-___
-
-### applyColorfulPluginData
-
-▸ **applyColorfulPluginData**(`chart`, `data`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `chart` | `Chart`<keyof `ChartTypeRegistry`, (``null`` \| `number` \| `ScatterDataPoint` \| `BubbleDataPoint`)[], `unknown`\> |
-| `data` | [`ColorfulPluginData`](interfaces/ColorfulPluginData.md) |
-
-#### Returns
-
-`void`
-
-___
-
-### applyColorfulPluginOptions
-
-▸ **applyColorfulPluginOptions**(`chart`, `opts`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `chart` | `any` |
-| `opts` | [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md) |
 
 #### Returns
 
@@ -294,34 +246,9 @@ ___
 
 ___
 
-### createColorfulScaleOptions
+### createGreyLinear
 
-▸ **createColorfulScaleOptions**(`linear`, `min`, `max`): `Object`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `linear` | [`ColorLinear`](README.md#colorlinear) |
-| `min` | `number` |
-| `max` | `number` |
-
-#### Returns
-
-`Object`
-
-| Name | Type |
-| :------ | :------ |
-| `linear` | () => [`ColorLinear`](README.md#colorlinear) |
-| `max` | `number` |
-| `min` | `number` |
-| `type` | `string` |
-
-___
-
-### createGreyLiear
-
-▸ **createGreyLiear**(): [`ColorLinear`](README.md#colorlinear)
+▸ **createGreyLinear**(): [`ColorLinear`](README.md#colorlinear)
 
 #### Returns
 

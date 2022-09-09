@@ -1,10 +1,18 @@
-[chartjs-color-schemes - v1.0.0-alpha.3](../README.md) / ColorfulScale
+[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorfulScale
 
-# Class: ColorfulScale
+# Class: ColorfulScale<O\>
+
+colorful-scale.
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `O` | extends [`ColorfulScaleOptions`](../interfaces/ColorfulScaleOptions.md) = [`ColorfulScaleOptions`](../interfaces/ColorfulScaleOptions.md) |
 
 ## Hierarchy
 
-- `LinearScale`
+- `LinearScale`<`O`\>
 
   ↳ **`ColorfulScale`**
 
@@ -26,8 +34,6 @@
 - [\_createGradient](ColorfulScale.md#_creategradient)
 - [\_getGradient](ColorfulScale.md#_getgradient)
 - [afterFit](ColorfulScale.md#afterfit)
-- [beforeUpdate](ColorfulScale.md#beforeupdate)
-- [configure](ColorfulScale.md#configure)
 - [drawGrid](ColorfulScale.md#drawgrid)
 - [drawLabels](ColorfulScale.md#drawlabels)
 - [init](ColorfulScale.md#init)
@@ -36,7 +42,13 @@
 
 ### constructor
 
-• **new ColorfulScale**(`cfg`)
+• **new ColorfulScale**<`O`\>(`cfg`)
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `O` | extends [`ColorfulScaleOptions`](../interfaces/ColorfulScaleOptions.md)<`O`\> = [`ColorfulScaleOptions`](../interfaces/ColorfulScaleOptions.md) |
 
 #### Parameters
 
@@ -46,7 +58,7 @@
 
 #### Overrides
 
-LinearScale.constructor
+LinearScale&lt;O\&gt;.constructor
 
 ## Properties
 
@@ -110,11 +122,11 @@ ___
 
 ### \_getGradient
 
-▸ **_getGradient**(): `any`
+▸ **_getGradient**(): `CanvasGradient`
 
 #### Returns
 
-`any`
+`CanvasGradient`
 
 ___
 
@@ -129,34 +141,6 @@ ___
 #### Overrides
 
 LinearScale.afterFit
-
-___
-
-### beforeUpdate
-
-▸ **beforeUpdate**(): `void`
-
-#### Returns
-
-`void`
-
-#### Overrides
-
-LinearScale.beforeUpdate
-
-___
-
-### configure
-
-▸ **configure**(): `void`
-
-#### Returns
-
-`void`
-
-#### Overrides
-
-LinearScale.configure
 
 ___
 
@@ -208,7 +192,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `options` | `any` |
+| `options` | `O` |
 
 #### Returns
 

@@ -9,7 +9,7 @@
   },
   "typedocOptions": {
     "entryPoints": [
-      "./src/index.ts"
+      "./src/index.umd.ts",
     ],
     "out": "./docs",
     "theme": "default",

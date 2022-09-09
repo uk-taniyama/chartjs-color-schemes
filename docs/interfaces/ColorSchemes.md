@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.3](../README.md) / ColorSchemes
+[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorSchemes
 
 # Interface: ColorSchemes
 
@@ -164,13 +164,13 @@ ___
 
 ### setSchemeName
 
-▸ **setSchemeName**(`schmeName`): `void`
+▸ **setSchemeName**(`schemeName`): `void`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `schmeName` | `string` |
+| `schemeName` | `string` |
 
 #### Returns
 

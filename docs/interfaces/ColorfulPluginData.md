@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.3](../README.md) / ColorfulPluginData
+[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorfulPluginData
 
 # Interface: ColorfulPluginData
 
@@ -22,11 +22,19 @@
 
 • `Optional` **axis**: `string`
 
+colorful-scale axis.
+
 ___
 
 ### datasetIndex
 
 • `Optional` **datasetIndex**: `number`
+
+target dataset index.
+
+**`Default`**
+
+0
 
 ___
 
@@ -34,11 +42,19 @@ ___
 
 • **max**: `number`
 
+maximum number for the scale.
+
 ___
 
 ### max2
 
 • `Optional` **max2**: `number`
+
+maximum number for the color linear.
+
+**`Default`**
+
+1.0
 
 ___
 
@@ -46,11 +62,19 @@ ___
 
 • **min**: `number`
 
+minimum number for the scale.
+
 ___
 
 ### min2
 
 • `Optional` **min2**: `number`
+
+minimum number for the color linear.
+
+**`Default`**
+
+0.0
 
 ___
 
@@ -58,14 +82,24 @@ ___
 
 • **name**: `string`
 
+name for the color linear.
+
+**`See`**
+
+[addLinears](../README.md#addlinears), [getLinear](../README.md#getlinear)
+
 ___
 
 ### scale
 
-• `Optional` **scale**: `any`
+• `Optional` **scale**: `_DeepPartialObject`<[`ColorfulScaleOptions`](ColorfulScaleOptions.md)\>
+
+options for color-scale
 
 ___
 
 ### value
 
 • `Optional` **value**: `string` \| [`ValueFn`](../README.md#valuefn)
+
+value key name or value from ctx function.
