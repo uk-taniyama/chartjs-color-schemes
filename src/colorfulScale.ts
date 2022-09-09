@@ -5,12 +5,17 @@ import {
 import type { DeepPartial } from 'chart.js/types/utils';
 import type { ColorLinear } from './types';
 
+/**
+ * [LinearScaleOptions](https://www.chartjs.org/docs/latest/api/#linearscaleoptions)
+ */
 export interface ColorfulScaleOptions extends LinearScaleOptions {
+  // NOTE scriptableを抑止できないので、scriptableの形式にする。
+  linear: () => ColorLinear,
 }
 
 declare module 'chart.js' {
   interface CartesianScaleTypeRegistry {
-    colorLinear: {
+    colorful: {
       options: ColorfulScaleOptions;
     }
   }
@@ -18,6 +23,7 @@ declare module 'chart.js' {
 
 const id = 'colorful';
 
+/** @internal */
 export function createColorfulScaleOptions(linear: ColorLinear, min: number, max: number) {
   return {
     type: id,
@@ -36,6 +42,7 @@ const colorfulScaleDefaults: DeepPartial<ColorfulScaleOptions> = {
     drawOnChartArea: false,
   },
   ticks: {
+    // TODO こいつで、color-scaleの幅が決まるんだが......
     padding: 20,
     position: 'right',
     // @ts-expect-error: TS2322 not defined.but exist.....
@@ -43,12 +50,20 @@ const colorfulScaleDefaults: DeepPartial<ColorfulScaleOptions> = {
     // @ts-expect-error: TS2322 not defined.but exist.....
     callback: Ticks.formatters.numeric,
   },
-  axios: 'v',
   position: 'right',
 };
 
-export class ColorfulScale extends LinearScale {
-  private colorful: any;
+/**
+ * colorful-scale.
+ */
+export class ColorfulScale<O extends ColorfulScaleOptions = ColorfulScaleOptions>
+  extends LinearScale<O> {
+  private colorful: {
+    linear: ColorLinear;
+    padding: number;
+    gradient: CanvasGradient | null;
+    textSize: number;
+  };
 
   static readonly id = id;
 
@@ -64,40 +79,27 @@ export class ColorfulScale extends LinearScale {
 
   constructor(cfg: any) {
     super(cfg);
+    // setup by afterFit.
     this.colorful = {
-    };
+    } as any;
   }
 
-  init(options: any) { // CustomScaleOptions
+  init(options: O) { // CustomScaleOptions
     super.init(options);
-  }
-
-  beforeUpdate(): void {
-    // NOTE initがplugin.beforeUpdateの前に来る......
-    // Object.assign(
-    //   this.options,
-    //   (this.chart.config.options as any).scales[this.axis],
-    // );
-    super.beforeUpdate();
-  }
-
-  configure(): void {
-    super.configure();
   }
 
   afterFit() {
     super.afterFit();
-    this.colorful.linear = (this.options as any).linear;
-    this.colorful.min = this.options.min || 0;
-    this.colorful.max = this.options.max || 1;
+    // NOTE linearは関数であるが、Scriptableの処理により解決されるので、この段階では、ColorLinearになっている。
+    this.colorful.linear = this.options.linear as any;
     this.colorful.padding = this.options.ticks.padding;
     this.colorful.gradient = null;
-    this.colorful.size = this.width - 2 * this.colorful.padding;
+    this.colorful.textSize = this.width - 2 * this.colorful.padding;
   }
 
   _createGradient() {
-    const { ctx, height } = this;
-    const { linear, max } = this.colorful;
+    const { ctx, height, max } = this;
+    const { linear } = this.colorful;
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     for (let i = 0; i <= 10; i += 1) {
       const v = (i / 10);
@@ -115,8 +117,8 @@ export class ColorfulScale extends LinearScale {
   }
 
   drawLabels(chartArea: ChartArea): void {
-    const { padding, size } = this.colorful;
-    const offset = padding + size - 6;
+    const { padding, textSize } = this.colorful;
+    const offset = padding + textSize - 6;
     this.left -= offset;
     this.right -= offset;
     super.drawLabels(chartArea);
@@ -125,24 +127,24 @@ export class ColorfulScale extends LinearScale {
   }
 
   _computeGridLineItems(chartArea: ChartArea) {
-    const { padding, size } = this.colorful;
-    const offset = padding + size - 12;
+    const { padding, textSize } = this.colorful;
+    const offset = padding + textSize - 12;
     const x = this.left + offset;
     // @ts-expect-error: TS2339 access private method.
     const items: { tx1: number, tx2: number }[] = super._computeGridLineItems(chartArea);
     items.forEach((item) => {
-      Object.assign(item, {
-        tx1: x,
-        tx2: this.right,
-      });
+      /* eslint-disable no-param-reassign */
+      item.tx1 = x;
+      item.tx2 = this.right;
+      /* eslint-enable no-param-reassign */
     });
     return items;
   }
 
   drawGrid(chartArea: ChartArea) {
     const { ctx } = this;
-    const { padding, size } = this.colorful;
-    const offset = padding + size - 4;
+    const { padding, textSize } = this.colorful;
+    const offset = padding + textSize - 4;
     const x = this.left + offset;
     const w = this.right - x;
     ctx.save();

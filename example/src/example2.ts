@@ -3,11 +3,11 @@ import Chart from 'chart.js/auto';
 import { getD3Schemes } from 'chartjs-color-schemes/schemes';
 import { DebugPlugin } from 'chartjs-color-schemes/helpers';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
-import seed from 'seed-random';
 import {
   ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
   createColorSchemes, setup,
 } from 'chartjs-color-schemes';
+import seed from 'seed-random';
 
 if (document.location.search === '?e2e') {
   Chart.defaults.animation = false;
@@ -189,6 +189,7 @@ schemesEl.addEventListener('click', (ev: any) => {
 });
 
 const handlers: Record<string, (opts: any) => void> = {
+  /* eslint-disable no-param-reassign */
   ToggleScale: (opts: any) => {
     if (opts.scale?.display !== false) {
       Object.assign(opts, {
@@ -212,6 +213,7 @@ const handlers: Record<string, (opts: any) => void> = {
     opts.min2 = 0.25;
     opts.max2 = 0.75;
   },
+  /* eslint-enable no-param-reassign */
 };
 const handlersEl = document.getElementById('handlers')!;
 handlersEl.innerHTML = Object.keys(handlers).map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');

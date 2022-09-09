@@ -19,7 +19,8 @@ describe('ColorfulScale', () => {
         }],
       },
       options: {
-        responsive: true,
+        responsive: false,
+        animation: false,
         maintainAspectRatio: false,
         scales: {
           test: createColorfulScaleOptions(linear, 0, 10) as any,
@@ -27,7 +28,7 @@ describe('ColorfulScale', () => {
       },
     });
     chart.update();
-    return chart;
+    return { chart, canvas };
   }
   it('id', () => {
     expect(ColorfulScale.id).toBe('colorful');
@@ -41,16 +42,14 @@ describe('ColorfulScale', () => {
     Chart.unregister(ColorfulScale);
   });
 
-  it('empty', () => {
-    const chart = createChart();
+  it('simple', () => {
+    const { chart, canvas } = createChart();
     const scale = chart.scales.test as any;
     expect(scale.colorful).toEqual({
-      gradient: null,
+      gradient: expect.anything(),
       linear: expect.toBeFunction(),
-      max: 10,
-      min: 0,
       padding: 20,
-      size: -40,
+      textSize: 22,
     });
     const { linear } = scale.colorful;
     expect(linear(0)).toBe('#000');
@@ -63,5 +62,7 @@ describe('ColorfulScale', () => {
       width: 100,
       height: 100,
     });
+    expect(canvas.toDataURL()).toMatchSnapshot();
+    chart.destroy();
   });
 });
