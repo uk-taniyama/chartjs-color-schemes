@@ -1,5 +1,14 @@
-export default {
+import { defineConfig } from 'vite'
+
+export default defineConfig(({ command }) => ({
   base: './',
+  resolve: command ==='serve' ? {
+    alias: {
+      'chartjs-color-schemes': __dirname + '/../src/',
+      'chartjs-color-schemes/helpers': __dirname + '/../src/helpers/',
+      'chartjs-color-schemes/schemes': __dirname + '/../src/schemes/',
+    },
+  }: undefined,
   build: {
     outDir: 'out',
     rollupOptions: {
@@ -15,5 +24,5 @@ export default {
       }
     }
   }
-};
-
+})
+);

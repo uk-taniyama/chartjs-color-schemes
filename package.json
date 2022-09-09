@@ -8,7 +8,32 @@
   "unpkg": "dist/index.min.js",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/es/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/es/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "node": "./dist/cjs/index.js",
+      "default": "./dist/index.min.js"
+    },
+    "./helpers": {
+      "import": {
+        "types": "./dist/es/helpers/index.d.ts",
+        "default": "./dist/esm/helpers/index.js"
+      },
+      "default": "./dist/cjs/helpers/index.js"
+    },
+    "./schemes": {
+      "import": {
+        "types": "./dist/es/schemes/index.d.ts",
+        "default": "./dist/esm/schemes/index.js"
+      },
+      "node": "./dist/cjs/schemes/index.js",
+      "types": "./dist/es/schemes/index.d.ts"
+    }
+  },
   "keywords": [
     "chartjs",
     "chart.js",
@@ -17,11 +42,8 @@
   ],
   "files": [
     "dist/**",
-    "helpers/*",
-    "schemes/*",
     "CHANGELOG.md",
     "README.md",
-    "index.html",
     "package.json"
   ],
   "repository": {
@@ -36,10 +58,8 @@
     "clean": "rimraf dist test-result",
     "rebuild": "npm-run-all -s clean test build:all",
     "build": "rollup -c",
-    "build:all": "npm-run-all -p build:docs build build:typedoc build:esm build:cjs",
+    "build:all": "npm-run-all -p build:docs build build:typedoc",
     "build:watch": "rollup -c --watch",
-    "build:esm": "tsc -P ./tsconfig.build.json --outDir dist/esm --module esnext -d",
-    "build:cjs": "tsc -P ./tsconfig.build.json --outDir dist/cjs --module commonjs",
     "build:docs": "node src/tools/mkdocs.js",
     "build:typedoc": "typedoc --tsconfig tsconfig.build.json",
     "lint": "eslint .",
@@ -62,12 +82,8 @@
   "devDependencies": {
     "@babel/core": "^7.19.0",
     "@babel/preset-env": "^7.19.0",
-    "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^14.0.1",
-    "@rollup/plugin-typescript": "^8.5.0",
-    "@swc/core": "^1.2.249",
-    "@swc/jest": "^0.2.22",
     "@types/d3-color": "^3.1.0",
     "@types/d3-scale-chromatic": "^3.0.0",
     "@types/jest": "^29.0.0",
@@ -80,6 +96,8 @@
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-test-utils": "^0.4.0",
     "d3-scale-chromatic": "^3.0.0",
+    "esbuild": "^0.15.7",
+    "esbuild-jest": "^0.5.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -103,13 +121,12 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.79.0",
     "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-esbuild": "^4.10.1",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^28.0.8",
     "tslib": "^2.4.0",
     "typedoc": "0.23.14",
     "typedoc-plugin-markdown": "^3.13.6",
-    "typescript": "^4.8.2",
-    "yargs": "^17.5.1"
+    "typescript": "^4.8.2"
   }
 }

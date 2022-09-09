@@ -18,19 +18,6 @@ module.exports = {
   ],
   setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
   transform: {
-    '.+\\.(t|j)sx?$': [
-      '@swc/jest', {
-        sourceMaps: true,
-        module: {
-          type: 'commonjs',
-        },
-        jsc: {
-          parser: {
-            syntax: 'typescript',
-            tsx: true,
-          },
-        },
-      },
-    ],
+    '.+\\.(t|j)sx?$': 'esbuild-jest',
   },
 };

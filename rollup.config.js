@@ -1,11 +1,10 @@
-const typescript = require('@rollup/plugin-typescript');
 const { default: resolve } = require('@rollup/plugin-node-resolve');
-const { terser } = require('rollup-plugin-terser');
+const { default: esbuild } = require('rollup-plugin-esbuild');
 const { default: dts } = require('rollup-plugin-dts');
 const json = require('@rollup/plugin-json');
+
 const pkg = require('./package.json');
 
-const input = 'src/index.ts';
 const banner = `/*!
  * ${pkg.name} v${pkg.version}
  * ${pkg.homepage}
@@ -15,12 +14,13 @@ const banner = `/*!
 
 const commonPlugins = [
   json(),
-  typescript({
-    exclude: ['**/*test*'],
+  esbuild({
+    exclude: ['**/*test*', 'src/e2e/**'],
+    sourceMap: true,
   }),
   resolve({
     mainFields: ['module', 'main'],
-    extensions: ['.mjs', '.cjs', '.js', '.jsx', '.json', '.node'],
+    extensions: ['.ts', '.mjs', '.cjs', '.js', '.jsx', '.json', '.node'],
     modulesOnly: true,
   }),
 ];
@@ -33,12 +33,15 @@ const globals = {
   'd3-scale-chromatic': 'd3',
 };
 
+const external = Object.keys(globals);
+const external2 = [...external, './helpers', '../helpers', './schemes', '../schemes'];
+
 const minifyPlugins = [
   ...commonPlugins,
-  terser({
-    output: {
-      preamble: banner,
-    },
+  esbuild({
+    exclude: ['**/*test*', 'src/e2e/**'],
+    sourceMap: false,
+    minify: true,
   }),
 ];
 
@@ -46,35 +49,56 @@ const dtsPlugins = [
   dts(),
 ];
 
-module.exports = [
+const onwarn = (warning, defaultHandler) => {
+  // NOTE next warning is not a bug. https://github.com/d3/d3-interpolate/issues/58
+  if (warning.code === 'CIRCULAR_DEPENDENCY') {
+    if (warning.importer.indexOf('d3-interpolate')) return;
+  }
+  // console.error(warning);
+  defaultHandler(warning);
+};
+
+const defs = [
   { format: 'umd', ext: '.js', minify: false },
   { format: 'umd', ext: '.min.js', minify: true },
-  // { format: 'cjs', ext: '.cjs.js' },
-  // { format: 'esm', ext: '.esm.js' },
-  // { format: 'es', ext: '.d.ts' },
 ]
-  .filter(({ format, minify }) => watch === false || (format === 'umd' && minify === false))
+  .filter(({ minify }) => watch === false || minify === false)
   .map(({
-    format, ext, minify = false,
+    format, ext, minify,
   }) => ({
-    input,
+    input: 'src/index.umd.ts',
     // eslint-disable-next-line no-nested-ternary
-    plugins: ext === '.d.ts' ? dtsPlugins : (minify ? minifyPlugins : commonPlugins),
+    plugins: (minify ? minifyPlugins : commonPlugins),
     output: {
       name: 'ChartColorSchemes',
       format,
       file: `dist/index${ext}`,
-      banner: minify ? false : banner,
+      banner,
       indent: false,
       globals,
     },
-    onwarn: (warning, defaultHandler) => {
-      // NOTE next warning is not a bug. https://github.com/d3/d3-interpolate/issues/58
-      if (warning.code === 'CIRCULAR_DEPENDENCY') {
-        if (warning.importer.indexOf('d3-interpolate')) return;
-      }
-      // console.error(warning);
-      defaultHandler(warning);
-    },
-    external: Object.keys(globals),
+    onwarn,
+    external,
   }));
+
+const defs2 = [
+  { format: 'esm', ext: '.js', plugins: commonPlugins },
+  { format: 'cjs', ext: '.js', plugins: commonPlugins },
+  { format: 'es', ext: '.d.ts', plugins: dtsPlugins },
+]
+  .filter(({ minify }) => watch === false || minify === false)
+  .map(({ format, ext, plugins }) => ['.', 'helpers', 'schemes']
+    .map((dir) => ({
+      plugins,
+      input: `src/${dir}/index.ts`.replace('/./', '/'),
+      output: {
+        format,
+        file: `dist/${format}/${dir}/index${ext}`.replace('/./', '/'),
+        globals,
+      },
+      onwarn,
+      external: external2,
+    })))
+  .reduce((prev, curr) => [...prev, ...curr], []);
+
+module.exports = watch ? [defs[0]] : [...defs, ...defs2];

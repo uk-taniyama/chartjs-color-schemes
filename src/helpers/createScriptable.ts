@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import type { ColorFn, ValueFn } from 'src/types';
+import type { ColorFn, ValueFn } from '../types';
 
 export function createScriptableValue(value: string | ValueFn): ValueFn {
   if (isString(value)) {
