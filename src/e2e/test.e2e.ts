@@ -82,14 +82,14 @@ describe('example2', () => {
     await clickAndScreenshot('#ToggleScale');
     await clickAndScreenshot('#ToggleScale');
     await clickAndScreenshot('#DefaultColor');
-    await clickAndScreenshot('#ReverceColor');
+    await clickAndScreenshot('#ReverseColor');
     await clickAndScreenshot('#HalfColor');
     await clickAndScreenshot('#matrix');
     await clickAndScreenshot('#Sinebow');
     await clickAndScreenshot('#ToggleScale');
     await clickAndScreenshot('#ToggleScale');
     await clickAndScreenshot('#DefaultColor');
-    await clickAndScreenshot('#ReverceColor');
+    await clickAndScreenshot('#ReverseColor');
     await clickAndScreenshot('#HalfColor');
   });
 });

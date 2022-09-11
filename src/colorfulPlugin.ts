@@ -4,16 +4,14 @@ import type {
 import type { DeepPartial } from 'chart.js/types/utils';
 import { isArray } from 'chart.js/helpers';
 import {
-  clampColor, createLinear, createScriptableColor, createScriptableValue,
+  clampColor, createLinear, createScriptableColor, createScriptableValue, getColor, getColors,
 } from './helpers';
 import type {
   Bicolor, ColorConverter, ColorLinear, Colors, ValueFn,
 } from './types';
 import { isBicolor } from './types';
 import { ColorfulScaleOptions, createColorfulScaleOptions } from './colorfulScale';
-import {
-  getColor, getColors, getLinear, getScheme,
-} from './createColorSchemes';
+import { getLinear, getScheme } from './repositories';
 
 export interface ColorfulPluginDataOptions {
   /**

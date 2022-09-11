@@ -1,8 +1,10 @@
 import './style.css';
 import Chart from 'chart.js/auto';
 import {
-  createColorSchemes, setup, addScheme, addSchemes, getSchemeNames,
+  ColorfulScale, ColorfulPlugin,
+  addScheme, addSchemes, getSchemeNames, addLinears,
 } from 'chartjs-color-schemes';
+import { defaultConverter } from 'chartjs-color-schemes/helpers';
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
@@ -11,8 +13,8 @@ if (document.location.search === '?e2e') {
   Chart.defaults.animations.colors = false;
 }
 
-// create color-schemes.
-const colorSchemes = createColorSchemes();
+// Chart.register(DebugPlugin);
+Chart.register(ColorfulScale, ColorfulPlugin);
 
 // add custom scheme
 addScheme('Primary', ['#00F', '#0F0', '#0FF', '#F00', '#F0F', '#FF0']);
@@ -24,7 +26,11 @@ addSchemes(getOfficeSchemes());
 
 // get registered scheme names.
 const schemeNames = getSchemeNames();
-setup(colorSchemes);
+
+// get schemes and register.
+const { namedLinear } = getD3Schemes();
+
+addLinears(namedLinear);
 
 const ctx: HTMLCanvasElement = document.getElementById('chart') as any;
 const schemeNameEl = document.getElementById('schemeName')!;
@@ -51,6 +57,7 @@ function createRandomData(type: string): any {
 }
 
 const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((name) => ([`Data ${name}`]));
+// const labels = [1].map((name) => ([`Data ${name}`]));
 
 function config(chartType: string): any {
   random = seed('default');
@@ -59,10 +66,15 @@ function config(chartType: string): any {
     type: chartType === 'area' ? 'line' : chartType,
     data: {
       labels,
-      datasets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((name) => ({
+      datasets: [1, 2, 3].map((name) => ({
         label: `Dataset ${name}`,
         data: labels.map(getData),
-        fill: chartType === 'area' ? true : undefined,
+        fill: chartType === 'area' || chartType === 'bar' ? true : undefined,
+        borderColor: '#F00',
+        // backgroundColor: '#FCC',
+        borderWidth: 2,
+        // borderRadius: Number.MAX_VALUE,
+        // borderSkipped: false,
       })),
     },
     options: {
@@ -72,22 +84,26 @@ function config(chartType: string): any {
         title: {
           display: false,
         },
+        [ColorfulPlugin.id]: {
+          converter: defaultConverter,
+        },
       },
     },
   };
 }
-let chart = new Chart(ctx, config('line'));
+let chart = new Chart(ctx, config('bar'));
+window.chart = chart;
 
 schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');
 schemesEl.addEventListener('click', (ev: any) => {
   if (ev.target.tagName !== 'BUTTON') {
     return;
   }
-  const schemeName = ev.target.id;
+  const schemeName: string = ev.target.id;
   schemeNameEl.innerHTML = schemeName;
 
   // set scheme name and update.
-  colorSchemes.setSchemeName(schemeName);
+  chart.options.plugins!.colorful!.colors = schemeName;
   chart.update();
 });
 const types = ['line', 'area', 'bar', 'bubble', 'scatter', 'pie', 'doughnut', 'polarArea', 'radar'];
@@ -100,4 +116,5 @@ typesEl.addEventListener('click', (ev: any) => {
   const type = ev.target.id;
   chart.destroy();
   chart = new Chart(ctx, config(type));
+  window.chart = chart;
 });

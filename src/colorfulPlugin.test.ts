@@ -2,7 +2,7 @@
 import { CanvasGradient } from 'canvas';
 import { ColorfulPlugin } from './colorfulPlugin';
 import type { NamedLinear } from './types';
-import { addLinear, addLinears } from './createColorSchemes';
+import { addLinear, addLinears } from './repositories';
 import { createLinear } from './helpers';
 
 describe('ColorfulPlugin', () => {

@@ -2,9 +2,9 @@ import './style.css';
 import Chart from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import {
-  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames, defaultConverter,
+  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
 } from 'chartjs-color-schemes';
-// import { DebugPlugin } from 'chartjs-color-schemes/helpers';
+import { defaultConverter } from 'chartjs-color-schemes/helpers';
 import { getD3Schemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 

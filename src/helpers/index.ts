@@ -5,3 +5,6 @@ export * from './createLinear';
 export * from './convertColor';
 export * from './debugPlugin';
 export * from './createScriptable';
+export * from './getColor';
+export * from './getColors';
+export * from './defaultConverter';

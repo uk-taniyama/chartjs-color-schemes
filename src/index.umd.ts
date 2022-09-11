@@ -1,8 +1,3 @@
-export * from './types';
-export * from './createColorSchemes';
-export * from './colorfulPlugin';
-export * from './colorfulScale';
-export { defaultConverter } from './defaultConverter';
-export { setup } from './setup';
+export * from './index';
 export * as helpers from './helpers';
 export * as schemes from './schemes';

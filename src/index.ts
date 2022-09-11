@@ -1,6 +1,11 @@
 export * from './types';
-export * from './createColorSchemes';
-export * from './colorfulPlugin';
-export * from './colorfulScale';
-export { defaultConverter } from './defaultConverter';
-export { setup } from './setup';
+export * from './repositories';
+export { ColorfulPlugin, colorfulPluginDatasetDefaults } from './colorfulPlugin';
+export type {
+  ColorfulPluginOptions,
+  ColorfulPluginDataOptions,
+  ColorfulPluginDatasetOptions,
+  ColorFnNames,
+} from './colorfulPlugin';
+export { ColorfulScale } from './colorfulScale';
+export type { ColorfulScaleOptions } from './colorfulScale';

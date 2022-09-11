@@ -67,6 +67,7 @@
     "coverage": "jest --coverage",
     "start": "npm-run-all server build:watch",
     "server": "mdserver .",
+    "example": "cd example; yarn dev",
     "clean-chartjs": "rimraf modules/chart.js",
     "clone-chartjs": "git clone --branch v3.9.1 --depth 1 https://github.com/chartjs/Chart.js.git modules/chart.js"
   },
