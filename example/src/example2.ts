@@ -1,12 +1,11 @@
 import './style.css';
 import Chart from 'chart.js/auto';
-import { getD3Schemes } from 'chartjs-color-schemes/schemes';
-import { DebugPlugin } from 'chartjs-color-schemes/helpers';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import {
   ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
-  createColorSchemes, setup,
 } from 'chartjs-color-schemes';
+// import { DebugPlugin } from 'chartjs-color-schemes/helpers';
+import { getD3Schemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
 if (document.location.search === '?e2e') {
@@ -15,10 +14,8 @@ if (document.location.search === '?e2e') {
 }
 
 Chart.register(MatrixController, MatrixElement);
-Chart.register(DebugPlugin);
+// Chart.register(DebugPlugin);
 Chart.register(ColorfulScale, ColorfulPlugin);
-const schemes = createColorSchemes();
-setup(schemes);
 
 // get schemes and register.
 const { namedLinear } = getD3Schemes();
@@ -121,6 +118,7 @@ function configMatrix(): any {
             min: 0,
             max: V,
             axis: 'r',
+            value: 'r',
           }],
         },
         tooltip: {
@@ -165,6 +163,7 @@ function configBubble(): any {
             min: 0,
             max: V,
             axis: 'r',
+            value: 'r',
           }],
         },
       },
@@ -205,7 +204,7 @@ const handlers: Record<string, (opts: any) => void> = {
     opts.min2 = 0;
     opts.max2 = 1;
   },
-  ReverceColor: (opts: any) => {
+  ReverseColor: (opts: any) => {
     opts.min2 = 1;
     opts.max2 = 0;
   },
