@@ -1,4 +1,4 @@
-import { clampValue } from './helpers';
+import { createLinear } from './helpers';
 import type {
   Colors, ColorConverter, ColorFn, ColorLinear,
 } from './types';
@@ -62,15 +62,7 @@ export function getScheme(name?: string): Colors {
   return globalSchemes[name] || defaultScheme;
 }
 
-export function createGreyLinear(): ColorLinear {
-  const clamp = clampValue(0, 1, 255, 0);
-  return (value: number) => {
-    const hex = Math.floor(clamp(value)).toString(16).padStart(2, '0');
-    return `#${hex}${hex}${hex}`;
-  };
-}
-
-const grayLinear = createGreyLinear();
+const grayLinear = createLinear('#000000');
 
 const globalLinears: Record<string, ColorLinear> = {
   default: grayLinear,

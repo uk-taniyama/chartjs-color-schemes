@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { CanvasGradient } from 'canvas';
 import { ColorfulPlugin } from './colorfulPlugin';
 import type { NamedLinear } from './types';
 import { addLinear, addLinears } from './createColorSchemes';
+import { createLinear } from './helpers';
 
 describe('ColorfulPlugin', () => {
   it('id', () => {
@@ -13,7 +16,7 @@ describe('ColorfulPlugin', () => {
     },
   };
   const linears: NamedLinear = {
-    test: (v) => v.toString(),
+    test: createLinear('#000'),
   };
 
   beforeEach(() => {
@@ -25,11 +28,17 @@ describe('ColorfulPlugin', () => {
   });
 
   function createChart(): any {
+    const canvas = document.createElement('canvas');
     return {
+      type: 'line',
+      ctx: canvas.getContext('2d'),
+      chartArea: {
+        top: 0, bottom: 100, left: 0, right: 100, height: 100, width: 100,
+      },
+      data: {
+        datasets: [{}, {}],
+      },
       config: {
-        data: {
-          datasets: [{}, {}],
-        },
         options: {
           scales: {
           },
@@ -39,43 +48,49 @@ describe('ColorfulPlugin', () => {
   }
   it('empty', () => {
     const chart = createChart();
+    // @ts-ignore
     ColorfulPlugin.beforeInit(chart, undefined, {
       data: [],
     });
-    expect(chart).toEqual(createChart());
+    expect(true).toBeTrue();
   });
 
   it('update dataset only. set valid function.', () => {
     const chart = createChart();
+    // @ts-ignore
     ColorfulPlugin.beforeInit(chart, undefined, {
       data: [{
         min: 0,
         max: 1,
         name: 'test',
+        datasetIndex: 0,
       }],
     });
-    const color = chart.config.data.datasets[0].backgroundColor;
+    const color = chart.data.datasets[0].backgroundColor;
     expect(color).toBeFunction();
-    expect(color(ctx)).toBe('0');
+    expect(color()).toBeInstanceOf(CanvasGradient);
   });
 
   it('update dataset only', () => {
     const chart = createChart();
+    // @ts-ignore
     ColorfulPlugin.beforeInit(chart, undefined, {
       data: [{
         min: 0,
         max: 1,
+        datasetIndex: 0,
         value: 'v',
         name: 'name',
       }],
     });
-    const color = chart.config.data.datasets[0].backgroundColor;
+    const color = chart.data.datasets[0].backgroundColor;
     expect(color).toBeFunction();
-    expect(color(ctx)).toBe('#000000');
+    expect(color(ctx)).toBe('#000');
   });
 
   it('many', () => {
     const chart = createChart();
+    // @ts-ignore
     ColorfulPlugin.beforeInit(chart, undefined, {
       data: [{
         min: 0,
@@ -93,9 +108,9 @@ describe('ColorfulPlugin', () => {
         max2: 0,
       }],
     });
-    const color0 = chart.config.data.datasets[0].backgroundColor;
-    expect(color0).toBeFunction();
-    const color1 = chart.config.data.datasets[1].backgroundColor;
+    const color0 = chart.data.datasets[0].backgroundColor;
+    expect(color0).toBeUndefined();
+    const color1 = chart.data.datasets[1].backgroundColor;
     expect(color1).toBeFunction();
     const scale = chart.config.options.scales.r;
     expect(scale).toEqual({
@@ -105,6 +120,6 @@ describe('ColorfulPlugin', () => {
       type: 'colorful',
     });
     const { linear } = scale;
-    expect(linear()(0)).toBe('1');
+    expect(linear()(0)).toBe('#000');
   });
 });

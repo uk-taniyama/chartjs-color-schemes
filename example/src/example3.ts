@@ -2,7 +2,7 @@ import './style.css';
 import Chart from 'chart.js/auto';
 import {
   ColorfulScale, ColorfulPlugin,
-  createColorSchemes, addScheme, addSchemes, getSchemeNames, getLinearNames, addLinears,
+  addScheme, addSchemes, getSchemeNames, getLinearNames, addLinears, defaultConverter,
 } from 'chartjs-color-schemes';
 import { DebugPlugin } from 'chartjs-color-schemes/helpers';
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
@@ -16,9 +16,6 @@ if (document.location.search === '?e2e') {
 // Chart.register(DebugPlugin);
 Chart.register(ColorfulScale, ColorfulPlugin);
 
-// create color-schemes.
-const colorSchemes = createColorSchemes();
-
 // add custom scheme
 addScheme('Primary', ['#00F', '#0F0', '#0FF', '#F00', '#F0F', '#FF0']);
 
@@ -29,7 +26,6 @@ addSchemes(getOfficeSchemes());
 
 // get registered scheme names.
 const schemeNames = getSchemeNames();
-// setup(colorSchemes);
 
 // get schemes and register.
 const { namedLinear } = getD3Schemes();
@@ -95,21 +91,33 @@ function config(chartType: string): any {
           //     background: 'gradient',
           //   },
           // },
-          data: [{
-            min: 0,
-            max: 50,
-            name: 'Blues',
-            axis: 'c1',
-            value: chartType === 'bubble' ? 'r' : undefined,
-            datasetIndex: 0,
+          converter: defaultConverter,
+          dataset: [{
+            types: ['pie', 'doughnut', 'polarArea'],
+            backgroundColor: 'colors2',
+            borderColor: 'color',
           }, {
-            min: 0,
-            max: 50,
-            name: 'Greens',
-            axis: 'c2',
-            value: chartType === 'bubble' ? 'r' : undefined,
-            datasetIndex: 1,
+            types: ['bar', 'line'],
+            borderColor: 'color',
+            backgroundColor: 'linear',
+          }, {
+            borderColor: 'color',
+            backgroundColor: 'color2',
           }],
+          // data: [{
+          //   min: 0,
+          //   max: 50,
+          //   name: 'Blues',
+          //   axis: 'c1',
+          //   value: chartType === 'bubble' ? 'r' : undefined,
+          //   datasetIndex: 0,
+          // }, {
+          //   min: 0,
+          //   max: 50,
+          //   axis: 'c2',
+          //   value: chartType === 'bubble' ? 'r' : undefined,
+          //   datasetIndex: 1,
+          // }],
         },
       },
     },
@@ -123,11 +131,11 @@ schemesEl.addEventListener('click', (ev: any) => {
   if (ev.target.tagName !== 'BUTTON') {
     return;
   }
-  const schemeName = ev.target.id;
+  const schemeName: string = ev.target.id;
   schemeNameEl.innerHTML = schemeName;
 
   // set scheme name and update.
-  colorSchemes.setSchemeName(schemeName);
+  chart.options.plugins!.colorful!.colors = schemeName;
   chart.update();
 });
 const types = ['line', 'area', 'bar', 'bubble', 'scatter', 'pie', 'doughnut', 'polarArea', 'radar'];

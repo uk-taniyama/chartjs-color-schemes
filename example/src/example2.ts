@@ -2,7 +2,7 @@ import './style.css';
 import Chart from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import {
-  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
+  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames, defaultConverter,
 } from 'chartjs-color-schemes';
 // import { DebugPlugin } from 'chartjs-color-schemes/helpers';
 import { getD3Schemes } from 'chartjs-color-schemes/schemes';
@@ -114,10 +114,13 @@ function configMatrix(): any {
           display: false,
         },
         [ColorfulPlugin.id]: {
+          colors: 'default',
+          converter: defaultConverter,
           data: [{
             min: 0,
             max: V,
             axis: 'r',
+            datasetIndex: 0,
             value: 'r',
           }],
         },
@@ -163,6 +166,7 @@ function configBubble(): any {
             min: 0,
             max: V,
             axis: 'r',
+            datasetIndex: 0,
             value: 'r',
           }],
         },
