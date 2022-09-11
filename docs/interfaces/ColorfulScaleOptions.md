@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorfulScaleOptions
+[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / ColorfulScaleOptions
 
 # Interface: ColorfulScaleOptions
 

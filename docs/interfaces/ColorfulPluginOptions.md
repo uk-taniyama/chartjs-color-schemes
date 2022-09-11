@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorfulPluginOptions
+[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / ColorfulPluginOptions
 
 # Interface: ColorfulPluginOptions
 
@@ -6,10 +6,31 @@
 
 ### Properties
 
+- [colors](ColorfulPluginOptions.md#colors)
+- [converter](ColorfulPluginOptions.md#converter)
 - [data](ColorfulPluginOptions.md#data)
+- [dataset](ColorfulPluginOptions.md#dataset)
 
 ## Properties
 
+### colors
+
+• **colors**: `string` \| [`Colors`](../README.md#colors)
+
+___
+
+### converter
+
+• **converter**: [`ColorConverter`](../README.md#colorconverter)
+
+___
+
 ### data
 
-• **data**: [`ColorfulPluginData`](ColorfulPluginData.md)[]
+• **data**: [`ColorfulPluginDataOptions`](ColorfulPluginDataOptions.md)[]
+
+___
+
+### dataset
+
+• **dataset**: [`ColorfulPluginDatasetOptions`](ColorfulPluginDatasetOptions.md)[]

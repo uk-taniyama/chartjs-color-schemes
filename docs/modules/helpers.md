@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / helpers
+[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / helpers
 
 # Namespace: helpers
 
@@ -18,8 +18,12 @@
 - [clampValue](helpers.md#clampvalue)
 - [createColors](helpers.md#createcolors)
 - [createConvertColorBuilder](helpers.md#createconvertcolorbuilder)
+- [createLinear](helpers.md#createlinear)
 - [createScriptableColor](helpers.md#createscriptablecolor)
 - [createScriptableValue](helpers.md#createscriptablevalue)
+- [defaultConverter](helpers.md#defaultconverter)
+- [getColor](helpers.md#getcolor)
+- [getColors](helpers.md#getcolors)
 
 ## Variables
 
@@ -113,6 +117,22 @@ ___
 
 ___
 
+### createLinear
+
+▸ **createLinear**(`color`): [`ColorLinear`](../README.md#colorlinear)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `color` | `string` |
+
+#### Returns
+
+[`ColorLinear`](../README.md#colorlinear)
+
+___
+
 ### createScriptableColor
 
 ▸ **createScriptableColor**(`valueFn`, `colorFn`): (`ctx`: `any`) => ``null`` \| `string`
@@ -155,3 +175,54 @@ ___
 #### Returns
 
 [`ValueFn`](../README.md#valuefn)
+
+___
+
+### defaultConverter
+
+▸ **defaultConverter**(`color`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `color` | `string` |
+
+#### Returns
+
+`string`
+
+___
+
+### getColor
+
+▸ **getColor**(`colors`, `index`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `colors` | [`Colors`](../README.md#colors) |
+| `index` | `number` |
+
+#### Returns
+
+`string`
+
+___
+
+### getColors
+
+▸ **getColors**(`colors`, `count`, `startIndex?`): [`Colors`](../README.md#colors)
+
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `colors` | [`Colors`](../README.md#colors) | `undefined` |
+| `count` | `number` | `undefined` |
+| `startIndex` | `number` | `0` |
+
+#### Returns
+
+[`Colors`](../README.md#colors)

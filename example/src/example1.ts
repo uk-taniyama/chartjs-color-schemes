@@ -92,6 +92,7 @@ function config(chartType: string): any {
   };
 }
 let chart = new Chart(ctx, config('bar'));
+// @ts-ignore
 window.chart = chart;
 
 schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');
@@ -116,5 +117,6 @@ typesEl.addEventListener('click', (ev: any) => {
   const type = ev.target.id;
   chart.destroy();
   chart = new Chart(ctx, config(type));
+  // @ts-ignore
   window.chart = chart;
 });

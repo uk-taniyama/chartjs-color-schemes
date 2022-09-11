@@ -1,6 +1,6 @@
-chartjs-color-schemes - v1.0.0-alpha.4
+chartjs-color-schemes - v1.0.0-alpha.5
 
-# chartjs-color-schemes - v1.0.0-alpha.4
+# chartjs-color-schemes - v1.0.0-alpha.5
 
 ## Table of contents
 
@@ -15,8 +15,9 @@ chartjs-color-schemes - v1.0.0-alpha.4
 
 ### Interfaces
 
-- [ColorSchemes](interfaces/ColorSchemes.md)
-- [ColorfulPluginData](interfaces/ColorfulPluginData.md)
+- [Bicolor](interfaces/Bicolor.md)
+- [ColorfulPluginDataOptions](interfaces/ColorfulPluginDataOptions.md)
+- [ColorfulPluginDatasetOptions](interfaces/ColorfulPluginDatasetOptions.md)
 - [ColorfulPluginOptions](interfaces/ColorfulPluginOptions.md)
 - [ColorfulScaleOptions](interfaces/ColorfulScaleOptions.md)
 
@@ -24,6 +25,7 @@ chartjs-color-schemes - v1.0.0-alpha.4
 
 - [ColorConverter](README.md#colorconverter)
 - [ColorFn](README.md#colorfn)
+- [ColorFnNames](README.md#colorfnnames)
 - [ColorLinear](README.md#colorlinear)
 - [Colors](README.md#colors)
 - [NamedColors](README.md#namedcolors)
@@ -33,6 +35,7 @@ chartjs-color-schemes - v1.0.0-alpha.4
 ### Variables
 
 - [ColorfulPlugin](README.md#colorfulplugin)
+- [colorfulPluginDatasetDefaults](README.md#colorfulplugindatasetdefaults)
 
 ### Functions
 
@@ -41,18 +44,13 @@ chartjs-color-schemes - v1.0.0-alpha.4
 - [addScheme](README.md#addscheme)
 - [addSchemes](README.md#addschemes)
 - [clearNamedColors](README.md#clearnamedcolors)
-- [createColorSchemes](README.md#createcolorschemes)
-- [createGreyLinear](README.md#creategreylinear)
-- [defaultConverter](README.md#defaultconverter)
-- [getColor](README.md#getcolor)
-- [getColors](README.md#getcolors)
 - [getLinear](README.md#getlinear)
 - [getLinearNames](README.md#getlinearnames)
 - [getScheme](README.md#getscheme)
 - [getSchemeNames](README.md#getschemenames)
+- [isBicolor](README.md#isbicolor)
 - [setNamedColor](README.md#setnamedcolor)
 - [setNamedColors](README.md#setnamedcolors)
-- [setup](README.md#setup)
 
 ## Type Aliases
 
@@ -93,6 +91,12 @@ ___
 ##### Returns
 
 `string`
+
+___
+
+### ColorFnNames
+
+Ƭ **ColorFnNames**: ``"color"`` \| ``"color2"`` \| ``"linear"`` \| ``"colors"`` \| ``"colors2"``
 
 ___
 
@@ -157,6 +161,12 @@ ___
 ### ColorfulPlugin
 
 • `Const` **ColorfulPlugin**: `Plugin`<keyof `ChartTypeRegistry`, [`ColorfulPluginOptions`](interfaces/ColorfulPluginOptions.md)\>
+
+___
+
+### colorfulPluginDatasetDefaults
+
+• `Const` **colorfulPluginDatasetDefaults**: [`ColorfulPluginDatasetOptions`](interfaces/ColorfulPluginDatasetOptions.md)[]
 
 ## Functions
 
@@ -236,77 +246,6 @@ ___
 
 ___
 
-### createColorSchemes
-
-▸ **createColorSchemes**(): [`ColorSchemes`](interfaces/ColorSchemes.md)
-
-#### Returns
-
-[`ColorSchemes`](interfaces/ColorSchemes.md)
-
-___
-
-### createGreyLinear
-
-▸ **createGreyLinear**(): [`ColorLinear`](README.md#colorlinear)
-
-#### Returns
-
-[`ColorLinear`](README.md#colorlinear)
-
-___
-
-### defaultConverter
-
-▸ **defaultConverter**(`color`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `color` | `string` |
-
-#### Returns
-
-`string`
-
-___
-
-### getColor
-
-▸ **getColor**(`colors`, `index`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `colors` | [`Colors`](README.md#colors) |
-| `index` | `number` |
-
-#### Returns
-
-`string`
-
-___
-
-### getColors
-
-▸ **getColors**(`colors`, `count`, `startIndex?`): `any`[]
-
-#### Parameters
-
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `colors` | [`Colors`](README.md#colors) | `undefined` |
-| `count` | `number` | `undefined` |
-| `startIndex` | `number` | `0` |
-
-#### Returns
-
-`any`[]
-
-___
-
 ### getLinear
 
 ▸ **getLinear**(`name?`): [`ColorLinear`](README.md#colorlinear)
@@ -359,6 +298,22 @@ ___
 
 ___
 
+### isBicolor
+
+▸ **isBicolor**(`what`): what is Bicolor
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `what` | `any` |
+
+#### Returns
+
+what is Bicolor
+
+___
+
 ### setNamedColor
 
 ▸ **setNamedColor**(`name`, `color`): `void`
@@ -385,23 +340,6 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `namedColors` | `Record`<`string`, `string`\> |
-
-#### Returns
-
-`void`
-
-___
-
-### setup
-
-▸ **setup**(`schemes`, `colorsTypes?`): `void`
-
-#### Parameters
-
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `schemes` | [`ColorSchemes`](interfaces/ColorSchemes.md) | `undefined` |
-| `colorsTypes` | `string`[] | `defaultColorsTypes` |
 
 #### Returns
 

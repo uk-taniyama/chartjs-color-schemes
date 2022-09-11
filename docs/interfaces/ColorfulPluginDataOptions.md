@@ -1,20 +1,20 @@
-[chartjs-color-schemes - v1.0.0-alpha.4](../README.md) / ColorfulPluginData
+[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / ColorfulPluginDataOptions
 
-# Interface: ColorfulPluginData
+# Interface: ColorfulPluginDataOptions
 
 ## Table of contents
 
 ### Properties
 
-- [axis](ColorfulPluginData.md#axis)
-- [datasetIndex](ColorfulPluginData.md#datasetindex)
-- [max](ColorfulPluginData.md#max)
-- [max2](ColorfulPluginData.md#max2)
-- [min](ColorfulPluginData.md#min)
-- [min2](ColorfulPluginData.md#min2)
-- [name](ColorfulPluginData.md#name)
-- [scale](ColorfulPluginData.md#scale)
-- [value](ColorfulPluginData.md#value)
+- [axis](ColorfulPluginDataOptions.md#axis)
+- [datasetIndex](ColorfulPluginDataOptions.md#datasetindex)
+- [max](ColorfulPluginDataOptions.md#max)
+- [max2](ColorfulPluginDataOptions.md#max2)
+- [min](ColorfulPluginDataOptions.md#min)
+- [min2](ColorfulPluginDataOptions.md#min2)
+- [name](ColorfulPluginDataOptions.md#name)
+- [scale](ColorfulPluginDataOptions.md#scale)
+- [value](ColorfulPluginDataOptions.md#value)
 
 ## Properties
 
@@ -80,7 +80,7 @@ ___
 
 ### name
 
-• **name**: `string`
+• `Optional` **name**: `string`
 
 name for the color linear.
 
