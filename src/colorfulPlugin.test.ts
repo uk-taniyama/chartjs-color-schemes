@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { CanvasGradient } from 'canvas';
 import { ColorfulPlugin } from './colorfulPlugin';
 import type { NamedLinear } from './types';
 import { addLinear, addLinears } from './repositories';
@@ -38,10 +37,8 @@ describe('ColorfulPlugin', () => {
       data: {
         datasets: [{}, {}],
       },
-      config: {
-        options: {
-          scales: {
-          },
+      options: {
+        scales: {
         },
       },
     };
@@ -68,7 +65,7 @@ describe('ColorfulPlugin', () => {
     });
     const color = chart.data.datasets[0].backgroundColor;
     expect(color).toBeFunction();
-    expect(color()).toBeInstanceOf(CanvasGradient);
+    expect(color()).toBe('#000');
   });
 
   it('update dataset only', () => {
@@ -112,7 +109,7 @@ describe('ColorfulPlugin', () => {
     expect(color0).toBeUndefined();
     const color1 = chart.data.datasets[1].backgroundColor;
     expect(color1).toBeFunction();
-    const scale = chart.config.options.scales.r;
+    const scale = chart.options.scales.r;
     expect(scale).toEqual({
       linear: expect.toBeFunction(),
       min: 0,

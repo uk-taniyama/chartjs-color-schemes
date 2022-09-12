@@ -233,3 +233,20 @@ a:hover {
 	.chartjs-links a { flex-direction: column; }
 	.chartjs-links .fa { margin: 0 }
 }
+
+.row {
+  display: flex;
+  width: 100%;
+  background: #FFF;
+  border: 1px solid #404244;
+}
+
+.row > .color {
+  height: 30px;
+  width: 100%;
+}
+
+.row > .linear {
+  height: 180px;
+  width: 100%;
+}

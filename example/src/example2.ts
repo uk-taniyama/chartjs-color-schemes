@@ -1,11 +1,11 @@
 import './style.css';
 import Chart from 'chart.js/auto';
-import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import {
-  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
+  ColorfulScale, ColorfulPlugin,
+  addScheme, addSchemes, getSchemeNames,
 } from 'chartjs-color-schemes';
 import { defaultConverter } from 'chartjs-color-schemes/helpers';
-import { getD3Schemes } from 'chartjs-color-schemes/schemes';
+import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
 if (document.location.search === '?e2e') {
@@ -13,230 +13,123 @@ if (document.location.search === '?e2e') {
   Chart.defaults.animations.colors = false;
 }
 
-Chart.register(MatrixController, MatrixElement);
 // Chart.register(DebugPlugin);
 Chart.register(ColorfulScale, ColorfulPlugin);
 
-// get schemes and register.
-const { namedLinear } = getD3Schemes();
+// add custom scheme
+addScheme('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
 
-// get registered linears
-addLinears(namedLinear);
-const schemeNames = getLinearNames();
+// get schemes and register.
+const { namedColors: d3Schemes } = getD3Schemes();
+addSchemes(d3Schemes);
+addSchemes(getOfficeSchemes());
+
+// get registered scheme names.
+const schemeNames = getSchemeNames();
+
+const ctx: HTMLCanvasElement = document.getElementById('chart') as any;
 
 let random = seed('default');
 
-function createMatrixData(countX: number, countY: number, maxV: number) {
-  const data: Record<string, any>[] = [];
-  for (let x = 0; x < countX; x += 1) {
-    for (let y = 0; y < countY; y += 1) {
-      // const v = (y < 1) ? x * 2 + y * countX : random() * maxV;
-      const r = random() * maxV;
-      data.push({
-        x, y, r,
-      });
-    }
-  }
-  return data;
+function randomData() {
+  return random() * 50;
 }
 
-function createBubbleData(count: number, maxX: number, maxY: number, maxV: number) {
-  const data: Record<string, any>[] = [];
-  for (let i = 0; i < count; i += 1) {
-    data.push({
-      x: random() * maxX,
-      y: random() * maxY,
-      r: random() * maxV,
-    });
-  }
-  return data;
-}
-
-const X = 30;
-const Y = 20;
-const V = 20;
-Object.assign(window, { Chart });
-
-function createMatrixOptions(maxX: number, maxY: number) {
+function randomData3d() {
   return {
-    width: (ctx: any) => (ctx?.chart?.chartArea?.width || 0) / maxX,
-    height: (ctx: any) => (ctx?.chart?.chartArea?.height || 0) / maxY,
+    x: randomData(),
+    y: randomData(),
+    r: randomData(),
   };
 }
 
-function configMatrix(): any {
-  random = seed('default');
+function createRandomData(type: string): any {
+  if (type === 'bubble') return randomData3d;
+  if (type === 'scatter') return randomData3d;
+  return randomData;
+}
 
-  const data = createMatrixData(X, Y, V);
+const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((name) => ([`Data ${name}`]));
+
+function config(chartType: string, colors: string): any {
+  random = seed('default');
+  const getData = createRandomData(chartType);
   return {
-    type: 'matrix',
+    type: chartType.startsWith('area') ? 'line' : chartType.replace('2', ''),
     data: {
-      datasets: [{
-        data, ...createMatrixOptions(X, Y),
-      }],
+      labels,
+      datasets: [1, 2, 3].map((name) => ({
+        label: `Dataset ${name}`,
+        data: labels.map(getData),
+        fill: chartType.startsWith('area') || chartType.startsWith('bar') ? true : undefined,
+        borderWidth: 2,
+      })),
     },
     options: {
+      indexAxis: chartType.endsWith('2') ? 'y' : undefined,
       responsive: true,
       maintainAspectRatio: false,
-      animation: false,
-      scales: {
-        x: {
-          // display: false,
-          min: -0.5,
-          max: X - 0.5,
-          grid: {
-            display: false,
-          },
-          ticks: {
-            callback: (value: number) => (Number.isInteger(value) ? value : undefined),
-          },
-          offset: false,
-        },
-        y: {
-          // display: false,
-          min: -0.5,
-          max: Y - 0.5,
-          grid: {
-            // display: false,
-          },
-          ticks: {
-            callback: (value: number) => (Number.isInteger(value) ? value : undefined),
-          },
-          offset: false,
-        },
-        // r: linearColors.getScaleOptions(),
-      },
       plugins: {
         title: {
           display: false,
         },
-        legend: {
-          display: false,
-        },
         [ColorfulPlugin.id]: {
-          colors: 'default',
+          colors,
           converter: defaultConverter,
-          data: [{
-            min: 0,
-            max: V,
-            axis: 'r',
-            datasetIndex: 0,
-            value: 'r',
-          }],
-        },
-        tooltip: {
-          callbacks: {
-            title(arg: any) {
-              return [arg[0].raw.x, arg[0].raw.y].join('/');
-            },
-            label({ raw }: any) {
-              return raw.r;
-            },
-          },
         },
       },
     },
   };
 }
 
-function configBubble(): any {
-  random = seed('default');
-
-  const data = createBubbleData(50, X, Y, V);
-  return {
-    type: 'bubble',
-    data: {
-      datasets: [{
-        data,
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false,
-      plugins: {
-        title: {
-          display: false,
-        },
-        legend: {
-          display: false,
-        },
-        [ColorfulPlugin.id]: {
-          data: [{
-            min: 0,
-            max: V,
-            axis: 'r',
-            datasetIndex: 0,
-            value: 'r',
-          }],
-        },
-      },
-    },
-  };
-}
-
-const canvas: HTMLCanvasElement = document.getElementById('chart') as any;
-let chart = new Chart(canvas, configBubble());
-Object.assign(window, { chart });
-const schemesEl = document.getElementById('schemes')!;
 const schemeNameEl = document.getElementById('schemeName')!;
-schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');
-schemesEl.addEventListener('click', (ev: any) => {
+
+const schemesEl = document.getElementById('schemes')!;
+schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn scheme" id="${name}">${name}</button>`).join(' ');
+
+let chart: Chart | null = null!;
+function selectScheme(name: string) {
+  Array.from(document.getElementsByClassName('scheme')).forEach((el) => {
+    el.classList.toggle('btn-chartjs', el.id === name);
+  });
+
+  schemeNameEl.innerText = name;
+  if (chart == null) {
+    return;
+  }
+  // set scheme name and update.
+  chart.options.plugins!.colorful!.colors = name;
+  chart.update();
+}
+
+const types = ['line', 'line2', 'area', 'area2', 'bar', 'bar2', 'bubble', 'scatter', 'pie', 'doughnut', 'polarArea', 'radar'];
+const typesEl = document.getElementById('types')!;
+typesEl.innerHTML = types.map((type) => `<button class="btn type" id="${type}">${type}</button>`).join(' ');
+
+function selectType(type: string) {
+  Array.from(document.getElementsByClassName('type')).forEach((el) => {
+    el.classList.toggle('btn-chartjs', el.id === type);
+  });
+
+  if (chart != null) {
+    chart.destroy();
+  }
+  chart = new Chart(ctx, config(type, schemeNameEl.innerText));
+  Object.assign(window, { chart });
+}
+
+const buttonsEl = document.getElementById('buttons')!;
+buttonsEl.addEventListener('click', (ev: any) => {
   if (ev.target.tagName !== 'BUTTON') {
     return;
   }
-  const name = ev.target.id;
-  schemeNameEl.innerHTML = name;
-  (chart.options as any).plugins[ColorfulPlugin.id].data[0].name = name;
-  chart.update();
+  const { id, classList } = ev.target;
+  if (classList.contains('scheme')) {
+    selectScheme(id);
+  } else {
+    selectType(id);
+  }
 });
 
-const handlers: Record<string, (opts: any) => void> = {
-  /* eslint-disable no-param-reassign */
-  ToggleScale: (opts: any) => {
-    if (opts.scale?.display !== false) {
-      Object.assign(opts, {
-        scale: {
-          display: false,
-        },
-      });
-    } else {
-      opts.scale.display = true;
-    }
-  },
-  DefaultColor: (opts: any) => {
-    opts.min2 = 0;
-    opts.max2 = 1;
-  },
-  ReverseColor: (opts: any) => {
-    opts.min2 = 1;
-    opts.max2 = 0;
-  },
-  HalfColor: (opts: any) => {
-    opts.min2 = 0.25;
-    opts.max2 = 0.75;
-  },
-  /* eslint-enable no-param-reassign */
-};
-const handlersEl = document.getElementById('handlers')!;
-handlersEl.innerHTML = Object.keys(handlers).map((name) => `<button class="btn btn-chartjs" id="${name}">${name}</button>`).join(' ');
-handlersEl.addEventListener('click', (ev: any) => {
-  if (ev.target.tagName !== 'BUTTON') {
-    return;
-  }
-  const name = ev.target.id;
-  handlers[name]((chart.options as any).plugins[ColorfulPlugin.id].data[0]);
-  chart.update();
-});
-const typesEl = document.getElementById('types')!;
-const types = ['bubble', 'matrix'];
-typesEl.innerHTML = types.map((type) => `<button class="btn btn-chartjs" id="${type}">${type}</button>`).join(' ');
-typesEl.addEventListener('click', (ev: any) => {
-  if (ev.target.tagName !== 'BUTTON') {
-    return;
-  }
-  const type = ev.target.id;
-  chart.destroy();
-  chart = new Chart(canvas, type === 'bubble' ? configBubble() : configMatrix());
-  Object.assign(window, { chart });
-});
+selectScheme('default');
+selectType('line');

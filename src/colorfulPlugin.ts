@@ -2,14 +2,15 @@ import type {
   Chart, ChartType, Plugin, ScriptableContext,
 } from 'chart.js';
 import type { DeepPartial } from 'chart.js/types/utils';
-import { isArray } from 'chart.js/helpers';
+import { isArray, isNumber } from 'chart.js/helpers';
+import { isFunction } from 'lodash-es';
 import {
-  clampColor, createLinear, createScriptableColor, createScriptableValue, getColor, getColors,
+  clampColor, transparent, createScriptableColor,
+  createScriptableValue, getColor, getColors, createLinear,
 } from './helpers';
 import type {
-  Bicolor, ColorConverter, ColorLinear, Colors, ValueFn,
+  ColorConverter, ColorLinear, Colors, ValueFn,
 } from './types';
-import { isBicolor } from './types';
 import { ColorfulScaleOptions, createColorfulScaleOptions } from './colorfulScale';
 import { getLinear, getScheme } from './repositories';
 
@@ -56,7 +57,7 @@ export interface ColorfulPluginDataOptions {
   max2?: number;
 }
 
-export type ColorFnNames = 'color' | 'color2' | 'linear' | 'colors' | 'colors2';
+export type ColorFnNames = 'color' | 'color2' | 'gradient' | 'colors' | 'colors2' | 'gradients';
 
 export interface ColorfulPluginDatasetOptions {
   types?: string[];
@@ -73,7 +74,7 @@ export interface ColorfulPluginOptions {
   data: ColorfulPluginDataOptions[];
 }
 
-interface IColorfulPlugin extends Plugin<ChartType, ColorfulPluginOptions> {
+export interface IColorfulPlugin extends Plugin<ChartType, ColorfulPluginOptions> {
   defaults: ColorfulPluginOptions;
   /** @private */
   colors: Colors;
@@ -86,30 +87,155 @@ interface IColorfulPlugin extends Plugin<ChartType, ColorfulPluginOptions> {
   isDatasetsUpdate: boolean;
 }
 
+function getGradientParamByRScale(
+  chart: Chart,
+) {
+  const rScale = chart.scales.r;
+  if (rScale == null) {
+    return null;
+  }
+  const { xCenter, yCenter, drawingArea } = rScale as any;
+  if (xCenter == null || yCenter == null || drawingArea == null) {
+    return null;
+  }
+  return {
+    x: xCenter,
+    y: yCenter,
+    r1: 0,
+    r2: drawingArea,
+  };
+}
+
+function getGradientParamByArcElement(
+  chart: Chart,
+  datasetIndex: number,
+  dataIndex: number,
+) {
+  const el = chart.getDatasetMeta(datasetIndex)?.data[dataIndex];
+  if (el == null) {
+    return null;
+  }
+  const {
+    x, y, innerRadius, outerRadius,
+  } = el.getProps(['x', 'y', 'innerRadius', 'outerRadius'], true);
+  if (!isNumber(x) || !isNumber(y) || !isNumber(innerRadius) || !isNumber(outerRadius)) {
+    return null;
+  }
+  return {
+    x: x as number,
+    y: y as number,
+    r1: innerRadius as number,
+    r2: outerRadius as number,
+  };
+}
+
+function setGradientColorStop(gradient: CanvasGradient, color: ColorLinear | string) {
+  if (isFunction(color)) {
+    for (let i = 0; i <= 10; i += 1) {
+      const v = (i / 10);
+      gradient.addColorStop(v, color(v));
+    }
+  } else {
+    gradient.addColorStop(0, transparent(color));
+    gradient.addColorStop(1, color);
+  }
+}
+
+function createDataGradient(
+  chart: Chart,
+  color: string,
+  datasetIndex: number,
+  dataIndex: number,
+) {
+  const param = getGradientParamByRScale(chart)
+   || getGradientParamByArcElement(chart, datasetIndex, dataIndex);
+  if (param == null) {
+    return color;
+  }
+  const { ctx } = chart;
+  const gradient = ctx.createRadialGradient(
+    param.x,
+    param.y,
+    param.r1,
+    param.x,
+    param.y,
+    param.r2,
+  );
+  setGradientColorStop(gradient, color);
+  return gradient;
+}
+
+function createRadialGradient(
+  chart: Chart,
+): CanvasGradient | null {
+  const param = getGradientParamByRScale(chart);
+  if (param == null) {
+    return null;
+  }
+
+  const { ctx } = chart;
+  return ctx.createRadialGradient(
+    param.x,
+    param.y,
+    param.r1,
+    param.x,
+    param.y,
+    param.r2,
+  );
+}
+
 export function createGradient(
   chart: Chart,
-  linear: ColorLinear | Bicolor,
+  linear: ColorLinear | string,
 ): CanvasGradient | null {
   const { ctx, chartArea } = chart;
   if (chartArea == null) {
     return null;
   }
-  const { top, bottom } = chartArea;
-  const gradient = ctx.createLinearGradient(0, top, 0, bottom);
-  if (isBicolor(linear)) {
-    gradient.addColorStop(0, linear.color1);
-    gradient.addColorStop(1, linear.color2);
-  } else {
-    for (let i = 0; i <= 10; i += 1) {
-      const v = (i / 10);
-      gradient.addColorStop(v, linear((1 - v)));
+
+  let gradient = createRadialGradient(chart);
+  if (gradient == null) {
+    const {
+      top, left, bottom, right,
+    } = chartArea;
+    const indexAxis = chart.options?.indexAxis;
+    if (indexAxis === 'x') {
+      gradient = ctx.createLinearGradient(0, bottom, 0, top);
+    } else {
+      gradient = ctx.createLinearGradient(left, 0, right, 0);
     }
   }
+  setGradientColorStop(gradient, linear);
   return gradient;
 }
 
-export function createScriptableGradient(chart: Chart, color: Bicolor | ColorLinear) {
-  return () => createGradient(chart, color);
+export function createScriptableGradient(
+  plugin: IColorfulPlugin,
+  chart: Chart,
+  color: string,
+  linear: ColorLinear | null = null,
+) {
+  return () => {
+    if (!plugin.isDatasetsUpdate) {
+      return color;
+    }
+    return createGradient(chart, linear || color);
+  };
+}
+
+export function createScriptableDataGradient(plugin: IColorfulPlugin, colors: Colors) {
+  return ({ chart, datasetIndex, dataIndex }: ScriptableContext<any>) => {
+    const color = getColor(colors, dataIndex);
+    if (!plugin.isDatasetsUpdate) {
+      return color;
+    }
+    return createDataGradient(
+      chart,
+      color,
+      datasetIndex,
+      dataIndex,
+    );
+  };
 }
 
 export function resolveColors(colorsOrName: Colors | string): Colors {
@@ -142,7 +268,7 @@ export function applyColorfulPluginDataOptions(
   if (axis) {
     const opt = createColorfulScaleOptions(valueToColor, min, max);
     // eslint-disable-next-line no-param-reassign
-    (chart.config.options as any).scales![axis] = Object.assign(opt, scale);
+    (chart.options as any).scales![axis] = Object.assign(opt, scale);
   }
 
   if (datasetIndex == null) {
@@ -169,7 +295,7 @@ export function applyColorfulPluginDataOptions(
     dataset.backgroundColor = color as any;
   } else {
     // gradation background.
-    const color = createScriptableGradient(chart, linear);
+    const color = createScriptableGradient(plugin, chart, colorMax2, linear);
     dataset.backgroundColor = color as any;
     dataset.borderColor = colorMax2;
     (dataset as any).pointBackgroundColor = colorMax2;
@@ -181,22 +307,30 @@ export function createColor(
   chart: Chart,
   name: string,
   datasetIndex: number,
-  dataIndex: number,
+  dataLength: number,
 ) {
   const { colors, colors2 } = plugin;
   if (name === 'color') {
     return getColor(colors, datasetIndex);
-  } if (name === 'color2') {
+  }
+  if (name === 'color2') {
     return getColor(colors2, datasetIndex);
-  } if (name === 'linear') {
+  }
+  if (name === 'gradient') {
     return createScriptableGradient(
+      plugin,
       chart,
-      createLinear(getColor(colors, datasetIndex)),
+      getColor(colors, datasetIndex),
     );
-  } if (name === 'colors') {
-    return getColors(colors, dataIndex);
-  } if (name === 'colors2') {
-    return getColors(colors2, dataIndex);
+  }
+  if (name === 'colors') {
+    return getColors(colors, dataLength);
+  }
+  if (name === 'colors2') {
+    return getColors(colors2, dataLength);
+  }
+  if (name === 'gradients') {
+    return createScriptableDataGradient(plugin, colors);
   }
   return null;
 }
@@ -258,12 +392,17 @@ declare module 'chart.js' {
 export const colorfulPluginDatasetDefaults: ColorfulPluginDatasetOptions[] = [
   {
     types: ['pie', 'doughnut', 'polarArea'],
-    backgroundColor: 'colors2',
+    backgroundColor: 'gradients',
     borderColor: 'color',
   }, {
     types: ['bar', 'line'],
     borderColor: 'color',
-    backgroundColor: 'linear',
+    backgroundColor: 'gradient',
+    pointBackgroundColor: 'color',
+  }, {
+    types: ['radar'],
+    borderColor: 'color',
+    backgroundColor: 'gradient',
   }, {
     borderColor: 'color',
     backgroundColor: 'color2',
