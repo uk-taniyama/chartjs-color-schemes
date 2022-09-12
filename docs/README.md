@@ -1,6 +1,6 @@
-chartjs-color-schemes - v1.0.0-alpha.5
+chartjs-color-schemes - v1.0.0-alpha.6
 
-# chartjs-color-schemes - v1.0.0-alpha.5
+# chartjs-color-schemes - v1.0.0-alpha.6
 
 ## Table of contents
 
@@ -96,7 +96,7 @@ ___
 
 ### ColorFnNames
 
-Ƭ **ColorFnNames**: ``"color"`` \| ``"color2"`` \| ``"linear"`` \| ``"colors"`` \| ``"colors2"``
+Ƭ **ColorFnNames**: ``"color"`` \| ``"color2"`` \| ``"gradient"`` \| ``"colors"`` \| ``"colors2"`` \| ``"gradients"``
 
 ___
 

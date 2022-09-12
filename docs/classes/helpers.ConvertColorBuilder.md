@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / [helpers](../modules/helpers.md) / ConvertColorBuilder
+[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / [helpers](../modules/helpers.md) / ConvertColorBuilder
 
 # Class: ConvertColorBuilder
 
@@ -41,23 +41,11 @@ ___
 
 ### build
 
-▸ **build**(): (`color`: `string`) => `string`
+▸ **build**(): [`ColorConverter`](../README.md#colorconverter)
 
 #### Returns
 
-`fn`
-
-▸ (`color`): `string`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `color` | `string` |
-
-##### Returns
-
-`string`
+[`ColorConverter`](../README.md#colorconverter)
 
 ___
 

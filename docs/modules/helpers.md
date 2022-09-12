@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / helpers
+[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / helpers
 
 # Namespace: helpers
 
@@ -16,6 +16,7 @@
 
 - [clampColor](helpers.md#clampcolor)
 - [clampValue](helpers.md#clampvalue)
+- [convertAlpha](helpers.md#convertalpha)
 - [createColors](helpers.md#createcolors)
 - [createConvertColorBuilder](helpers.md#createconvertcolorbuilder)
 - [createLinear](helpers.md#createlinear)
@@ -24,6 +25,7 @@
 - [defaultConverter](helpers.md#defaultconverter)
 - [getColor](helpers.md#getcolor)
 - [getColors](helpers.md#getcolors)
+- [transparent](helpers.md#transparent)
 
 ## Variables
 
@@ -87,6 +89,22 @@ ___
 ##### Returns
 
 `number`
+
+___
+
+### convertAlpha
+
+▸ **convertAlpha**(`alpha`): [`ColorConverter`](../README.md#colorconverter)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `alpha` | `number` |
+
+#### Returns
+
+[`ColorConverter`](../README.md#colorconverter)
 
 ___
 
@@ -226,3 +244,19 @@ ___
 #### Returns
 
 [`Colors`](../README.md#colors)
+
+___
+
+### transparent
+
+▸ **transparent**(`color`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `color` | `string` |
+
+#### Returns
+
+`string`

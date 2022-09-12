@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.5](../README.md) / Bicolor
+[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / Bicolor
 
 # Interface: Bicolor
 
@@ -6,17 +6,17 @@
 
 ### Properties
 
-- [color1](Bicolor.md#color1)
-- [color2](Bicolor.md#color2)
+- [c0](Bicolor.md#c0)
+- [c1](Bicolor.md#c1)
 
 ## Properties
 
-### color1
+### c0
 
-• **color1**: `string`
+• **c0**: `string`
 
 ___
 
-### color2
+### c1
 
-• **color2**: `string`
+• **c1**: `string`

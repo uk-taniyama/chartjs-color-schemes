@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>chartjs-chart-schemes example</title>
+  <title>chartjs-chart-schemes sample colors</title>
   <script type="module" crossorigin src="./assets/example1.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/index.js">
   <link rel="stylesheet" href="./assets/index.css">
@@ -13,14 +13,30 @@
 <body>
   <div class="content">
     <a href="..">Home</a>
-    <div>
+    <div id="buttons">
       <span>Scheme:</span><span id="schemeName">default</span>
-      <div id="schemes"></div>
-      <span>Chart</span>
-      <div id="types"></div>
+      <div>
+        <button class="btn scheme" id="default">default</button>
+        <button class="btn scheme" id="custom">custom</button>
+      </div>
+      <div>Extra
+        <span id="extra">
+          <button class="btn extra" id="d3">d3</button>
+          <button class="btn extra" id="office">office</button>
+          <button class="btn extra" id="brewer">brewer</button>
+          <button class="btn extra" id="tableau">tableau</button>
+        </span>
+        <div id="schemes"></div>
+      </div>
     </div>
-    <div id="canvas-holder" style="width:100%">
-      <canvas id="chart" style="max-height: 800px; min-height: 800px;"></canvas>
+    <span>Sample</span>
+    <div>
+      <span><b>colors</b> base color.</span>
+      <div class="row" id="colors"></div>
+      <span><b>colors2</b> sub color.(converted color)</span>
+      <div class="row" id="colors2"></div>
+      <span><b>linear</b> linear gradient to base color from alpha 0.</span>
+      <div class="row" id="linears"></div>
     </div>
   </div>
   
