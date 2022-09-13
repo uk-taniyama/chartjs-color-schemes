@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { CanvasGradient } from 'canvas';
 import { ColorfulPlugin } from './colorfulPlugin';
 import type { NamedLinear } from './types';
 import { addLinear, addLinears } from './repositories';
@@ -29,8 +30,10 @@ describe('ColorfulPlugin', () => {
   function createChart(): any {
     const canvas = document.createElement('canvas');
     return {
-      type: 'line',
       ctx: canvas.getContext('2d'),
+      config: {
+        type: 'line',
+      },
       chartArea: {
         top: 0, bottom: 100, left: 0, right: 100, height: 100, width: 100,
       },
@@ -65,7 +68,7 @@ describe('ColorfulPlugin', () => {
     });
     const color = chart.data.datasets[0].backgroundColor;
     expect(color).toBeFunction();
-    expect(color()).toBe('#000');
+    expect(color()).toBeInstanceOf(CanvasGradient);
   });
 
   it('update dataset only', () => {

@@ -65,6 +65,8 @@ export interface ColorfulPluginDatasetOptions {
   borderColor?: ColorFnNames;
   pointBackgroundColor?: ColorFnNames;
   pointBorderColor?: ColorFnNames;
+  hoverBackgroundColor?: ColorFnNames;
+  hoverBorderColor?: ColorFnNames;
 }
 
 export interface ColorfulPluginOptions {
@@ -84,13 +86,17 @@ export interface IColorfulPlugin extends Plugin<ChartType, ColorfulPluginOptions
   /** @private */
   beforeUpdated: boolean;
   /** @private */
+  isUpdate: boolean;
+  /** @private */
   isDatasetsUpdate: boolean;
+  /** @private */
+  updated: [any, string][];
 }
 
 function getGradientParamByRScale(
   chart: Chart,
 ) {
-  const rScale = chart.scales.r;
+  const rScale = chart?.scales?.r;
   if (rScale == null) {
     return null;
   }
@@ -216,7 +222,7 @@ export function createScriptableGradient(
   linear: ColorLinear | null = null,
 ) {
   return () => {
-    if (!plugin.isDatasetsUpdate) {
+    if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
       return color;
     }
     return createGradient(chart, linear || color);
@@ -226,7 +232,7 @@ export function createScriptableGradient(
 export function createScriptableDataGradient(plugin: IColorfulPlugin, colors: Colors) {
   return ({ chart, datasetIndex, dataIndex }: ScriptableContext<any>) => {
     const color = getColor(colors, dataIndex);
-    if (!plugin.isDatasetsUpdate) {
+    if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
       return color;
     }
     return createDataGradient(
@@ -285,7 +291,7 @@ export function applyColorfulPluginDataOptions(
     const colorBase = createScriptableColor(getValue, valueToColor);
     const color = (ctx: ScriptableContext<any>) => {
       // for legends.
-      if (!plugin.isDatasetsUpdate) {
+      if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
         return colorMax2;
       }
       // for data.
@@ -336,12 +342,12 @@ export function createColor(
 }
 
 /** @internal */
-export function applyColorfulPluginSetupOptions(
+export function applyColorfulPluginDatasetOptions(
   plugin: IColorfulPlugin,
   chart: Chart,
   opts: ColorfulPluginDatasetOptions[],
 ) {
-  if (opts == null || opts.length === 0) {
+  if (!opts || opts.length === 0) {
     return;
   }
   const chartType = (chart.config as any).type;
@@ -356,10 +362,14 @@ export function applyColorfulPluginSetupOptions(
         if (!name.endsWith('Color')) {
           return;
         }
+        const target = dataset as any;
+        if (target[name] !== undefined) {
+          return;
+        }
         const color = createColor(plugin, chart, value, index, dataset.data.length);
         if (color != null) {
-          // eslint-disable-next-line no-param-reassign
-          (dataset as any)[name] = color;
+          plugin.updated.push([target, name]);
+          target[name] = color;
         }
       });
   });
@@ -372,13 +382,13 @@ export function applyColorfulPluginOptions(
   opts: ColorfulPluginOptions,
 ) {
   const {
-    colors, converter, dataset: setup, data,
+    colors, converter, dataset, data,
   } = opts;
   /* eslint-disable no-param-reassign */
   plugin.colors = isArray(colors) ? colors as Colors : getScheme(colors);
   plugin.colors2 = converter == null ? plugin.colors : plugin.colors.map((c) => converter(c));
   /* eslint-disable no-param-reassign */
-  applyColorfulPluginSetupOptions(plugin, chart, setup);
+  applyColorfulPluginDatasetOptions(plugin, chart, dataset);
   data?.forEach((d) => applyColorfulPluginDataOptions(plugin, chart, d));
 }
 
@@ -392,20 +402,24 @@ declare module 'chart.js' {
 export const colorfulPluginDatasetDefaults: ColorfulPluginDatasetOptions[] = [
   {
     types: ['pie', 'doughnut', 'polarArea'],
+    borderColor: 'colors',
     backgroundColor: 'gradients',
-    borderColor: 'color',
+    hoverBackgroundColor: 'colors',
   }, {
     types: ['bar', 'line'],
     borderColor: 'color',
     backgroundColor: 'gradient',
     pointBackgroundColor: 'color',
+    hoverBackgroundColor: 'color',
   }, {
     types: ['radar'],
     borderColor: 'color',
     backgroundColor: 'gradient',
+    pointBackgroundColor: 'color',
   }, {
     borderColor: 'color',
     backgroundColor: 'color2',
+    hoverBackgroundColor: 'color',
   },
 ];
 
@@ -436,6 +450,10 @@ const ColorfulPluginImpl: IColorfulPlugin = {
 
   isDatasetsUpdate: false,
 
+  isUpdate: false,
+
+  updated: [],
+
   /** @private */
   beforeInit(chart: Chart, _args: any, opts: ColorfulPluginOptions) {
     applyColorfulPluginOptions(this, chart, opts);
@@ -444,9 +462,10 @@ const ColorfulPluginImpl: IColorfulPlugin = {
 
   /** @private */
   beforeUpdate(chart: Chart, _args: any, opts: ColorfulPluginOptions) {
+    this.isUpdate = true;
     if (this.beforeUpdated === false) {
-      this.beforeUpdated = true;
       applyColorfulPluginOptions(this, chart, opts);
+      this.beforeUpdated = true;
       chart.update();
       return false;
     }
@@ -455,7 +474,10 @@ const ColorfulPluginImpl: IColorfulPlugin = {
 
   /** @private */
   afterUpdate() {
+    this.isUpdate = false;
     this.beforeUpdated = false;
+    this.updated.forEach(([target, name]) => delete target[name]);
+    this.updated = [];
   },
 
   /** @private */
