@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / helpers
+[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / helpers
 
 # Namespace: helpers
 
@@ -16,7 +16,7 @@
 
 - [clampColor](helpers.md#clampcolor)
 - [clampValue](helpers.md#clampvalue)
-- [convertAlpha](helpers.md#convertalpha)
+- [createAlphaConverter](helpers.md#createalphaconverter)
 - [createColors](helpers.md#createcolors)
 - [createConvertColorBuilder](helpers.md#createconvertcolorbuilder)
 - [createLinear](helpers.md#createlinear)
@@ -45,6 +45,11 @@
 
 ▸ **clampColor**(`linear`, `min`, `max`, `colorMin?`, `colorMax?`): [`ColorLinear`](../README.md#colorlinear)
 
+returns function is input value [min,max] translate to [colorMin, colorMax] then call linear.
+ex) linear:(red -> blue), min:0, max:20, colorMin: 1.0, colorMax: 0.0
+returned function call by '0' then returned 'blue'.
+returned function call by '20' then returned 'red'.
+
 #### Parameters
 
 | Name | Type | Default value |
@@ -65,14 +70,19 @@ ___
 
 ▸ **clampValue**(`min`, `max`, `rangeMin?`, `rangeMax?`): (`value`: `number`) => `number`
 
+returns function is input value [min,max] translate to [colorMin, colorMax].
+ex) min:0, max:20, colorMin: 1.0, colorMax: 0.0
+returned function call by '0' then returned '1.0'.
+returned function call by '20' then returned '0.0'.
+
 #### Parameters
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
 | `min` | `number` | `undefined` |
 | `max` | `number` | `undefined` |
-| `rangeMin` | `number` | `0` |
-| `rangeMax` | `number` | `1` |
+| `rangeMin` | `number` | `0.0` |
+| `rangeMax` | `number` | `1.0` |
 
 #### Returns
 
@@ -92,9 +102,9 @@ ___
 
 ___
 
-### convertAlpha
+### createAlphaConverter
 
-▸ **convertAlpha**(`alpha`): [`ColorConverter`](../README.md#colorconverter)
+▸ **createAlphaConverter**(`alpha`): [`ColorConverter`](../README.md#colorconverter)
 
 #### Parameters
 
@@ -153,46 +163,34 @@ ___
 
 ### createScriptableColor
 
-▸ **createScriptableColor**(`valueFn`, `colorFn`): (`ctx`: `any`) => ``null`` \| `string`
+▸ **createScriptableColor**(`valueFn`, `linear`): [`ScriptableColor`](../README.md#scriptablecolor)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `valueFn` | [`ValueFn`](../README.md#valuefn) |
-| `colorFn` | [`ColorFn`](../README.md#colorfn) |
+| `valueFn` | [`ScriptableValue`](../README.md#scriptablevalue) |
+| `linear` | [`ColorLinear`](../README.md#colorlinear) |
 
 #### Returns
 
-`fn`
-
-▸ (`ctx`): ``null`` \| `string`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `ctx` | `any` |
-
-##### Returns
-
-``null`` \| `string`
+[`ScriptableColor`](../README.md#scriptablecolor)
 
 ___
 
 ### createScriptableValue
 
-▸ **createScriptableValue**(`value`): [`ValueFn`](../README.md#valuefn)
+▸ **createScriptableValue**(`value`): [`ScriptableValue`](../README.md#scriptablevalue)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `value` | `string` \| [`ValueFn`](../README.md#valuefn) |
+| `value` | `string` \| [`ScriptableValue`](../README.md#scriptablevalue) |
 
 #### Returns
 
-[`ValueFn`](../README.md#valuefn)
+[`ScriptableValue`](../README.md#scriptablevalue)
 
 ___
 

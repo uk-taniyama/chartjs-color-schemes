@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / ColorfulPluginDataOptions
+[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / ColorfulPluginDataOptions
 
 # Interface: ColorfulPluginDataOptions
 
@@ -8,11 +8,11 @@
 
 - [axis](ColorfulPluginDataOptions.md#axis)
 - [datasetIndex](ColorfulPluginDataOptions.md#datasetindex)
+- [linear](ColorfulPluginDataOptions.md#linear)
 - [max](ColorfulPluginDataOptions.md#max)
 - [max2](ColorfulPluginDataOptions.md#max2)
 - [min](ColorfulPluginDataOptions.md#min)
 - [min2](ColorfulPluginDataOptions.md#min2)
-- [name](ColorfulPluginDataOptions.md#name)
 - [scale](ColorfulPluginDataOptions.md#scale)
 - [value](ColorfulPluginDataOptions.md#value)
 
@@ -35,6 +35,18 @@ target dataset index.
 **`Default`**
 
 0
+
+___
+
+### linear
+
+• `Optional` **linear**: `string`
+
+name for the color linear.
+
+**`See`**
+
+[linears](../modules/registries.md#linears)
 
 ___
 
@@ -78,18 +90,6 @@ minimum number for the color linear.
 
 ___
 
-### name
-
-• `Optional` **name**: `string`
-
-name for the color linear.
-
-**`See`**
-
-[addLinears](../README.md#addlinears), [getLinear](../README.md#getlinear)
-
-___
-
 ### scale
 
 • `Optional` **scale**: `_DeepPartialObject`<[`ColorfulScaleOptions`](ColorfulScaleOptions.md)\>
@@ -100,6 +100,6 @@ ___
 
 ### value
 
-• `Optional` **value**: `string` \| [`ValueFn`](../README.md#valuefn)
+• `Optional` **value**: `string` \| [`ScriptableValue`](../README.md#scriptablevalue)
 
 value key name or value from ctx function.

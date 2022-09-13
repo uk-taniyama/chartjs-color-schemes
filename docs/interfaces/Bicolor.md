@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / Bicolor
+[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / Bicolor
 
 # Interface: Bicolor
 

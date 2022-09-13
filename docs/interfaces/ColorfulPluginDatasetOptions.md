@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-alpha.6](../README.md) / ColorfulPluginDatasetOptions
+[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / ColorfulPluginDatasetOptions
 
 # Interface: ColorfulPluginDatasetOptions
 
@@ -8,6 +8,8 @@
 
 - [backgroundColor](ColorfulPluginDatasetOptions.md#backgroundcolor)
 - [borderColor](ColorfulPluginDatasetOptions.md#bordercolor)
+- [hoverBackgroundColor](ColorfulPluginDatasetOptions.md#hoverbackgroundcolor)
+- [hoverBorderColor](ColorfulPluginDatasetOptions.md#hoverbordercolor)
 - [pointBackgroundColor](ColorfulPluginDatasetOptions.md#pointbackgroundcolor)
 - [pointBorderColor](ColorfulPluginDatasetOptions.md#pointbordercolor)
 - [types](ColorfulPluginDatasetOptions.md#types)
@@ -26,6 +28,18 @@ ___
 
 ___
 
+### hoverBackgroundColor
+
+• `Optional` **hoverBackgroundColor**: [`ColorFnNames`](../README.md#colorfnnames)
+
+___
+
+### hoverBorderColor
+
+• `Optional` **hoverBorderColor**: [`ColorFnNames`](../README.md#colorfnnames)
+
+___
+
 ### pointBackgroundColor
 
 • `Optional` **pointBackgroundColor**: [`ColorFnNames`](../README.md#colorfnnames)
@@ -41,3 +55,5 @@ ___
 ### types
 
 • `Optional` **types**: `string`[]
+
+target dataset type's array.

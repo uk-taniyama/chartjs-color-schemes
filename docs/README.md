@@ -1,12 +1,13 @@
-chartjs-color-schemes - v1.0.0-alpha.6
+chartjs-color-schemes - v1.0.0-beta.1
 
-# chartjs-color-schemes - v1.0.0-alpha.6
+# chartjs-color-schemes - v1.0.0-beta.1
 
 ## Table of contents
 
 ### Namespaces
 
 - [helpers](modules/helpers.md)
+- [registries](modules/registries.md)
 - [schemes](modules/schemes.md)
 
 ### Classes
@@ -23,14 +24,16 @@ chartjs-color-schemes - v1.0.0-alpha.6
 
 ### Type Aliases
 
+- [Color](README.md#color)
 - [ColorConverter](README.md#colorconverter)
-- [ColorFn](README.md#colorfn)
 - [ColorFnNames](README.md#colorfnnames)
 - [ColorLinear](README.md#colorlinear)
 - [Colors](README.md#colors)
 - [NamedColors](README.md#namedcolors)
 - [NamedLinear](README.md#namedlinear)
-- [ValueFn](README.md#valuefn)
+- [Scheme](README.md#scheme)
+- [ScriptableColor](README.md#scriptablecolor)
+- [ScriptableValue](README.md#scriptablevalue)
 
 ### Variables
 
@@ -39,58 +42,33 @@ chartjs-color-schemes - v1.0.0-alpha.6
 
 ### Functions
 
-- [addLinear](README.md#addlinear)
-- [addLinears](README.md#addlinears)
-- [addScheme](README.md#addscheme)
-- [addSchemes](README.md#addschemes)
-- [clearNamedColors](README.md#clearnamedcolors)
-- [getLinear](README.md#getlinear)
-- [getLinearNames](README.md#getlinearnames)
-- [getScheme](README.md#getscheme)
-- [getSchemeNames](README.md#getschemenames)
 - [isBicolor](README.md#isbicolor)
-- [setNamedColor](README.md#setnamedcolor)
-- [setNamedColors](README.md#setnamedcolors)
 
 ## Type Aliases
 
-### ColorConverter
+### Color
 
-Ƭ **ColorConverter**: (`color`: `string`) => `string`
-
-#### Type declaration
-
-▸ (`color`): `string`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `color` | `string` |
-
-##### Returns
-
-`string`
+Ƭ **Color**: `string`
 
 ___
 
-### ColorFn
+### ColorConverter
 
-Ƭ **ColorFn**: (`ctx`: `any`) => `string`
+Ƭ **ColorConverter**: (`color`: [`Color`](README.md#color)) => [`Color`](README.md#color)
 
 #### Type declaration
 
-▸ (`ctx`): `string`
+▸ (`color`): [`Color`](README.md#color)
 
 ##### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `ctx` | `any` |
+| `color` | [`Color`](README.md#color) |
 
 ##### Returns
 
-`string`
+[`Color`](README.md#color)
 
 ___
 
@@ -98,31 +76,40 @@ ___
 
 Ƭ **ColorFnNames**: ``"color"`` \| ``"color2"`` \| ``"gradient"`` \| ``"colors"`` \| ``"colors2"`` \| ``"gradients"``
 
+color: color by datasetIndex.
+color2: converted color by datasetIndex.
+gradient: gradient color by datasetIndex.
+colors: color by dataIndex.(ex.type='pie')
+colors2: converted color by dataIndex.(ex.type='pie')
+gradients: gradient color by dataIndex.(ex.type='pie')
+
 ___
 
 ### ColorLinear
 
-Ƭ **ColorLinear**: (`index`: `number`) => `string`
+Ƭ **ColorLinear**: (`value`: `number`) => [`Color`](README.md#color)
 
 #### Type declaration
 
-▸ (`index`): `string`
+▸ (`value`): [`Color`](README.md#color)
+
+Given a value in the range [0,1], returns the corresponding color.
 
 ##### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `index` | `number` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `value` | `number` | 0.0, 1.0 |
 
 ##### Returns
 
-`string`
+[`Color`](README.md#color)
 
 ___
 
 ### Colors
 
-Ƭ **Colors**: `string`[]
+Ƭ **Colors**: [`Color`](README.md#color)[]
 
 ___
 
@@ -138,9 +125,35 @@ ___
 
 ___
 
-### ValueFn
+### Scheme
 
-Ƭ **ValueFn**: (`ctx`: `any`) => `number` \| ``null`` \| `undefined`
+Ƭ **Scheme**: [`Color`](README.md#color)[]
+
+___
+
+### ScriptableColor
+
+Ƭ **ScriptableColor**: (`ctx`: `any`) => [`Color`](README.md#color) \| ``null``
+
+#### Type declaration
+
+▸ (`ctx`): [`Color`](README.md#color) \| ``null``
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ctx` | `any` |
+
+##### Returns
+
+[`Color`](README.md#color) \| ``null``
+
+___
+
+### ScriptableValue
+
+Ƭ **ScriptableValue**: (`ctx`: `any`) => `number` \| ``null`` \| `undefined`
 
 #### Type declaration
 
@@ -170,134 +183,6 @@ ___
 
 ## Functions
 
-### addLinear
-
-▸ **addLinear**(`name`, `linear`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `name` | `string` |
-| `linear` | [`ColorLinear`](README.md#colorlinear) |
-
-#### Returns
-
-`void`
-
-___
-
-### addLinears
-
-▸ **addLinears**(`linears`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `linears` | `Record`<`string`, [`ColorLinear`](README.md#colorlinear)\> |
-
-#### Returns
-
-`void`
-
-___
-
-### addScheme
-
-▸ **addScheme**(`schemeName`, `colors`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `schemeName` | `string` |
-| `colors` | [`Colors`](README.md#colors) |
-
-#### Returns
-
-`void`
-
-___
-
-### addSchemes
-
-▸ **addSchemes**(`schemes`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `schemes` | `Record`<`string`, [`Colors`](README.md#colors)\> |
-
-#### Returns
-
-`void`
-
-___
-
-### clearNamedColors
-
-▸ **clearNamedColors**(): `void`
-
-#### Returns
-
-`void`
-
-___
-
-### getLinear
-
-▸ **getLinear**(`name?`): [`ColorLinear`](README.md#colorlinear)
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `name?` | `string` |
-
-#### Returns
-
-[`ColorLinear`](README.md#colorlinear)
-
-___
-
-### getLinearNames
-
-▸ **getLinearNames**(): `string`[]
-
-#### Returns
-
-`string`[]
-
-___
-
-### getScheme
-
-▸ **getScheme**(`name?`): [`Colors`](README.md#colors)
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `name?` | `string` |
-
-#### Returns
-
-[`Colors`](README.md#colors)
-
-___
-
-### getSchemeNames
-
-▸ **getSchemeNames**(): `string`[]
-
-#### Returns
-
-`string`[]
-
-___
-
 ### isBicolor
 
 ▸ **isBicolor**(`what`): what is Bicolor
@@ -311,36 +196,3 @@ ___
 #### Returns
 
 what is Bicolor
-
-___
-
-### setNamedColor
-
-▸ **setNamedColor**(`name`, `color`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `name` | `string` |
-| `color` | `string` |
-
-#### Returns
-
-`void`
-
-___
-
-### setNamedColors
-
-▸ **setNamedColors**(`namedColors`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `namedColors` | `Record`<`string`, `string`\> |
-
-#### Returns
-
-`void`
