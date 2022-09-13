@@ -100,10 +100,10 @@ export class ColorfulScale<O extends ColorfulScaleOptions = ColorfulScaleOptions
   _createGradient() {
     const { ctx, height, max } = this;
     const { linear } = this.colorful;
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    const gradient = ctx.createLinearGradient(0, height, 0, 0);
     for (let i = 0; i <= 10; i += 1) {
       const v = (i / 10);
-      gradient.addColorStop(v, linear(max * (1 - v)));
+      gradient.addColorStop(v, linear(max * v));
     }
     return gradient;
   }

@@ -1,10 +1,7 @@
 import './style.css';
-import {
-  getScheme, addScheme, addSchemes, NamedColors, Colors,
-} from 'chartjs-color-schemes';
-import {
-  defaultConverter, createConvertColorBuilder,
-} from 'chartjs-color-schemes/helpers';
+import type { NamedColors, Colors } from 'chartjs-color-schemes';
+import { defaultConverter, transparent } from 'chartjs-color-schemes/helpers';
+import { schemes } from 'chartjs-color-schemes/registries';
 import {
   getD3Schemes, getOfficeSchemes, getBrewerSchemes, getTableauSchemes,
 } from 'chartjs-color-schemes/schemes';
@@ -18,9 +15,7 @@ const schemesSet: Record<string, NamedColors> = {
 };
 
 // add custom scheme
-addScheme('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
-
-const convertAlpha0 = createConvertColorBuilder().alpha(0).build();
+schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
 
 function selectExtra(extra: string) {
   Array.from(document.getElementsByClassName('extra')).forEach((el) => {
@@ -28,9 +23,9 @@ function selectExtra(extra: string) {
   });
 
   const schemesEl = document.getElementById('schemes')!;
-  const schemes = schemesSet[extra];
-  addSchemes(schemes);
-  schemesEl.innerHTML = Object.keys(schemes)
+  const selected = schemesSet[extra];
+  schemes.addAll(selected);
+  schemesEl.innerHTML = Object.keys(selected)
     .map((name) => `<button class="btn scheme" id="${name}">${name}</button>`).join(' ');
 }
 
@@ -44,7 +39,7 @@ function renderColors(id: string, colors: Colors) {
 function renderLinears(id: string, colors: Colors) {
   const el = document.getElementById(id)!;
   el.innerHTML = colors.map((c) => `
-    <div class="linear" style="background: linear-gradient(${c}, ${convertAlpha0(c)});"></div>
+    <div class="linear" style="background: linear-gradient(${c}, ${transparent(c)});"></div>
   `).join('');
 }
 
@@ -57,7 +52,7 @@ function selectScheme(name: string) {
 
   schemeNameEl.innerText = name;
 
-  const scheme = getScheme(name);
+  const scheme = schemes.get(name);
   renderColors('colors', scheme);
   renderColors('colors2', scheme.map((c) => defaultConverter(c)));
   renderLinears('linears', scheme);

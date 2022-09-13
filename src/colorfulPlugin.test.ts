@@ -2,7 +2,7 @@
 import { CanvasGradient } from 'canvas';
 import { ColorfulPlugin } from './colorfulPlugin';
 import type { NamedLinear } from './types';
-import { addLinear, addLinears } from './repositories';
+import { linears } from './registries';
 import { createLinear } from './helpers';
 
 describe('ColorfulPlugin', () => {
@@ -15,16 +15,16 @@ describe('ColorfulPlugin', () => {
       v: 1,
     },
   };
-  const linears: NamedLinear = {
+  const namedLinears: NamedLinear = {
     test: createLinear('#000'),
   };
 
   beforeEach(() => {
-    addLinears(linears);
+    linears.addAll(namedLinears);
   });
 
   afterEach(() => {
-    Object.keys(linears).forEach((k) => addLinear(k, undefined as any));
+    linears.clear();
   });
 
   function createChart(): any {
@@ -62,13 +62,13 @@ describe('ColorfulPlugin', () => {
       data: [{
         min: 0,
         max: 1,
-        name: 'test',
+        linear: 'test',
         datasetIndex: 0,
       }],
     });
     const color = chart.data.datasets[0].backgroundColor;
     expect(color).toBeFunction();
-    expect(color()).toBeInstanceOf(CanvasGradient);
+    expect(color({ chart })).toBeInstanceOf(CanvasGradient);
   });
 
   it('update dataset only', () => {
@@ -80,7 +80,7 @@ describe('ColorfulPlugin', () => {
         max: 1,
         datasetIndex: 0,
         value: 'v',
-        name: 'name',
+        linear: 'name',
       }],
     });
     const color = chart.data.datasets[0].backgroundColor;
@@ -96,12 +96,12 @@ describe('ColorfulPlugin', () => {
         min: 0,
         max: 1,
         value: 'v',
-        name: 'name',
+        linear: 'name',
       }, {
         min: 0,
         max: 10,
         value: 'r',
-        name: 'test',
+        linear: 'test',
         datasetIndex: 1,
         axis: 'r',
         min2: 1,

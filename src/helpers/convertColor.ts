@@ -1,14 +1,14 @@
 import { color as toColor } from 'chart.js/helpers';
 import type { ColorModel } from 'chart.js/helpers';
-import type { ColorConverter } from '../types';
+import type { Color, ColorConverter } from '../types';
 
 type Fn = (v: ColorModel) => ColorModel;
 
-export function convertAlpha(alpha: number): ColorConverter {
+export function createAlphaConverter(alpha: number): ColorConverter {
   return (color) => toColor(color).alpha(alpha).hexString();
 }
 
-export const transparent: ColorConverter = convertAlpha(0);
+export const transparent: ColorConverter = createAlphaConverter(0);
 
 export class ConvertColorBuilder {
   /** @private */
@@ -20,10 +20,10 @@ export class ConvertColorBuilder {
   }
 
   build(): ColorConverter {
-    return (color: string) => this.fn.reduce((prev, fn) => fn(prev), toColor(color)).hexString();
+    return (color: Color) => this.fn.reduce((prev, fn) => fn(prev), toColor(color)).hexString();
   }
 
-  mix(color: string, weight: number) {
+  mix(color: Color, weight: number) {
     this.fn.push((x) => x.mix(toColor(color), weight));
     return this;
   }

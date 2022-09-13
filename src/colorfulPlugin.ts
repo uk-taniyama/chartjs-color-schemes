@@ -2,17 +2,40 @@ import type {
   Chart, ChartType, Plugin, ScriptableContext,
 } from 'chart.js';
 import type { DeepPartial } from 'chart.js/types/utils';
-import { isArray, isNumber } from 'chart.js/helpers';
+import { isNumber } from 'chart.js/helpers';
 import { isFunction } from 'lodash-es';
 import {
   clampColor, transparent, createScriptableColor,
   createScriptableValue, getColor, getColors, createLinear,
 } from './helpers';
 import type {
-  ColorConverter, ColorLinear, Colors, ValueFn,
+  Color, ColorConverter, ColorLinear, Colors, ScriptableValue,
 } from './types';
 import { ColorfulScaleOptions, createColorfulScaleOptions } from './colorfulScale';
-import { getLinear, getScheme } from './repositories';
+import { linears, schemes } from './registries';
+
+/**
+ * color: color by datasetIndex.
+ * color2: converted color by datasetIndex.
+ * gradient: gradient color by datasetIndex.
+ * colors: color by dataIndex.(ex.type='pie')
+ * colors2: converted color by dataIndex.(ex.type='pie')
+ * gradients: gradient color by dataIndex.(ex.type='pie')
+ */
+export type ColorFnNames = 'color' | 'color2' | 'gradient' | 'colors' | 'colors2' | 'gradients';
+
+export interface ColorfulPluginDatasetOptions {
+  /**
+    * target dataset type's array.
+    */
+  types?: string[];
+  backgroundColor?: ColorFnNames;
+  borderColor?: ColorFnNames;
+  pointBackgroundColor?: ColorFnNames;
+  pointBorderColor?: ColorFnNames;
+  hoverBackgroundColor?: ColorFnNames;
+  hoverBorderColor?: ColorFnNames;
+}
 
 export interface ColorfulPluginDataOptions {
   /**
@@ -25,9 +48,9 @@ export interface ColorfulPluginDataOptions {
   max: number;
   /**
    * name for the color linear.
-   * @see {@link addLinears}, {@link getLinear}
+   * @see {@link registries.linears}
    */
-  name?: string;
+  linear?: string;
   /**
    * colorful-scale axis.
    */
@@ -44,7 +67,7 @@ export interface ColorfulPluginDataOptions {
   /**
    * value key name or value from ctx function.
    */
-  value?: string | ValueFn;
+  value?: string | ScriptableValue;
   /**
    * minimum number for the color linear.
    * @default 0.0
@@ -57,19 +80,11 @@ export interface ColorfulPluginDataOptions {
   max2?: number;
 }
 
-export type ColorFnNames = 'color' | 'color2' | 'gradient' | 'colors' | 'colors2' | 'gradients';
-
-export interface ColorfulPluginDatasetOptions {
-  types?: string[];
-  backgroundColor?: ColorFnNames;
-  borderColor?: ColorFnNames;
-  pointBackgroundColor?: ColorFnNames;
-  pointBorderColor?: ColorFnNames;
-  hoverBackgroundColor?: ColorFnNames;
-  hoverBorderColor?: ColorFnNames;
-}
-
 export interface ColorfulPluginOptions {
+  /**
+   * name for the scheme or colors..
+   * @see {@link schemes}
+   */
   colors: string | Colors;
   converter: ColorConverter;
   dataset: ColorfulPluginDatasetOptions[];
@@ -135,7 +150,7 @@ function getGradientParamByArcElement(
   };
 }
 
-function setGradientColorStop(gradient: CanvasGradient, color: ColorLinear | string) {
+function setGradientColorStop(gradient: CanvasGradient, color: ColorLinear | Color) {
   if (isFunction(color)) {
     for (let i = 0; i <= 10; i += 1) {
       const v = (i / 10);
@@ -149,7 +164,7 @@ function setGradientColorStop(gradient: CanvasGradient, color: ColorLinear | str
 
 function createDataGradient(
   chart: Chart,
-  color: string,
+  color: Color,
   datasetIndex: number,
   dataIndex: number,
 ) {
@@ -217,11 +232,10 @@ export function createGradient(
 
 export function createScriptableGradient(
   plugin: IColorfulPlugin,
-  chart: Chart,
-  color: string,
+  color: Color,
   linear: ColorLinear | null = null,
 ) {
-  return () => {
+  return ({ chart }: ScriptableContext<any>) => {
     if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
       return color;
     }
@@ -245,10 +259,10 @@ export function createScriptableDataGradient(plugin: IColorfulPlugin, colors: Co
 }
 
 export function resolveColors(colorsOrName: Colors | string): Colors {
-  if (isArray<string>(colorsOrName)) {
-    return colorsOrName as Colors;
+  if (Array.isArray(colorsOrName)) {
+    return colorsOrName;
   }
-  return getScheme(colorsOrName);
+  return schemes.get(colorsOrName);
 }
 
 /** @internal */
@@ -258,7 +272,7 @@ export function applyColorfulPluginDataOptions(
   data: ColorfulPluginDataOptions,
 ) {
   const {
-    name,
+    linear: name,
     min,
     max,
     axis,
@@ -269,7 +283,9 @@ export function applyColorfulPluginDataOptions(
     max2 = 1,
   } = data;
 
-  const linear = name ? getLinear(name) : createLinear(getColor(plugin.colors, datasetIndex || 0));
+  const linear = name
+    ? linears.get(name)
+    : createLinear(getColor(plugin.colors, datasetIndex || 0));
   const valueToColor = clampColor(linear, min, max, min2, max2);
   if (axis) {
     const opt = createColorfulScaleOptions(valueToColor, min, max);
@@ -301,7 +317,7 @@ export function applyColorfulPluginDataOptions(
     dataset.backgroundColor = color as any;
   } else {
     // gradation background.
-    const color = createScriptableGradient(plugin, chart, colorMax2, linear);
+    const color = createScriptableGradient(plugin, colorMax2, linear);
     dataset.backgroundColor = color as any;
     dataset.borderColor = colorMax2;
     (dataset as any).pointBackgroundColor = colorMax2;
@@ -310,32 +326,30 @@ export function applyColorfulPluginDataOptions(
 
 export function createColor(
   plugin: IColorfulPlugin,
-  chart: Chart,
-  name: string,
+  colorFn: string,
   datasetIndex: number,
   dataLength: number,
 ) {
   const { colors, colors2 } = plugin;
-  if (name === 'color') {
+  if (colorFn === 'color') {
     return getColor(colors, datasetIndex);
   }
-  if (name === 'color2') {
+  if (colorFn === 'color2') {
     return getColor(colors2, datasetIndex);
   }
-  if (name === 'gradient') {
+  if (colorFn === 'gradient') {
     return createScriptableGradient(
       plugin,
-      chart,
       getColor(colors, datasetIndex),
     );
   }
-  if (name === 'colors') {
+  if (colorFn === 'colors') {
     return getColors(colors, dataLength);
   }
-  if (name === 'colors2') {
+  if (colorFn === 'colors2') {
     return getColors(colors2, dataLength);
   }
-  if (name === 'gradients') {
+  if (colorFn === 'gradients') {
     return createScriptableDataGradient(plugin, colors);
   }
   return null;
@@ -358,7 +372,7 @@ export function applyColorfulPluginDatasetOptions(
       return;
     }
     Object.entries(opt)
-      .forEach(([name, value]) => {
+      .forEach(([name, colorFn]) => {
         if (!name.endsWith('Color')) {
           return;
         }
@@ -366,7 +380,7 @@ export function applyColorfulPluginDatasetOptions(
         if (target[name] !== undefined) {
           return;
         }
-        const color = createColor(plugin, chart, value, index, dataset.data.length);
+        const color = createColor(plugin, colorFn, index, dataset.data.length);
         if (color != null) {
           plugin.updated.push([target, name]);
           target[name] = color;
@@ -385,7 +399,7 @@ export function applyColorfulPluginOptions(
     colors, converter, dataset, data,
   } = opts;
   /* eslint-disable no-param-reassign */
-  plugin.colors = isArray(colors) ? colors as Colors : getScheme(colors);
+  plugin.colors = Array.isArray(colors) ? colors : schemes.get(colors);
   plugin.colors2 = converter == null ? plugin.colors : plugin.colors.map((c) => converter(c));
   /* eslint-disable no-param-reassign */
   applyColorfulPluginDatasetOptions(plugin, chart, dataset);

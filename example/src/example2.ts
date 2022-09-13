@@ -1,10 +1,8 @@
 import './style.css';
 import Chart from 'chart.js/auto';
-import {
-  ColorfulScale, ColorfulPlugin,
-  addScheme, addSchemes, getSchemeNames,
-} from 'chartjs-color-schemes';
+import { ColorfulScale, ColorfulPlugin } from 'chartjs-color-schemes';
 import { defaultConverter } from 'chartjs-color-schemes/helpers';
+import { schemes } from 'chartjs-color-schemes/registries';
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
@@ -17,15 +15,15 @@ if (document.location.search === '?e2e') {
 Chart.register(ColorfulScale, ColorfulPlugin);
 
 // add custom scheme
-addScheme('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
+schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
 
 // get schemes and register.
 const { namedColors: d3Schemes } = getD3Schemes();
-addSchemes(d3Schemes);
-addSchemes(getOfficeSchemes());
+schemes.addAll(d3Schemes);
+schemes.addAll(getOfficeSchemes());
 
 // get registered scheme names.
-const schemeNames = getSchemeNames();
+const schemeNames = schemes.names;
 
 const ctx: HTMLCanvasElement = document.getElementById('chart') as any;
 

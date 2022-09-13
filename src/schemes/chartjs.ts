@@ -6,7 +6,6 @@ import * as office from 'chartjs-plugin-colorschemes/src/colorschemes/colorschem
 // @ts-ignore
 import * as tableau from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.tableau.js';
 /* eslint-enable */
-// colorschemes.brewer.js  colorschemes.office.js  colorschemes.tableau.js
 
 import type { NamedColors } from '../types';
 

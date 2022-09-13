@@ -34,7 +34,6 @@ const globals = {
 };
 
 const external = Object.keys(globals);
-const external2 = [...external, './helpers', '../helpers', './schemes', '../schemes'];
 
 const minifyPlugins = [
   ...commonPlugins,
@@ -81,13 +80,19 @@ const defs = [
     external,
   }));
 
+const external2 = [...external,
+  './helpers', '../helpers',
+  './schemes', '../schemes',
+  './registries', '../registries',
+];
+
 const defs2 = [
   { format: 'esm', ext: '.js', plugins: commonPlugins },
   { format: 'cjs', ext: '.js', plugins: commonPlugins },
   { format: 'es', ext: '.d.ts', plugins: dtsPlugins },
 ]
   .filter(({ minify }) => watch === false || minify === false)
-  .map(({ format, ext, plugins }) => ['.', 'helpers', 'schemes']
+  .map(({ format, ext, plugins }) => ['.', 'helpers', 'schemes', 'registries']
     .map((dir) => ({
       plugins,
       input: `src/${dir}/index.ts`.replace('/./', '/'),

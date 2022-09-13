@@ -1,10 +1,9 @@
 import './style.css';
 import Chart from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
-import {
-  ColorfulScale, ColorfulPlugin, addLinears, getLinearNames,
-} from 'chartjs-color-schemes';
+import { ColorfulScale, ColorfulPlugin } from 'chartjs-color-schemes';
 import { defaultConverter } from 'chartjs-color-schemes/helpers';
+import { linears } from 'chartjs-color-schemes/registries';
 import { getD3Schemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
 
@@ -17,12 +16,9 @@ Chart.register(MatrixController, MatrixElement);
 // Chart.register(DebugPlugin);
 Chart.register(ColorfulScale, ColorfulPlugin);
 
-// get schemes and register.
+// get lininers and register.
 const { namedLinear } = getD3Schemes();
-
-// get registered linears
-addLinears(namedLinear);
-const schemeNames = getLinearNames();
+linears.addAll(namedLinear);
 
 let random = seed('default');
 
@@ -210,7 +206,8 @@ let chart: Chart | null = null!;
 const schemeNameEl = document.getElementById('schemeName')!;
 
 const schemesEl = document.getElementById('schemes')!;
-schemesEl.innerHTML = schemeNames.map((name) => `<button class="btn scheme" id="${name}">${name}</button>`).join(' ');
+schemesEl.innerHTML = linears.names
+  .map((name) => `<button class="btn scheme" id="${name}">${name}</button>`).join(' ');
 
 function selectScheme(name: string) {
   Array.from(document.getElementsByClassName('scheme')).forEach((el) => {
@@ -222,7 +219,7 @@ function selectScheme(name: string) {
     return;
   }
   // set scheme name and update.
-  chart.options.plugins!.colorful!.data![0].name = name;
+  chart.options.plugins!.colorful!.data![0].linear = name;
   chart.update();
 }
 

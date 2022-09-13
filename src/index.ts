@@ -1,5 +1,4 @@
 export * from './types';
-export * from './repositories';
 export { ColorfulPlugin, colorfulPluginDatasetDefaults } from './colorfulPlugin';
 export type {
   ColorfulPluginOptions,

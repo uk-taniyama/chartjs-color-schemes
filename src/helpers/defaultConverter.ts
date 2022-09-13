@@ -1,4 +1,4 @@
-import { color as toColor } from 'chart.js/helpers';
 import type { ColorConverter } from '../types';
+import { createAlphaConverter } from './convertColor';
 
-export const defaultConverter: ColorConverter = (color) => toColor(color).alpha(0.5).hexString();
+export const defaultConverter: ColorConverter = createAlphaConverter(0.5);

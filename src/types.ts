@@ -1,10 +1,21 @@
-export type Colors = string[];
-export type ColorConverter = (color: string) => string;
-export type ColorFn = (ctx: any) => string;
-export type ColorLinear = (index: number) => string;
+export type Color = string;
+export type Colors = Color[];
+export type Scheme = Color[];
+
+export type ColorConverter = (color: Color) => Color;
+
+export type ScriptableColor = (ctx: any) => Color | null;
+export type ScriptableValue = (ctx: any) => number | null | undefined;
+
+/**
+ * Given a value in the range [0,1], returns the corresponding color.
+ * @param value 0.0, 1.0
+ */
+export type ColorLinear = (value: number) => Color;
+
 export type NamedColors = Record<string, Colors>;
 export type NamedLinear = Record<string, ColorLinear>;
-export type ValueFn = (ctx: any) => number | null | undefined;
+
 export interface Bicolor {
   c0: string;
   c1: string;
