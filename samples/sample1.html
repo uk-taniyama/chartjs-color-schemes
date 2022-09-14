@@ -13,7 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.0.0/dist/d3-scale-chromatic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
   <script src="../dist/index.js"></script>
-  <script>window.ChartColorSchemes || document.write('<script src="https://unpkg.com/chartjs-colorful/dist/index.min.js"><\/script>')</script>
+  <script>window.ChartColorful || document.write('<script src="https://unpkg.com/chartjs-colorful/dist/index.min.js"><\/script>')</script>
   <style>
     canvas {
       -moz-user-select: none;
@@ -46,10 +46,18 @@
       <button class="btn btn-chartjs" id="radarChart">Rader Chart</button>
     </div>
     <script>
-      const colorSchemes = ChartColorSchemes.createColorSchemes();
-      ChartColorSchemes.setup(colorSchemes);
-      ChartColorSchemes.addSchemes(ChartColorSchemes.schemes.getD3Schemes().namedColors)
-      const schemeNames = ChartColorSchemes.getSchemeNames();
+      const { ColorfulPlugin } = ChartColorful;
+      const { createColors, createRotateLinear, halfTransparent } = ChartColorful.helpers;
+      const { schemes } = ChartColorful.registries;
+
+      Chart.register(ColorfulPlugin);
+
+      schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
+
+      const rotateLinear = createRotateLinear('#ff7f7f');
+      schemes.add('rotate', createColors(rotateLinear, 12, false));
+
+      const schemeNames = schemes.names;
 
       function randomScaler() {
         return Math.round(Math.random() * 100);
@@ -129,7 +137,7 @@
         }
         const name = schemeNames[schemeIndex];
         document.getElementById('scheme').innerText = name;
-        colorSchemes.setSchemeName(name);
+        chart.options.plugins.colorful.colors = name;
         chart.update();
       });
 
