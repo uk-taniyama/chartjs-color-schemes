@@ -1,7 +1,7 @@
 import './style.css';
 import Chart from 'chart.js/auto';
-import { ColorfulScale, ColorfulPlugin } from 'chartjs-color-schemes';
-import { defaultConverter } from 'chartjs-color-schemes/helpers';
+import { ColorfulPlugin, ColorfulScale } from 'chartjs-color-schemes';
+import { createColors, createRotateLinear, halfTransparent } from 'chartjs-color-schemes/helpers';
 import { schemes } from 'chartjs-color-schemes/registries';
 import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
@@ -16,6 +16,9 @@ Chart.register(ColorfulScale, ColorfulPlugin);
 
 // add custom scheme
 schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
+
+const rotateLinear = createRotateLinear('#ff7f7f');
+schemes.add('rotate', createColors(rotateLinear, 12, false));
 
 // get schemes and register.
 const { namedColors: d3Schemes } = getD3Schemes();
@@ -73,7 +76,7 @@ function config(chartType: string, colors: string): any {
         },
         [ColorfulPlugin.id]: {
           colors,
-          converter: defaultConverter,
+          converter: halfTransparent,
         },
       },
     },

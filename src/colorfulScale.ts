@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import {
-  ChartArea, LinearScale, LinearScaleOptions, Ticks,
-} from 'chart.js';
+import type { ChartArea, LinearScaleOptions } from 'chart.js';
+import { LinearScale, Ticks } from 'chart.js';
 import type { DeepPartial } from 'chart.js/types/utils';
 import type { ColorLinear } from './types';
 

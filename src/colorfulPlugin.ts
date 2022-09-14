@@ -2,16 +2,18 @@ import type {
   Chart, ChartType, Plugin, ScriptableContext,
 } from 'chart.js';
 import type { DeepPartial } from 'chart.js/types/utils';
-import { isNumber } from 'chart.js/helpers';
-import { isFunction } from 'lodash-es';
 import {
-  clampColor, transparent, createScriptableColor,
-  createScriptableValue, getColor, getColors, createLinear,
+  clampColor,
+  createLinear, createScriptableColor, createScriptableValue,
+  getColor, getColors,
+  isFunction, isNumber,
+  transparent,
 } from './helpers';
 import type {
   Color, ColorConverter, ColorLinear, Colors, ScriptableValue,
 } from './types';
-import { ColorfulScaleOptions, createColorfulScaleOptions } from './colorfulScale';
+import type { ColorfulScaleOptions } from './colorfulScale';
+import { createColorfulScaleOptions } from './colorfulScale';
 import { linears, schemes } from './registries';
 
 /**
@@ -82,10 +84,14 @@ export interface ColorfulPluginDataOptions {
 
 export interface ColorfulPluginOptions {
   /**
-   * name for the scheme or colors..
-   * @see {@link schemes}
+   * name for the scheme or colors.
+   *
+   * @see {@link registries.schemes}
    */
   colors: string | Colors;
+  /**
+   * ColorConverter for color2.
+   */
   converter: ColorConverter;
   dataset: ColorfulPluginDatasetOptions[];
   data: ColorfulPluginDataOptions[];
@@ -143,10 +149,7 @@ function getGradientParamByArcElement(
     return null;
   }
   return {
-    x: x as number,
-    y: y as number,
-    r1: innerRadius as number,
-    r2: outerRadius as number,
+    x, y, r1: innerRadius, r2: outerRadius,
   };
 }
 
@@ -230,25 +233,49 @@ export function createGradient(
   return gradient;
 }
 
+/** @internal */
+export function createScriptableValueColor(
+  plugin: IColorfulPlugin,
+  color: Color,
+  value: string | ScriptableValue,
+  linear: ColorLinear,
+) {
+  const toColor = createScriptableColor(createScriptableValue(value), linear);
+  return (ctx: ScriptableContext<any>) => {
+    // for legends.
+    if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
+      return color;
+    }
+    // for data.
+    return toColor(ctx);
+  };
+}
+
+/** @internal */
 export function createScriptableGradient(
   plugin: IColorfulPlugin,
   color: Color,
   linear: ColorLinear | null = null,
 ) {
   return ({ chart }: ScriptableContext<any>) => {
+    // for legends.
     if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
       return color;
     }
+    // for data.
     return createGradient(chart, linear || color);
   };
 }
 
+/** @internal */
 export function createScriptableDataGradient(plugin: IColorfulPlugin, colors: Colors) {
   return ({ chart, datasetIndex, dataIndex }: ScriptableContext<any>) => {
     const color = getColor(colors, dataIndex);
+    // for legends.
     if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
       return color;
     }
+    // for data.
     return createDataGradient(
       chart,
       color,
@@ -258,6 +285,7 @@ export function createScriptableDataGradient(plugin: IColorfulPlugin, colors: Co
   };
 }
 
+/** @internal */
 export function resolveColors(colorsOrName: Colors | string): Colors {
   if (Array.isArray(colorsOrName)) {
     return colorsOrName;
@@ -300,27 +328,20 @@ export function applyColorfulPluginDataOptions(
   if (dataset == null) {
     return;
   }
-  const colorMax2 = linear(max2);
+
+  const colorMax = linear(max2);
   if (value) {
     // background by value.
-    const getValue = createScriptableValue(value);
-    const colorBase = createScriptableColor(getValue, valueToColor);
-    const color = (ctx: ScriptableContext<any>) => {
-      // for legends.
-      if (plugin.isUpdate && !plugin.isDatasetsUpdate) {
-        return colorMax2;
-      }
-      // for data.
-      return colorBase(ctx);
-    };
-    dataset.borderColor = colorMax2;
+    const color = createScriptableValueColor(plugin, colorMax, value, valueToColor);
+    dataset.borderColor = colorMax;
     dataset.backgroundColor = color as any;
+    // NOTE DONT set pointBackgoundColor.
   } else {
     // gradation background.
-    const color = createScriptableGradient(plugin, colorMax2, linear);
+    const color = createScriptableGradient(plugin, colorMax, linear);
     dataset.backgroundColor = color as any;
-    dataset.borderColor = colorMax2;
-    (dataset as any).pointBackgroundColor = colorMax2;
+    dataset.borderColor = colorMax;
+    (dataset as any).pointBackgroundColor = colorMax;
   }
 }
 

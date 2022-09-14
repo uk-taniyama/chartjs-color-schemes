@@ -22,6 +22,9 @@ function stringify(obj: any) {
     }, {} as any);
 }
 
+/**
+ * debug console.log plugin.
+ */
 export const DebugPlugin = [
   'afterBuildTicks',
   'afterDataLimits',

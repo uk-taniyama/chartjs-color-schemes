@@ -22,5 +22,11 @@ describe('createColors', () => {
     expect(colors.length).toBe(3);
     expect(colors[0]).toEqual(interpolateRainbow(0));
     expect(colors[2]).toEqual(interpolateRainbow(1));
+
+    // includeOne=false, same as includeOne=true exclude last item.
+    const colors2 = createColors(interpolateRainbow, 2, false);
+    expect(colors2.length).toBe(2);
+    expect(colors2[1]).toEqual(colors[1]);
+    expect(colors2[1]).toEqual(colors[1]);
   });
 });

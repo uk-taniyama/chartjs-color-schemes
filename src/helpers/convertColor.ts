@@ -4,11 +4,26 @@ import type { Color, ColorConverter } from '../types';
 
 type Fn = (v: ColorModel) => ColorModel;
 
+/**
+ * Create color's alpha converter.
+ */
 export function createAlphaConverter(alpha: number): ColorConverter {
   return (color) => toColor(color).alpha(alpha).hexString();
 }
 
+/**
+ * Get a transparent color.
+ *
+ * #FFFFFF -> #FFFFFF00
+ */
 export const transparent: ColorConverter = createAlphaConverter(0);
+
+/**
+ * Get a half-transparent color.
+ *
+ * #FFFFFF -> #FFFFFF80
+ */
+export const halfTransparent: ColorConverter = createAlphaConverter(0.5);
 
 export class ConvertColorBuilder {
   /** @private */
@@ -20,7 +35,10 @@ export class ConvertColorBuilder {
   }
 
   build(): ColorConverter {
-    return (color: Color) => this.fn.reduce((prev, fn) => fn(prev), toColor(color)).hexString();
+    return (color: Color) => this.fn.reduce(
+      (prev, fn) => fn(prev),
+      toColor(color),
+    ).hexString();
   }
 
   mix(color: Color, weight: number) {

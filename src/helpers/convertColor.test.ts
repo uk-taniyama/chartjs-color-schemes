@@ -1,4 +1,4 @@
-import { createConvertColorBuilder } from './convertColor';
+import { createConvertColorBuilder, halfTransparent, transparent } from './convertColor';
 
 describe('convertColor', () => {
   it('buider:mix', () => {
@@ -45,4 +45,12 @@ describe('convertColor', () => {
     const convertColor = createConvertColorBuilder().rotate(360 / 3).build();
     expect(convertColor('#F00')).toEqual('#0F0');
   });
+});
+
+it('halfTransparent', () => {
+  expect(halfTransparent('#FFF')).toBe('#FFFFFF80');
+});
+
+it('transparent', () => {
+  expect(transparent('#FFF')).toBe('#FFF0');
 });

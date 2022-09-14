@@ -1,8 +1,10 @@
 import './style.css';
 import Chart from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
-import { ColorfulScale, ColorfulPlugin } from 'chartjs-color-schemes';
-import { defaultConverter } from 'chartjs-color-schemes/helpers';
+import { ColorfulPlugin, ColorfulScale } from 'chartjs-color-schemes';
+import {
+  createColors, createRotateLinear, halfTransparent,
+} from 'chartjs-color-schemes/helpers';
 import { linears } from 'chartjs-color-schemes/registries';
 import { getD3Schemes } from 'chartjs-color-schemes/schemes';
 import seed from 'seed-random';
@@ -15,6 +17,9 @@ if (document.location.search === '?e2e') {
 Chart.register(MatrixController, MatrixElement);
 // Chart.register(DebugPlugin);
 Chart.register(ColorfulScale, ColorfulPlugin);
+
+const rotateLinear = createRotateLinear('#ff0000');
+linears.add('rotate', rotateLinear);
 
 // get lininers and register.
 const { namedLinear } = getD3Schemes();
@@ -108,8 +113,8 @@ function configMatrix(name: string): any {
           display: false,
         },
         [ColorfulPlugin.id]: {
-          colors: 'default',
-          converter: defaultConverter,
+          colors: createColors(rotateLinear, 12, false),
+          converter: halfTransparent,
           data: [{
             name,
             min: 0,

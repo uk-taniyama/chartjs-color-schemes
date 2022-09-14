@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { chromium, Browser, Page } from 'playwright';
+import type { Browser, Page } from 'playwright';
+import { chromium } from 'playwright';
 import { toMatchImageSnapshot } from 'jest-image-snapshot';
 
 expect.extend({ toMatchImageSnapshot });
@@ -49,6 +50,7 @@ describe('example1', () => {
     expect(await page.screenshot()).toMatchImageSnapshot();
 
     await clickAndScreenshot('#custom');
+    await clickAndScreenshot('#rotate');
     await clickAndScreenshot('#d3');
     await clickAndScreenshot('#Accent');
     await clickAndScreenshot('#office');

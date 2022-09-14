@@ -1,9 +1,11 @@
 import './style.css';
-import type { NamedColors, Colors } from 'chartjs-color-schemes';
-import { defaultConverter, transparent } from 'chartjs-color-schemes/helpers';
+import type { Colors, NamedColors } from 'chartjs-color-schemes';
+import {
+  createColors, createRotateLinear, halfTransparent, transparent,
+} from 'chartjs-color-schemes/helpers';
 import { schemes } from 'chartjs-color-schemes/registries';
 import {
-  getD3Schemes, getOfficeSchemes, getBrewerSchemes, getTableauSchemes,
+  getBrewerSchemes, getD3Schemes, getOfficeSchemes, getTableauSchemes,
 } from 'chartjs-color-schemes/schemes';
 
 const { namedColors: d3Schemes } = getD3Schemes();
@@ -16,6 +18,9 @@ const schemesSet: Record<string, NamedColors> = {
 
 // add custom scheme
 schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
+
+const rotateLinear = createRotateLinear('#ff7f7f');
+schemes.add('rotate', createColors(rotateLinear, 12, false));
 
 function selectExtra(extra: string) {
   Array.from(document.getElementsByClassName('extra')).forEach((el) => {
@@ -54,7 +59,7 @@ function selectScheme(name: string) {
 
   const scheme = schemes.get(name);
   renderColors('colors', scheme);
-  renderColors('colors2', scheme.map((c) => defaultConverter(c)));
+  renderColors('colors2', scheme.map((c) => halfTransparent(c)));
   renderLinears('linears', scheme);
 }
 
