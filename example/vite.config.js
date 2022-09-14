@@ -7,9 +7,9 @@ export default defineConfig(({ command }) => ({
       'chart.js': __dirname + '/../node_modules/chart.js',
       'chart.js/helpers': __dirname + '/../node_modules/chart.js/helpers',
       'chart.js/auto': __dirname + '/../node_modules/chart.js/auto',
-      'chartjs-color-schemes': __dirname + '/../src/',
-      'chartjs-color-schemes/helpers': __dirname + '/../src/helpers/',
-      'chartjs-color-schemes/schemes': __dirname + '/../src/schemes/',
+      'chartjs-colorful': __dirname + '/../src/',
+      'chartjs-colorful/helpers': __dirname + '/../src/helpers/',
+      'chartjs-colorful/schemes': __dirname + '/../src/schemes/',
     },
   }: undefined,
   build: {

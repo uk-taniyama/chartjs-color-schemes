@@ -1,5 +1,6 @@
-# chartjs-color-schemes
-Simple color schemes for Chart.js v3.x
+# chartjs-colorful
+
+Be colorful Chart.js v3.
 
 ## Example
 
@@ -7,10 +8,12 @@ Simple color schemes for Chart.js v3.x
 - [Colorful chart and scheme](example/out/example2.html)
 - [Valued color and colorful scale](example/out/example3.html)
 
+* [Homepage](https://uk-taniyama.github.io/chartjs-colorful/)
+
 ## Install
 
-- **yarn** install: `yarn add chart.js chartjs-color-schemes`
-- **npm** install: `npm install --save chart.js chartjs-color-schemes`
+- **yarn** install: `yarn add chart.js chartjs-colorful`
+- **npm** install: `npm install --save chart.js chartjs-colorful`
 
 ### Support Scheme Packages
 
@@ -27,10 +30,10 @@ Simple color schemes for Chart.js v3.x
 
 ```javascript
 import Chart from 'chart.js/auto';
-import { ColorfulScale, ColorfulPlugin } from 'chartjs-color-schemes';
-import { defaultConverter } from 'chartjs-color-schemes/helpers';
-import { linears, schemes } from 'chartjs-color-schemes/registries';
-import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
+import { ColorfulScale, ColorfulPlugin } from 'chartjs-colorful';
+import { defaultConverter } from 'chartjs-colorful/helpers';
+import { linears, schemes } from 'chartjs-colorful/registries';
+import { getD3Schemes, getOfficeSchemes } from 'chartjs-colorful/schemes';
 
 // register scale and plugin.
 Chart.register(ColorfulScale, ColorfulPlugin);

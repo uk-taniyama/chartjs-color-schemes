@@ -69,7 +69,7 @@ const defs = [
     // eslint-disable-next-line no-nested-ternary
     plugins: (minify ? minifyPlugins : commonPlugins),
     output: {
-      name: 'ChartColorSchemes',
+      name: 'ChartColorful',
       format,
       file: `dist/index${ext}`,
       banner,

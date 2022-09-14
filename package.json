@@ -1,8 +1,8 @@
 {
-  "name": "chartjs-color-schemes",
-  "description": "Simple color schemes for Chart.js v3.x",
-  "homepage": "https://uk-taniyama.github.io/chartjs-color-schemes/",
-  "version": "1.0.0-beta.2",
+  "name": "chartjs-colorful",
+  "description": "Be colorful Chart.js v3.",
+  "homepage": "https://uk-taniyama.github.io/chartjs-colorful/",
+  "version": "1.0.0-RC.1",
   "license": "MIT",
   "jsdelivr": "dist/index.min.js",
   "unpkg": "dist/index.min.js",
@@ -56,10 +56,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/uk-taniyama/chartjs-color-schemes"
+    "url": "https://github.com/uk-taniyama/chartjs-colorful"
   },
   "bugs": {
-    "url": "https://github.com/uk-taniyama/chartjs-color-schemes/issues"
+    "url": "https://github.com/uk-taniyama/chartjs-colorful/issues"
   },
   "scripts": {
     "prepublishOnly": "npm-run-all rebuild",

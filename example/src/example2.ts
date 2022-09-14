@@ -1,9 +1,9 @@
 import './style.css';
 import Chart from 'chart.js/auto';
-import { ColorfulPlugin, ColorfulScale } from 'chartjs-color-schemes';
-import { createColors, createRotateLinear, halfTransparent } from 'chartjs-color-schemes/helpers';
-import { schemes } from 'chartjs-color-schemes/registries';
-import { getD3Schemes, getOfficeSchemes } from 'chartjs-color-schemes/schemes';
+import { ColorfulPlugin, ColorfulScale } from 'chartjs-colorful';
+import { createColors, createRotateLinear, halfTransparent } from 'chartjs-colorful/helpers';
+import { schemes } from 'chartjs-colorful/registries';
+import { getD3Schemes, getOfficeSchemes } from 'chartjs-colorful/schemes';
 import seed from 'seed-random';
 
 if (document.location.search === '?e2e') {

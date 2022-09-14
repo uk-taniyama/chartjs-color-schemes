@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-beta.2](../README.md) / [registries](../modules/registries.md) / Registry
+[chartjs-colorful - v1.0.0-RC.1](../README.md) / [registries](../modules/registries.md) / Registry
 
 # Class: Registry<T\>
 

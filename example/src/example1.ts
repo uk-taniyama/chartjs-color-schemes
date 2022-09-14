@@ -1,12 +1,12 @@
 import './style.css';
-import type { Colors, NamedColors } from 'chartjs-color-schemes';
+import type { Colors, NamedColors } from 'chartjs-colorful';
 import {
   createColors, createRotateLinear, halfTransparent, transparent,
-} from 'chartjs-color-schemes/helpers';
-import { schemes } from 'chartjs-color-schemes/registries';
+} from 'chartjs-colorful/helpers';
+import { schemes } from 'chartjs-colorful/registries';
 import {
   getBrewerSchemes, getD3Schemes, getOfficeSchemes, getTableauSchemes,
-} from 'chartjs-color-schemes/schemes';
+} from 'chartjs-colorful/schemes';
 
 const { namedColors: d3Schemes } = getD3Schemes();
 const schemesSet: Record<string, NamedColors> = {

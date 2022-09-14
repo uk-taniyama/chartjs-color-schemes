@@ -1,12 +1,12 @@
 import './style.css';
 import Chart from 'chart.js/auto';
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
-import { ColorfulPlugin, ColorfulScale } from 'chartjs-color-schemes';
+import { ColorfulPlugin, ColorfulScale } from 'chartjs-colorful';
 import {
   createColors, createRotateLinear, halfTransparent,
-} from 'chartjs-color-schemes/helpers';
-import { linears } from 'chartjs-color-schemes/registries';
-import { getD3Schemes } from 'chartjs-color-schemes/schemes';
+} from 'chartjs-colorful/helpers';
+import { linears } from 'chartjs-colorful/registries';
+import { getD3Schemes } from 'chartjs-colorful/schemes';
 import seed from 'seed-random';
 
 if (document.location.search === '?e2e') {

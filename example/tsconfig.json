@@ -17,8 +17,8 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "chartjs-color-schemes": ["../../src"],
-      "chartjs-color-schemes/*": ["../../src/*"]
+      "chartjs-colorful": ["../../src"],
+      "chartjs-colorful/*": ["../../src/*"]
     }
   },
   "include": ["src"]
