@@ -19,8 +19,19 @@ module.exports = {
     node: true,
   },
   rules: {
+    'sort-imports': [
+      'error',
+      {
+        ignoreCase: false,
+        ignoreDeclarationSort: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+        allowSeparatedGroups: true,
+      },
+    ],
     'import/no-named-as-default': 'off',
     'import/prefer-default-export': 'off',
+    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
     '@typescript-eslint/type-annotation-spacing': 'error',
     '@typescript-eslint/ban-ts-comment': ['error', { 'ts-expect-error': { descriptionFormat: '^: TS\\d+' } }],
   },
