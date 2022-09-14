@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / helpers
+[chartjs-color-schemes - v1.0.0-beta.2](../README.md) / helpers
 
 # Namespace: helpers
 
@@ -20,11 +20,15 @@
 - [createColors](helpers.md#createcolors)
 - [createConvertColorBuilder](helpers.md#createconvertcolorbuilder)
 - [createLinear](helpers.md#createlinear)
+- [createRotateLinear](helpers.md#createrotatelinear)
 - [createScriptableColor](helpers.md#createscriptablecolor)
 - [createScriptableValue](helpers.md#createscriptablevalue)
-- [defaultConverter](helpers.md#defaultconverter)
 - [getColor](helpers.md#getcolor)
 - [getColors](helpers.md#getcolors)
+- [halfTransparent](helpers.md#halftransparent)
+- [isFunction](helpers.md#isfunction)
+- [isNumber](helpers.md#isnumber)
+- [throughNull](helpers.md#throughnull)
 - [transparent](helpers.md#transparent)
 
 ## Variables
@@ -32,6 +36,8 @@
 ### DebugPlugin
 
 • `Const` **DebugPlugin**: `Object`
+
+debug console.log plugin.
 
 #### Type declaration
 
@@ -45,7 +51,7 @@
 
 ▸ **clampColor**(`linear`, `min`, `max`, `colorMin?`, `colorMax?`): [`ColorLinear`](../README.md#colorlinear)
 
-returns function is input value [min,max] translate to [colorMin, colorMax] then call linear.
+Get the function is input value [min,max] translate to [colorMin, colorMax] then call linear.
 ex) linear:(red -> blue), min:0, max:20, colorMin: 1.0, colorMax: 0.0
 returned function call by '0' then returned 'blue'.
 returned function call by '20' then returned 'red'.
@@ -70,7 +76,7 @@ ___
 
 ▸ **clampValue**(`min`, `max`, `rangeMin?`, `rangeMax?`): (`value`: `number`) => `number`
 
-returns function is input value [min,max] translate to [colorMin, colorMax].
+Get the function is input value [min,max] translate to [colorMin, colorMax].
 ex) min:0, max:20, colorMin: 1.0, colorMax: 0.0
 returned function call by '0' then returned '1.0'.
 returned function call by '20' then returned '0.0'.
@@ -106,6 +112,8 @@ ___
 
 ▸ **createAlphaConverter**(`alpha`): [`ColorConverter`](../README.md#colorconverter)
 
+Create color's alpha converter.
+
 #### Parameters
 
 | Name | Type |
@@ -120,14 +128,22 @@ ___
 
 ### createColors
 
-▸ **createColors**(`linear`, `count`): [`Colors`](../README.md#colors)
+▸ **createColors**(`linear`, `count`, `includeOne?`): [`Colors`](../README.md#colors)
+
+create Colors from ColorLinear.
+
+includeOne=false(default) => [0, 1].<br>
+includeOne=true => [0, 1).<br>
+If linear returns the same value for 0 and 1, specify include=false.
+For example, linear created with createRotateLinear
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `linear` | [`ColorLinear`](../README.md#colorlinear) |
-| `count` | `number` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `linear` | [`ColorLinear`](../README.md#colorlinear) | `undefined` |
+| `count` | `number` | `undefined` |
+| `includeOne` | `undefined` \| `boolean` | `true` |
 
 #### Returns
 
@@ -154,6 +170,23 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `color` | `string` |
+
+#### Returns
+
+[`ColorLinear`](../README.md#colorlinear)
+
+___
+
+### createRotateLinear
+
+▸ **createRotateLinear**(`color`, `reverse?`): [`ColorLinear`](../README.md#colorlinear)
+
+#### Parameters
+
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `color` | `string` | `undefined` |
+| `reverse` | `boolean` | `false` |
 
 #### Returns
 
@@ -194,22 +227,6 @@ ___
 
 ___
 
-### defaultConverter
-
-▸ **defaultConverter**(`color`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `color` | `string` |
-
-#### Returns
-
-`string`
-
-___
-
 ### getColor
 
 ▸ **getColor**(`colors`, `index`): `string`
@@ -245,9 +262,103 @@ ___
 
 ___
 
+### halfTransparent
+
+▸ **halfTransparent**(`color`): `string`
+
+Get a half-transparent color.
+
+#FFFFFF -> #FFFFFF80
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `color` | `string` |
+
+#### Returns
+
+`string`
+
+___
+
+### isFunction
+
+▸ **isFunction**(`v`): v is Function
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `v` | `any` |
+
+#### Returns
+
+v is Function
+
+___
+
+### isNumber
+
+▸ **isNumber**(`v`): v is number
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `v` | `any` |
+
+#### Returns
+
+v is number
+
+___
+
+### throughNull
+
+▸ **throughNull**<`V`, `R`\>(`fn`): (`v`: `V` \| ``null`` \| `undefined`) => `R` \| ``null``
+
+v is null then return null.
+v is NOT null then return fn(v).
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `V` |
+| `R` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `fn` | (`v`: `V`) => `R` |
+
+#### Returns
+
+`fn`
+
+▸ (`v`): `R` \| ``null``
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `v` | `V` \| ``null`` \| `undefined` |
+
+##### Returns
+
+`R` \| ``null``
+
+___
+
 ### transparent
 
 ▸ **transparent**(`color`): `string`
+
+Get a transparent color.
+
+#FFFFFF -> #FFFFFF00
 
 #### Parameters
 

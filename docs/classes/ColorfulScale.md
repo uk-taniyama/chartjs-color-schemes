@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / ColorfulScale
+[chartjs-color-schemes - v1.0.0-beta.2](../README.md) / ColorfulScale
 
 # Class: ColorfulScale<O\>
 

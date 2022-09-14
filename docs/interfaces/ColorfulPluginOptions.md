@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / ColorfulPluginOptions
+[chartjs-color-schemes - v1.0.0-beta.2](../README.md) / ColorfulPluginOptions
 
 # Interface: ColorfulPluginOptions
 
@@ -17,17 +17,19 @@
 
 • **colors**: `string` \| [`Colors`](../README.md#colors)
 
-name for the scheme or colors..
+name for the scheme or colors.
 
 **`See`**
 
-[schemes](../modules/schemes.md)
+[schemes](../modules/registries.md#schemes)
 
 ___
 
 ### converter
 
 • **converter**: [`ColorConverter`](../README.md#colorconverter)
+
+ColorConverter for color2.
 
 ___
 

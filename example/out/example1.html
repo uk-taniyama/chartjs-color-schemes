@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
   <title>Support colors</title>
   <script type="module" crossorigin src="./assets/example1.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/index.js">
@@ -16,10 +18,13 @@
     <h1>Support colors</h1>
     <div id="buttons">
       <span>Scheme:</span><span id="schemeName">default</span>
-      <div>
-        <button class="btn scheme" id="default">default</button>
-        <button class="btn scheme" id="custom">custom</button>
-      </div>
+      <div><button class="btn scheme" id="default">default</button></div>
+      <pre></pre>
+      <div><button class="btn scheme" id="custom">custom</button></div>
+      <pre><code>schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F'])</code></pre>
+      <div><button class="btn scheme" id="rotate">rotate</button></div>
+      <pre><code>rotateLinear = createRotateLinear('#ff7f7f');
+schemes.add('rotate', createColors(rotateLinear, 12, false));</code></pre>
       <div>Extra
         <span id="extra">
           <button class="btn extra" id="d3">d3</button>
@@ -42,5 +47,5 @@
   </div>
   
 </body>
-
+<script>hljs.highlightAll();</script>
 </html>

@@ -1,4 +1,4 @@
-[chartjs-color-schemes - v1.0.0-beta.1](../README.md) / registries
+[chartjs-color-schemes - v1.0.0-beta.2](../README.md) / registries
 
 # Namespace: registries
 
