@@ -2,13 +2,17 @@
 
 Be colorful Chart.js v3.
 
+## Homepage
+
+- https://uk-taniyama.github.io/chartjs-colorful/
+
 ## Example
 
 - [Support colors](example/out/example1.html)
 - [Colorful chart and scheme](example/out/example2.html)
 - [Valued color and colorful scale](example/out/example3.html)
 
-* [Homepage](https://uk-taniyama.github.io/chartjs-colorful/)
+- [Sample UMD](samples/sample1.html)
 
 ## Install
 
@@ -17,7 +21,7 @@ Be colorful Chart.js v3.
 
 ### Support Scheme Packages
 
-- chartjs-plugin-colorschemes(included)
+- chartjs-plugin-colorschemes
 - d3-scale-chromatic
 
 ## Interfaces
@@ -41,6 +45,12 @@ Chart.register(ColorfulScale, ColorfulPlugin);
 // add custom scheme
 schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
 
+// add hue-rotate color.
+// select key color and get 12 colors.
+// NOTE createColors's 3rd argument is 'false' because rotateLinear(0) and rotateLinear(1) are the same color.
+const rotateLinear = createRotateLinear('#ff7f7f');
+schemes.add('rotate', createColors(rotateLinear, 12, false));
+
 // get schemes and register.
 const { namedColors: d3Schemes } = getD3Schemes();
 schemes.addAll(d3Schemes);
@@ -59,6 +69,8 @@ const options = {
     colorful: {
       // set scheme name
       colors: 'custom',
+      // or set scheme(=string[])
+      // colors: ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F'],
       // set converter. (alpha:0.5)
       converter: defaultConverter,
     }
@@ -121,6 +133,33 @@ const options = {
     }
   }
 }
+```
+
+### Use other color schemes packages.
+
+### One by one
+
+```js
+import { schemes } from 'chartjs-colorful/registries';
+import { schemeTableau10 } from 'd3-scale-chromatic';
+
+// Add a scheme(=string[]) with a suitable name.
+schemes.add('Tableau10', schemeTableau10);
+```
+
+####  All at once
+
+```js
+import { schemes } from 'chartjs-colorful/registries';
+import { getBrewerSchemes, getD3Schemes, getOfficeSchemes, getTableauSchemes } from 'chartjs-colorful/schemes';
+
+// from chartjs-plugin-colorschemes
+schemes.addAll(getBrewerSchemes());
+schemes.addAll(getOfficeSchemes());
+schemes.addAll(getTableauSchemes());
+
+// from d3-scale-chromatic
+schemes.addAll(getD3Schemes().namedColors);
 ```
 
 ## License

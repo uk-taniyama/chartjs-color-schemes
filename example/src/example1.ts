@@ -19,6 +19,7 @@ const schemesSet: Record<string, NamedColors> = {
 // add custom scheme
 schemes.add('custom', ['#F00', '#FF0', '#0F0', '#0FF', '#00F', '#F0F']);
 
+// add hue-rotate color.
 const rotateLinear = createRotateLinear('#ff7f7f');
 schemes.add('rotate', createColors(rotateLinear, 12, false));
 
