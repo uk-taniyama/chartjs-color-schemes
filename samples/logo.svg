@@ -1,10 +1,11 @@
-<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-<title>chartjs-colorful</title>
-<g fill="none" fill-rule="evenodd">
-<path d="m63.108 59.281a92.818 98.047 0 0 1 61.729 11.791l-46.409 84.911z" fill="#36a2eb" stroke-width="1.2403"/>
-<path d="m123.46 70.157-45.031 85.825 64.963-40.843v-30.244a95.292 97.384 0 0 0-19.932-14.738zm35.523 33.818v1.3618l0.60742-0.38251a95.292 97.384 0 0 0-0.60742-0.97924z" fill="#ffce56" stroke-width="1.2525"/>
-<path d="m71.283 58.208a95.292 98.051 0 0 0-54.334 23.02v38.818l61.479 35.936z" fill="#fe6184" fill-opacity=".8" stroke-width="1.2568"/>
-<path d="m73 150 L87 60 L85 150 z" fill="#000000" fill-opacity=".66667" stroke-width="1.5178"/>
-<path d="m80 6 64.086 37v74l-64.086 37-64.086-37v-74z" fill="none" stroke="#e7e9ed" stroke-width="8"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" xml:space="preserve">
+    <defs>
+        <linearGradient id="1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#36A2EB"/><stop offset="80%" stop-color="#36A2EB" stop-opacity="0"/><stop offset="100%" stop-color="#36A2EB" stop-opacity="0"/></linearGradient>
+        <linearGradient id="2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#FFCE56"/><stop offset="80%" stop-color="#FFCE56" stop-opacity="0"/><stop offset="100%" stop-color="#FFCE56" stop-opacity="0"/></linearGradient>
+        <linearGradient id="3" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#FE6184"/><stop offset="20%" stop-color="#FE6184"/><stop offset="100%" stop-color="#FE6184" stop-opacity="0"/></linearGradient>
+    </defs>
+    <path fill="url(#1)" d="M161.271 96.556c-22.368.439-17.709 14.599-33.473 18.18-16.014 3.638-18.542-39.111-34.552-39.111-16.012 0-19.559 41.526-39.608 70.034l-.572.807 42.985 24.813 65.22-37.651V96.556z"/>
+    <path fill="url(#2)" d="M161.271 95.267c-7.488-9.61-12.567-20.658-23.494-20.658-19.337 0-14.249 31.545-35.62 31.545-21.373 0-23.62-33.931-47.832-2.035-7.715 10.163-13.925 21.495-18.803 32.218l60.529 34.943 65.22-37.651V95.267z"/>
+    <path fill="url(#3)" d="M30.829 108.334c7.338-20.321 10.505-36.779 24.514-36.779 21.371 0 26.458 60.039 44.779 53.931 18.318-6.105 16.282-38.669 44.779-38.669 5.424 0 10.962 3.323 16.371 8.698v38.113l-65.22 37.651-65.222-37.651v-25.294z"/>
+    <path fill="#E7E9ED" d="m96 176-69.292-39.999V56L96 16l69.292 40v80L96 176zm-61.151-44.699L96 166.602l61.151-35.301V60.7L96 25.399 34.849 60.7v70.601z"/>
 </svg>
