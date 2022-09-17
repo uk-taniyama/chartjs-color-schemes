@@ -1,3 +1,18 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+const yargs = require('yargs');
+
+const args = yargs(process.argv).parse();
+
+const coverage = args.coverage === true;
+const reporters = ['default'];
+if (coverage) {
+  reporters.push(['jest-html-reporters', {
+    publicPath: './test-result/html',
+    filename: 'report.html',
+    openReport: true,
+  }]);
+}
+
 const esmodules = [
   'd3-.*',
   'lodash-es',
@@ -16,6 +31,8 @@ module.exports = {
   transformIgnorePatterns: [
     `node_modules/(?!(${esmodules})/)`,
   ],
+  coverageDirectory: './test-result/coverage/',
+  reporters,
   setupFilesAfterEnv: ['jest-extended/all', 'expect-playwright'],
   transform: {
     '.+\\.(t|j)sx?$': [

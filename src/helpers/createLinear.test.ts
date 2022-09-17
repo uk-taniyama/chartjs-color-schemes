@@ -8,7 +8,7 @@ it('createLinear', () => {
   expect(linear(1)).toBe('#000');
   expect(linear(2)).toBe('#000');
 });
-describe.only('createRotateLinear', () => {
+describe('createRotateLinear', () => {
   it('normal', () => {
     const rotateLinear = createRotateLinear('#F00');
     expect(rotateLinear(0)).toBe('#F00');
