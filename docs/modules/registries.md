@@ -1,4 +1,4 @@
-[chartjs-colorful - v1.0.0-RC.1](../README.md) / registries
+[chartjs-colorful - v1.0.0](../README.md) / registries
 
 # Namespace: registries
 

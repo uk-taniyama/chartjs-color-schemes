@@ -1,6 +1,6 @@
-chartjs-colorful - v1.0.0-RC.1
+chartjs-colorful - v1.0.0
 
-# chartjs-colorful - v1.0.0-RC.1
+# chartjs-colorful - v1.0.0
 
 ## Table of contents
 

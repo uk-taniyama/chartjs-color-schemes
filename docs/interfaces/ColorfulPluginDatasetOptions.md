@@ -1,4 +1,4 @@
-[chartjs-colorful - v1.0.0-RC.1](../README.md) / ColorfulPluginDatasetOptions
+[chartjs-colorful - v1.0.0](../README.md) / ColorfulPluginDatasetOptions
 
 # Interface: ColorfulPluginDatasetOptions
 

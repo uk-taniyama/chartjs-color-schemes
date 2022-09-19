@@ -1,4 +1,4 @@
-[chartjs-colorful - v1.0.0-RC.1](../README.md) / [helpers](../modules/helpers.md) / ConvertColorBuilder
+[chartjs-colorful - v1.0.0](../README.md) / [helpers](../modules/helpers.md) / ConvertColorBuilder
 
 # Class: ConvertColorBuilder
 

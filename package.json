@@ -2,7 +2,7 @@
   "name": "chartjs-colorful",
   "description": "Be colorful Chart.js v3.",
   "homepage": "https://uk-taniyama.github.io/chartjs-colorful/",
-  "version": "1.0.0-RC.1",
+  "version": "1.0.0",
   "license": "MIT",
   "jsdelivr": "dist/index.min.js",
   "unpkg": "dist/index.min.js",
